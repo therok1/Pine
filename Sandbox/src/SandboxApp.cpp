@@ -3,6 +3,7 @@
 class Sandbox : public Pine::Application
 {
 public:
+
 	Sandbox()
 	{
 
@@ -12,6 +13,7 @@ public:
 	{
 
 	}
+
 };
 
 Pine::Application* Pine::CreateApplication()

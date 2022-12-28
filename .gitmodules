@@ -1,0 +1,3 @@
+[submodule "Pine/vendor/spdlog"]
+	path = Pine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
