@@ -1,4 +1,8 @@
+#include "pnpch.h"
 #include "Application.h"
+
+#include "Events/ApplicationEvent.h"
+#include "Log.h"
 
 namespace Pine
 {
@@ -14,9 +18,9 @@ namespace Pine
 
 	void Application::Run()
 	{
-		while (true)
-		{
+		WindowResizeEvent e(1280, 720);
+		PN_TRACE(e);
 
-		}
+		while (true);
 	}
 }

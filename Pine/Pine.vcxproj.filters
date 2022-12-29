@@ -4,6 +4,9 @@
     <Filter Include="Pine">
       <UniqueIdentifier>{11BB8A7C-FDF1-8B0D-A6DE-711092F4070F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pine\Events">
+      <UniqueIdentifier>{D5299F4F-41DF-1745-CAD3-111C36880E49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pine.h" />
@@ -16,9 +19,22 @@
     <ClInclude Include="src\Pine\EntryPoint.h">
       <Filter>Pine</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pine\Events\ApplicationEvent.h">
+      <Filter>Pine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pine\Events\Event.h">
+      <Filter>Pine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pine\Events\KeyEvent.h">
+      <Filter>Pine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pine\Events\MouseEvent.h">
+      <Filter>Pine\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pine\Log.h">
       <Filter>Pine</Filter>
     </ClInclude>
+    <ClInclude Include="src\pnpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pine\Application.cpp">
@@ -27,5 +43,6 @@
     <ClCompile Include="src\Pine\Log.cpp">
       <Filter>Pine</Filter>
     </ClCompile>
+    <ClCompile Include="src\pnpch.cpp" />
   </ItemGroup>
 </Project>
