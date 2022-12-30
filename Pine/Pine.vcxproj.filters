@@ -37,6 +37,12 @@
     <ClInclude Include="src\Pine\Events\MouseEvent.h">
       <Filter>Pine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pine\Layer.h">
+      <Filter>Pine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pine\LayerStack.h">
+      <Filter>Pine</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pine\Log.h">
       <Filter>Pine</Filter>
     </ClInclude>
@@ -50,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pine\Application.cpp">
+      <Filter>Pine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pine\Layer.cpp">
+      <Filter>Pine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pine\LayerStack.cpp">
       <Filter>Pine</Filter>
     </ClCompile>
     <ClCompile Include="src\Pine\Log.cpp">
