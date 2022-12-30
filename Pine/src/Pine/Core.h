@@ -10,6 +10,10 @@
 	#error Pine only supports Windows!
 #endif
 
+#ifdef PN_DEBUG
+	#define PN_ENABLE_ASSERTS
+#endif
+
 #ifdef PN_ENABLE_ASSERTS
 	#define PN_ASSERT(x, ...) { if (!(x)) { PN_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak; } }
 	#define PN_CORE_ASSERT(x, ...) { if (!(x)) { PN_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak; } }
