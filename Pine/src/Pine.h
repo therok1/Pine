@@ -5,5 +5,7 @@
 #include "Pine/Layer.h"
 #include "Pine/Log.h"
 
+#include "Pine/ImGui/ImGuiLayer.h"
+
 // Entry Point
 #include "Pine/EntryPoint.h"

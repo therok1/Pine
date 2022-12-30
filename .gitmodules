@@ -4,3 +4,6 @@
 [submodule "Pine/vendor/GLFW"]
 	path = Pine/vendor/GLFW
 	url = https://github.com/therok1/glfw.git
+[submodule "Pine/vendor/imgui"]
+	path = Pine/vendor/imgui
+	url = https://github.com/therok1/imgui
