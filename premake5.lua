@@ -5,7 +5,7 @@ workspace "Pine"
 	{
 		"Debug",
 		"Release",
-		"Distribution"
+		"Dist"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -69,8 +69,8 @@ project "Pine"
 		defines "PN_RELEASE"
 		optimize "On"
 
-	filter "configurations:Distribution"
-		defines "PN_DISTRIBUTION"
+	filter "configurations:Dist"
+		defines "PN_DIST"
 		optimize "On"
 
 project "Sandbox"
@@ -116,6 +116,6 @@ project "Sandbox"
 		defines "PN_RELEASE"
 		optimize "On"
 
-	filter "configurations:Distribution"
-		defines "PN_DISTRIBUTION"
+	filter "configurations:Dist"
+		defines "PN_DIST"
 		optimize "On"

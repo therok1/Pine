@@ -9,8 +9,8 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Distribution|x64">
-      <Configuration>Distribution</Configuration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -34,7 +34,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
@@ -49,7 +49,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -67,10 +67,10 @@
     <TargetName>Pine</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Distribution-windows-x86_64\Pine\</OutDir>
-    <IntDir>..\bin-int\Distribution-windows-x86_64\Pine\</IntDir>
+    <OutDir>..\bin\Dist-windows-x86_64\Pine\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\Pine\</IntDir>
     <TargetName>Pine</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
@@ -124,12 +124,12 @@
       <Command>IF EXIST ..\bin\Release-windows-x86_64\Pine\Pine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Pine\Pine.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Pine\Pine.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pnpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>PN_PLATFORM_WINDOWS;PN_BUILD_DLL;PN_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PN_PLATFORM_WINDOWS;PN_BUILD_DLL;PN_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -145,10 +145,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\bin\Distribution-windows-x86_64\Pine\Pine.lib</ImportLibrary>
+      <ImportLibrary>..\bin\Dist-windows-x86_64\Pine\Pine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Distribution-windows-x86_64\Pine\Pine.dll\ (xcopy /Q /E /Y /I ..\bin\Distribution-windows-x86_64\Pine\Pine.dll ..\bin\Distribution-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Distribution-windows-x86_64\Pine\Pine.dll ..\bin\Distribution-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Pine\Pine.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Pine\Pine.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Pine\Pine.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -161,9 +161,9 @@
     <ClInclude Include="src\Pine\Events\KeyEvent.h" />
     <ClInclude Include="src\Pine\Events\MouseEvent.h" />
     <ClInclude Include="src\Pine\Log.h" />
+    <ClInclude Include="src\Pine\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\pnpch.h" />
-    <ClInclude Include="src\Pine\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pine\Application.cpp" />
