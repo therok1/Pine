@@ -12,8 +12,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includedir = {}
 includedir["GLFW"] = "Pine/vendor/GLFW/include"
+includedir["Glad"] = "Pine/vendor/Glad/include"
 
 include "Pine/vendor/GLFW"
+include "Pine/vendor/Glad"
 
 project "Pine"
 	location "Pine"
@@ -36,12 +38,14 @@ project "Pine"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{includedir.GLFW}"
+		"%{includedir.GLFW}",
+		"%{includedir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -53,7 +57,8 @@ project "Pine"
 		defines
 		{
 			"PN_PLATFORM_WINDOWS",
-			"PN_BUILD_DLL"
+			"PN_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
