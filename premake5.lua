@@ -1,6 +1,8 @@
 workspace "Pine"
 	architecture "x64"
 
+	startproject "Sandbox"
+
 	configurations
 	{
 		"Debug",

@@ -121,9 +121,9 @@ namespace Pine
 	bool ImGuiLayer::OnMouseScrolledEvent(MouseScrolledEvent& e)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.MouseWheel += e.GetXOffset();
-		io.MouseWheelH += e.GetYOffset();
-
+		io.MouseWheel += e.GetYOffset();
+		io.MouseWheelH += e.GetXOffset();
+		
 		return false;
 	}
 
