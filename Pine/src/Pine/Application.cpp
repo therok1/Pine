@@ -3,6 +3,8 @@
 
 #include "Log.h"
 
+#include <glad/glad.h>
+
 namespace Pine
 {
 
@@ -51,6 +53,9 @@ namespace Pine
 	{
 		while (m_Running)
 		{
+			glClearColor(0, 0, 0, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
