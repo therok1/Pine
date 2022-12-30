@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Pine/Log.h"
+
 #ifdef PN_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif

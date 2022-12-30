@@ -10,6 +10,11 @@ workspace "Pine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+includedir = {}
+includedir["GLFW"] = "Pine/vendor/GLFW/include"
+
+include "Pine/vendor/GLFW"
+
 project "Pine"
 	location "Pine"
 	kind "SharedLib"
@@ -30,7 +35,14 @@ project "Pine"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{includedir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
