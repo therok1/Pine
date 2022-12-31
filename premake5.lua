@@ -16,6 +16,7 @@ includedir = {}
 includedir["GLFW"] = "Pine/vendor/GLFW/include"
 includedir["Glad"] = "Pine/vendor/Glad/include"
 includedir["ImGui"] = "Pine/vendor/imgui"
+includedir["glm"] = "Pine/vendor/glm"
 
 include "Pine/vendor/GLFW"
 include "Pine/vendor/Glad"
@@ -36,7 +37,9 @@ project "Pine"
 	files 
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -45,7 +48,8 @@ project "Pine"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{includedir.GLFW}",
 		"%{includedir.Glad}",
-		"%{includedir.ImGui}"
+		"%{includedir.ImGui}",
+		"%{includedir.glm}"
 	}
 
 	links
@@ -105,7 +109,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Pine/vendor/spdlog/include",
-		"Pine/src"
+		"Pine/src",
+		"%{includedir.glm}"
 	}
 
 	links
