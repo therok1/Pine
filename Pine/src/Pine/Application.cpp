@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+#include "Input.h"
+
 namespace Pine
 {
 

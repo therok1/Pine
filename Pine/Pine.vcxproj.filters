@@ -65,6 +65,10 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\pnpch.h" />
+    <ClInclude Include="src\Pine\Input.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Pine\KeyCodes.h" />
+    <ClInclude Include="src\Pine\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pine\Application.cpp">
@@ -89,5 +93,6 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\pnpch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>

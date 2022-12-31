@@ -12,7 +12,8 @@ public:
 
 	void OnUpdate() override
 	{
-		PN_INFO("ExampleLayer::Update");
+		if (Pine::Input::IsKeyPressed(PN_KEY_TAB))
+			PN_TRACE("Tab");
 	}
 
 	void OnEvent(Pine::Event& event) override

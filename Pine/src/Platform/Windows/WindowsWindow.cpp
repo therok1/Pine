@@ -64,7 +64,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, int width, int height)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 				data.Width = width;
 				data.Height = height;
 
@@ -77,7 +77,7 @@ namespace Pine
 			m_Window, 
 			[](GLFWwindow* window)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 				WindowCloseEvent event;
 				data.EventCallback(event);
 			}
@@ -87,7 +87,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, int key, int scancode, int action, int mods)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
 				switch (action)
 				{
@@ -117,7 +117,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, unsigned int keycode)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 				KeyTypedEvent event(keycode);
 				data.EventCallback(event);
 			}
@@ -127,7 +127,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, int button, int action, int mods)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
 				switch (action)
 				{
@@ -151,7 +151,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, double xOffset, double yOffset)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 				MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
 				data.EventCallback(event);
 			}
@@ -161,7 +161,7 @@ namespace Pine
 			m_Window,
 			[](GLFWwindow* window, double xPos, double yPos)
 			{
-				WindowData& data = *reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+				WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 				MouseMovedEvent event(static_cast<float>(xPos), static_cast<float>(yPos));
 				data.EventCallback(event);
 			}
