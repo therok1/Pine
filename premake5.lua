@@ -110,6 +110,7 @@ project "Sandbox"
 	{
 		"Pine/vendor/spdlog/include",
 		"Pine/src",
+		"Pine/vendor",
 		"%{includedir.glm}"
 	}
 
