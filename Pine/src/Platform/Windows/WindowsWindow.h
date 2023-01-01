@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Pine/Window.h"
+#include "Pine/Renderer/GraphicsContext.h"
 
 #include "GLFW/glfw3.h"
 
@@ -46,6 +47,7 @@ namespace Pine
 	private:
 
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{
