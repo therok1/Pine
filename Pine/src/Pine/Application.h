@@ -13,6 +13,8 @@
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
 
+#include "Renderer/OrthographicCamera.h"
+
 namespace Pine
 {
 	class PINE_API Application
@@ -55,6 +57,8 @@ namespace Pine
 
 		std::shared_ptr<Shader> m_SquareShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera;
 
 	private:
 

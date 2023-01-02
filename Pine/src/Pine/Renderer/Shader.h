@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 namespace Pine
 {
 	class Shader
@@ -11,6 +13,8 @@ namespace Pine
 
 		void Bind() const;
 		void Unind() const;
+
+		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
 
 	private:
 
