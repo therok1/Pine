@@ -18,7 +18,7 @@ namespace Pine
 			return new OpenGLVertexBuffer(vertices, size);
 		}
 
-		PN_CORE_ASSERT(false, "Unknown RendererAPI!");
+		PN_CORE_ASSERT(false, "Invalid RendererAPI!");
 		return nullptr;
 	}
 
@@ -33,7 +33,7 @@ namespace Pine
 			return new OpenGLIndexBuffer(indices, count);
 		}
 
-		PN_CORE_ASSERT(false, "Unknown RendererAPI!");
+		PN_CORE_ASSERT(false, "Invalid RendererAPI!");
 		return nullptr;
 	}
 }
