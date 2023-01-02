@@ -16,7 +16,7 @@ public:
 		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
 		m_CameraPosition(0.0f)
 	{
-		m_VertexArray = std::shared_ptr<Pine::VertexArray>(Pine::VertexArray::Create());
+		m_VertexArray = Pine::Ref<Pine::VertexArray>(Pine::VertexArray::Create());
 
 		float vertices[] =
 		{
@@ -25,7 +25,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.9f, 0.1f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Pine::VertexBuffer> vertexBuffer = std::shared_ptr<Pine::VertexBuffer>(Pine::VertexBuffer::Create(vertices, sizeof(vertices)));
+		Pine::Ref<Pine::VertexBuffer> vertexBuffer = Pine::Ref<Pine::VertexBuffer>(Pine::VertexBuffer::Create(vertices, sizeof(vertices)));
 		Pine::BufferLayout layout =
 		{
 			{ Pine::ShaderDataType::Float3, "a_Position" },
@@ -39,10 +39,10 @@ public:
 			0, 1, 2
 		};
 
-		std::shared_ptr<Pine::IndexBuffer> indexBuffer = std::shared_ptr<Pine::IndexBuffer>(Pine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		Pine::Ref<Pine::IndexBuffer> indexBuffer = Pine::Ref<Pine::IndexBuffer>(Pine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA = std::shared_ptr<Pine::VertexArray>(Pine::VertexArray::Create());
+		m_SquareVA = Pine::Ref<Pine::VertexArray>(Pine::VertexArray::Create());
 
 		float squareVertices[] =
 		{
@@ -52,7 +52,7 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<Pine::VertexBuffer> squareVB = std::shared_ptr<Pine::VertexBuffer>(Pine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Pine::Ref<Pine::VertexBuffer> squareVB = Pine::Ref<Pine::VertexBuffer>(Pine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({ { Pine::ShaderDataType::Float3, "a_Position" } });
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -61,7 +61,7 @@ public:
 			0, 1, 2, 2, 3, 0
 		};
 
-		std::shared_ptr<Pine::IndexBuffer> squareIB = std::shared_ptr<Pine::IndexBuffer>(Pine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		Pine::Ref<Pine::IndexBuffer> squareIB = Pine::Ref<Pine::IndexBuffer>(Pine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSource = R"(
@@ -101,7 +101,7 @@ public:
 
 		)";
 
-		m_Shader = std::shared_ptr<Pine::Shader>(Pine::Shader::Create(vertexSource, fragmentSource));
+		m_Shader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(vertexSource, fragmentSource));
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -137,7 +137,7 @@ public:
 
 		)";
 
-		m_FlatColorShader = std::shared_ptr<Pine::Shader>(Pine::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
+		m_FlatColorShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
 	}
 
 	void OnUpdate(Pine::Timestep ts) override
@@ -198,11 +198,11 @@ public:
 
 private:
 
-	std::shared_ptr<Pine::Shader> m_Shader;
-	std::shared_ptr<Pine::VertexArray> m_VertexArray;
+	Pine::Ref<Pine::Shader> m_Shader;
+	Pine::Ref<Pine::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Pine::Shader> m_FlatColorShader;
-	std::shared_ptr<Pine::VertexArray> m_SquareVA;
+	Pine::Ref<Pine::Shader> m_FlatColorShader;
+	Pine::Ref<Pine::VertexArray> m_SquareVA;
 
 	Pine::OrthographicCamera m_Camera;
 
