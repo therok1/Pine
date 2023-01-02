@@ -127,21 +127,21 @@ public:
 		m_SquareShader = std::make_shared<Pine::Shader>(squareVertexSource, squareFragmentSource);
 	}
 
-	void OnUpdate() override
+	void OnUpdate(Pine::Timestep ts) override
 	{
 		if (Pine::Input::IsKeyPressed(PN_KEY_A))
-			m_CameraPosition.x -= m_CameraMoveSpeed;
+			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
 		if (Pine::Input::IsKeyPressed(PN_KEY_D))
-			m_CameraPosition.x += m_CameraMoveSpeed;
+			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 		if (Pine::Input::IsKeyPressed(PN_KEY_S))
-			m_CameraPosition.y -= m_CameraMoveSpeed;
+			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 		if (Pine::Input::IsKeyPressed(PN_KEY_W))
-			m_CameraPosition.y += m_CameraMoveSpeed;
+			m_CameraPosition.y += m_CameraMoveSpeed * ts;
 		
 		if (Pine::Input::IsKeyPressed(PN_KEY_LEFT))
-			m_CameraRotation += m_CameraRotationSpeed;
+			m_CameraRotation += m_CameraRotationSpeed * ts;
 		if (Pine::Input::IsKeyPressed(PN_KEY_RIGHT))
-			m_CameraRotation -= m_CameraRotationSpeed;
+			m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 		Pine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		Pine::RenderCommand::Clear();
@@ -173,10 +173,10 @@ private:
 	Pine::OrthographicCamera m_Camera;
 
 	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 0.01f;
+	float m_CameraMoveSpeed = 2.5f;
 
 	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 2.0f;
+	float m_CameraRotationSpeed = 90.0f;
 
 };
 

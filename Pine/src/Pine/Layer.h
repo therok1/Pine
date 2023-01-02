@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "Core/Timestep.h"
 #include "Events/Event.h"
 
 namespace Pine
@@ -22,7 +23,7 @@ namespace Pine
 
 		}
 
-		virtual void OnUpdate()
+		virtual void OnUpdate(Timestep ts)
 		{
 
 		}
