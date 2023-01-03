@@ -19,9 +19,12 @@ includedir["ImGui"] = "Pine/vendor/imgui"
 includedir["glm"] = "Pine/vendor/glm"
 includedir["stb_image"] = "Pine/vendor/stb_image"
 
-include "Pine/vendor/GLFW"
-include "Pine/vendor/Glad"
-include "Pine/vendor/imgui"
+group "Dependencies"
+	include "Pine/vendor/GLFW"
+	include "Pine/vendor/Glad"
+	include "Pine/vendor/imgui"
+
+group ""
 
 project "Pine"
 	location "Pine"
