@@ -46,14 +46,17 @@ public:
 
 		float squareVertices[] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		Pine::Ref<Pine::VertexBuffer> squareVB = Pine::Ref<Pine::VertexBuffer>(Pine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-		squareVB->SetLayout({ { Pine::ShaderDataType::Float3, "a_Position" } });
+		squareVB->SetLayout({ 
+			{ Pine::ShaderDataType::Float3, "a_Position" }, 
+			{ Pine::ShaderDataType::Float2, "a_TexCoord" } 
+		});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[] =
@@ -132,12 +135,54 @@ public:
 			
 			void main()
 			{
-				color = vec4(u_Color, 1.0f);
+				color = vec4(u_Color, 1.0);
 			}
 
 		)";
 
 		m_FlatColorShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
+
+		std::string textureVertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+			
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}
+
+		)";
+
+		std::string textureFragmentSource = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
+			
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+
+		)";
+
+		m_TextureShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(textureVertexSource, textureFragmentSource));
+
+		m_Texture = Pine::Texture2D::Create("assets/textures/headshot.jpg");
+
+		std::dynamic_pointer_cast<Pine::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Pine::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Pine::Timestep ts) override
@@ -179,7 +224,10 @@ public:
 			}
 		}
 
-		Pine::Renderer::Submit(m_Shader, m_VertexArray);
+		m_Texture->Bind();
+		Pine::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		// Pine::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Pine::Renderer::EndScene();
 	}
@@ -201,8 +249,10 @@ private:
 	Pine::Ref<Pine::Shader> m_Shader;
 	Pine::Ref<Pine::VertexArray> m_VertexArray;
 
-	Pine::Ref<Pine::Shader> m_FlatColorShader;
+	Pine::Ref<Pine::Shader> m_FlatColorShader, m_TextureShader;
 	Pine::Ref<Pine::VertexArray> m_SquareVA;
+
+	Pine::Ref<Pine::Texture2D> m_Texture;
 
 	Pine::OrthographicCamera m_Camera;
 

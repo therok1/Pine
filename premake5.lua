@@ -17,6 +17,7 @@ includedir["GLFW"] = "Pine/vendor/GLFW/include"
 includedir["Glad"] = "Pine/vendor/Glad/include"
 includedir["ImGui"] = "Pine/vendor/imgui"
 includedir["glm"] = "Pine/vendor/glm"
+includedir["stb_image"] = "Pine/vendor/stb_image"
 
 include "Pine/vendor/GLFW"
 include "Pine/vendor/Glad"
@@ -39,6 +40,8 @@ project "Pine"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
@@ -55,7 +58,8 @@ project "Pine"
 		"%{includedir.GLFW}",
 		"%{includedir.Glad}",
 		"%{includedir.ImGui}",
-		"%{includedir.glm}"
+		"%{includedir.glm}",
+		"%{includedir.stb_image}"
 	}
 
 	links
