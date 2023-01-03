@@ -24,9 +24,16 @@ namespace Pine
 		std::string source = ReadFile(path);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+		
+		std::size_t lastSlash = path.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		std::size_t lastDot = path.rfind(".");
+		std::size_t count = lastDot == std::string::npos ? path.size() - lastSlash : lastDot - lastSlash;
+		m_Name = path.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSource;
@@ -67,14 +74,10 @@ namespace Pine
 		while (pos != std::string::npos)
 		{
 			std::size_t eol = source.find_first_of("\r\n", pos);
-
 			PN_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-
 			std::size_t begin = pos + delimiterLength + 1;
 			std::string type = source.substr(begin, eol - begin);
-
 			PN_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specifier!");
-
 			std::size_t nextLinePos = source.find_first_not_of("\r\n", eol);
 			pos = source.find(delimiter, nextLinePos);
 			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
@@ -86,9 +89,7 @@ namespace Pine
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-
 		PN_CORE_ASSERT(shaderSources.size() <= 2, "Maximum of 2 shaders are supported!");
-
 		std::array<GLenum, 2> glShaderIDs;
 		int glShaderIDIndex = 0;
 

@@ -1,11 +1,11 @@
 #include <Pine.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#include "Platform/OpenGL/OpenGLShader.h"
 
 class ExampleLayer : public Pine::Layer
 {
@@ -104,7 +104,7 @@ public:
 
 		)";
 
-		m_Shader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(vertexSource, fragmentSource));
+		m_Shader = Pine::Ref<Pine::Shader>(Pine::Shader::Create("VertexPosColor", vertexSource, fragmentSource));
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -140,15 +140,15 @@ public:
 
 		)";
 
-		m_FlatColorShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
+		m_FlatColorShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource));
 
-		m_TextureShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Pine::Texture2D::Create("assets/textures/headshot.jpg");
 		m_Texture2 = Pine::Texture2D::Create("assets/textures/texture.png");
 
-		std::dynamic_pointer_cast<Pine::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Pine::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Pine::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Pine::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Pine::Timestep ts) override
@@ -190,10 +190,12 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
-		Pine::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Pine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_Texture2->Bind();
-		Pine::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Pine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Pine::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -214,10 +216,12 @@ public:
 
 private:
 
+	Pine::ShaderLibrary m_ShaderLibrary;
+
 	Pine::Ref<Pine::Shader> m_Shader;
 	Pine::Ref<Pine::VertexArray> m_VertexArray;
 
-	Pine::Ref<Pine::Shader> m_FlatColorShader, m_TextureShader;
+	Pine::Ref<Pine::Shader> m_FlatColorShader;
 	Pine::Ref<Pine::VertexArray> m_SquareVA;
 
 	Pine::Ref<Pine::Texture2D> m_Texture, m_Texture2;
