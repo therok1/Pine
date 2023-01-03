@@ -86,15 +86,16 @@ namespace Pine
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
 
-		for (auto& shaderSource : shaderSources)
+		PN_CORE_ASSERT(shaderSources.size() <= 2, "Maximum of 2 shaders are supported!");
+
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
+
+		for (auto&& [key, value] : shaderSources)
 		{
-			GLenum type = shaderSource.first;
-			const std::string& source = shaderSource.second;
-
-			GLuint shader = glCreateShader(type);
-			const GLchar* source_cstr = source.c_str();
+			GLuint shader = glCreateShader(key);
+			const GLchar* source_cstr = value.c_str();
 
 			glShaderSource(shader, 1, &source_cstr, 0);
 			glCompileShader(shader);
@@ -118,7 +119,7 @@ namespace Pine
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		glLinkProgram(program);
