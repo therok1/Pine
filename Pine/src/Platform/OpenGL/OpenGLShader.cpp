@@ -1,63 +1,125 @@
 #include "pnpch.h"
 #include "OpenGLShader.h"
 
+#include <fstream>
 #include <glad/glad.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Pine
 {
+	static GLenum ShaderTypeFromString(const std::string& type)
+	{
+		if (type == "vertex") 
+			return GL_VERTEX_SHADER;
+		if (type == "fragment" || type == "pixel")
+			return GL_FRAGMENT_SHADER;
+
+		PN_CORE_ASSERT(false, "Invalid shader type!");
+		return 0;
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& path)
+	{
+		std::string source = ReadFile(path);
+		auto shaderSources = PreProcess(source);
+		Compile(shaderSources);
+	}
+
 	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
 	{
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		const GLchar* source = vertexSource.c_str();
+		std::unordered_map<GLenum, std::string> shaderSources;
+		shaderSources[GL_VERTEX_SHADER] = vertexSource;
+		shaderSources[GL_FRAGMENT_SHADER] = fragmentSource;
+		Compile(shaderSources);
+	}
 
-		glShaderSource(vertexShader, 1, &source, 0);
-		glCompileShader(vertexShader);
+	OpenGLShader::~OpenGLShader()
+	{
+		glDeleteProgram(m_RendererID);
+	}
 
-		GLint compiled = 0;
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compiled);
-		if (compiled == GL_FALSE)
+	std::string OpenGLShader::ReadFile(const std::string& path)
+	{
+		std::string result;
+		std::ifstream in(path, std::ios::in, std::ios::binary);
+		if (in.is_open())
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+			in.seekg(0, std::ios::end);
+			result.resize(in.tellg());
+			in.seekg(0, std::ios::beg);
+			in.read(&result[0], result.size());
+			in.close();
+		}
+		else
+			PN_CORE_ERROR("Could not open '{0}'!", path);
 
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+		return result;
+	}
 
-			glDeleteShader(vertexShader);
+	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<GLenum, std::string> shaderSources;
 
-			PN_CORE_ASSERT(false, "Vertex shader compilation failure!");
-			return;
+		std::string delimiter = "#type";
+		std::size_t delimiterLength = delimiter.size();
+		std::size_t pos = source.find(delimiter, 0);
+		while (pos != std::string::npos)
+		{
+			std::size_t eol = source.find_first_of("\r\n", pos);
+
+			PN_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+
+			std::size_t begin = pos + delimiterLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+
+			PN_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specifier!");
+
+			std::size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(delimiter, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
 
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		source = fragmentSource.c_str();
+		return shaderSources;
+	}
 
-		glShaderSource(fragmentShader, 1, &source, 0);
-		glCompileShader(fragmentShader);
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+	{
+		GLuint program = glCreateProgram();
+		std::vector<GLenum> glShaderIDs(shaderSources.size());
 
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compiled);
-		if (compiled == GL_FALSE)
+		for (auto& shaderSource : shaderSources)
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
+			GLenum type = shaderSource.first;
+			const std::string& source = shaderSource.second;
 
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
+			GLuint shader = glCreateShader(type);
+			const GLchar* source_cstr = source.c_str();
 
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			glShaderSource(shader, 1, &source_cstr, 0);
+			glCompileShader(shader);
 
-			PN_CORE_ASSERT(false, "Fragment shader compilation failure!");
-			return;
+			GLint compiled = 0;
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+			if (compiled == GL_FALSE)
+			{
+				GLint maxLength = 0;
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+				std::vector<GLchar> infoLog(maxLength);
+				glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
+
+				glDeleteShader(shader);
+
+				PN_CORE_ERROR("{0}", infoLog.data());
+				PN_CORE_ASSERT(false, "Shader compilation failure!");
+
+				break;
+			}
+
+			glAttachShader(program, shader);
+			glShaderIDs.push_back(shader);
 		}
-
-		m_RendererID = glCreateProgram();
-		GLuint program = m_RendererID;
-
-		glAttachShader(program, vertexShader);
-		glAttachShader(program, fragmentShader);
 
 		glLinkProgram(program);
 
@@ -73,20 +135,17 @@ namespace Pine
 
 			glDeleteProgram(program);
 
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			for (auto id : glShaderIDs)
+				glDeleteShader(id);
 
 			PN_CORE_ASSERT(false, "Shader link failure!");
 			return;
 		}
 
-		glDetachShader(program, vertexShader);
-		glDetachShader(program, fragmentShader);
-	}
+		for (auto id : glShaderIDs)
+			glDetachShader(program, id);
 
-	OpenGLShader::~OpenGLShader()
-	{
-		glDeleteProgram(m_RendererID);
+		m_RendererID = program;
 	}
 
 	void OpenGLShader::Bind() const

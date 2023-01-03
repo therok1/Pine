@@ -4,15 +4,26 @@
 
 #include <glm/glm.hpp>
 
+typedef unsigned int GLenum;
+
 namespace Pine
 {
 	class OpenGLShader : public Shader
 	{
 	public:
 
+		OpenGLShader(const std::string& path);
 		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
 
 		virtual ~OpenGLShader();
+
+	private:
+
+		std::string ReadFile(const std::string& path);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
+
+	public:
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
