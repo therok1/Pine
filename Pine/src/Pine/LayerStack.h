@@ -3,8 +3,6 @@
 #include "Core.h"
 #include "Layer.h"
 
-#include <vector>
-
 namespace Pine
 {
 	class PINE_API LayerStack

@@ -10,6 +10,7 @@ namespace Pine
 
 		OrthographicCamera(float left, float right, float bottom, float top);
 
+		void SetProjection(float left, float right, float bottom, float top);
 
 		const glm::vec3& GetPosition() const
 		{

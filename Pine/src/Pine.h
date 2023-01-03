@@ -10,6 +10,7 @@
 #include "Pine/Input.h"
 #include "Pine/KeyCodes.h"
 #include "Pine/MouseButtonCodes.h"
+#include "Pine/OrthographicCameraController.h"
 
 #include "Pine/ImGui/ImGuiLayer.h"
 
