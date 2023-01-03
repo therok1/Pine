@@ -45,15 +45,16 @@ namespace Pine
 		m_LayerStack.PushOverlay(overlay);
 	}
 
-	void Application::OnEvent(Event& e)
+	void Application::OnEvent(Event& event)
 	{
-		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowCloseEvent>(PN_BIND_EVENT_FN(Application::OnWindowClosed));
+		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(Application::OnWindowResized));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(*--it)->OnEvent(e);
-			if (e.Handled)
+			(*--it)->OnEvent(event);
+			if (event.Handled)
 				break;
 		}
 	}
@@ -66,21 +67,38 @@ namespace Pine
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			if (!m_Minimized)
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
+
 			for (Layer* layer : m_LayerStack)
 				layer->OnImGuiRender();
+
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
 	}
 
-	bool Application::OnWindowClosed(WindowCloseEvent& e)
+	bool Application::OnWindowClosed(WindowCloseEvent& event)
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResized(WindowResizeEvent& event)
+	{
+		if (!event.GetWidth() || !event.GetHeight())
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(event.GetWidth(), event.GetHeight());
+
+		return false;
 	}
 }
