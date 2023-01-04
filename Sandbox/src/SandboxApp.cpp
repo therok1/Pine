@@ -1,6 +1,9 @@
 #include <Pine.h>
+#include <Pine/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
+
+#include "Sandbox2D.h"
 
 #include <imgui/imgui.h>
 
@@ -16,7 +19,7 @@ public:
 		Layer("Example"),
 		m_CameraController(1280.0f / 720.0f)
 	{
-		m_VertexArray = Pine::Ref<Pine::VertexArray>(Pine::VertexArray::Create());
+		m_VertexArray = Pine::VertexArray::Create();
 
 		float vertices[] =
 		{
@@ -25,7 +28,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.9f, 0.1f, 0.2f, 1.0f
 		};
 
-		Pine::Ref<Pine::VertexBuffer> vertexBuffer = Pine::Ref<Pine::VertexBuffer>(Pine::VertexBuffer::Create(vertices, sizeof(vertices)));
+		Pine::Ref<Pine::VertexBuffer> vertexBuffer = Pine::VertexBuffer::Create(vertices, sizeof(vertices));
 		Pine::BufferLayout layout =
 		{
 			{ Pine::ShaderDataType::Float3, "a_Position" },
@@ -39,10 +42,10 @@ public:
 			0, 1, 2
 		};
 
-		Pine::Ref<Pine::IndexBuffer> indexBuffer = Pine::Ref<Pine::IndexBuffer>(Pine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		Pine::Ref<Pine::IndexBuffer> indexBuffer = Pine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA = Pine::Ref<Pine::VertexArray>(Pine::VertexArray::Create());
+		m_SquareVA = Pine::VertexArray::Create();
 
 		float squareVertices[] =
 		{
@@ -52,7 +55,7 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
-		Pine::Ref<Pine::VertexBuffer> squareVB = Pine::Ref<Pine::VertexBuffer>(Pine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Pine::Ref<Pine::VertexBuffer> squareVB = Pine::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({ 
 			{ Pine::ShaderDataType::Float3, "a_Position" }, 
 			{ Pine::ShaderDataType::Float2, "a_TexCoord" } 
@@ -64,7 +67,7 @@ public:
 			0, 1, 2, 2, 3, 0
 		};
 
-		Pine::Ref<Pine::IndexBuffer> squareIB = Pine::Ref<Pine::IndexBuffer>(Pine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		Pine::Ref<Pine::IndexBuffer> squareIB = Pine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSource = R"(
@@ -104,7 +107,7 @@ public:
 
 		)";
 
-		m_Shader = Pine::Ref<Pine::Shader>(Pine::Shader::Create("VertexPosColor", vertexSource, fragmentSource));
+		m_Shader = Pine::Shader::Create("VertexPosColor", vertexSource, fragmentSource);
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -140,7 +143,7 @@ public:
 
 		)";
 
-		m_FlatColorShader = Pine::Ref<Pine::Shader>(Pine::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource));
+		m_FlatColorShader = Pine::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource);
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
@@ -223,7 +226,8 @@ public:
 
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

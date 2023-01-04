@@ -24,6 +24,3 @@
 
 #include "Pine/Renderer/OrthographicCamera.h"
 #include "Pine/Renderer/OrthographicCameraController.h"
-
-// Entry Point
-#include "Pine/Core/EntryPoint.h"
