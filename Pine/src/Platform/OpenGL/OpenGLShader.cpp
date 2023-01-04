@@ -92,7 +92,7 @@ namespace Pine
 		std::array<GLenum, 2> glShaderIDs;
 		int glShaderIDIndex = 0;
 
-		for (auto&& [key, value] : shaderSources)
+		for (auto& [key, value] : shaderSources)
 		{
 			GLuint shader = glCreateShader(key);
 			const GLchar* source_cstr = value.c_str();
