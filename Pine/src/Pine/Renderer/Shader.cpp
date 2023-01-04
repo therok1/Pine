@@ -1,7 +1,7 @@
 #include "pnpch.h"
 #include "Shader.h"
 
-#include "Renderer.h"
+#include "Pine/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 

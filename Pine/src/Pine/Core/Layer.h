@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.h"
-#include "Core/Timestep.h"
-#include "Events/Event.h"
+#include "Pine/Core/Core.h"
+#include "Pine/Core/Timestep.h"
+#include "Pine/Events/Event.h"
 
 namespace Pine
 {

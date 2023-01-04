@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pine/Input.h"
+#include "Pine/Core/Input.h"
 
 namespace Pine
 {

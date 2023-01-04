@@ -1,16 +1,15 @@
 #pragma once
 
 // For use by Pine applications
-#include "Pine/Application.h"
-#include "Pine/Layer.h"
-#include "Pine/Log.h"
+#include "Pine/Core/Application.h"
+#include "Pine/Core/Layer.h"
+#include "Pine/Core/Log.h"
 
 #include "Pine/Core/Timestep.h"
 
-#include "Pine/Input.h"
-#include "Pine/KeyCodes.h"
-#include "Pine/MouseButtonCodes.h"
-#include "Pine/OrthographicCameraController.h"
+#include "Pine/Core/Input.h"
+#include "Pine/Core/KeyCodes.h"
+#include "Pine/Core/MouseButtonCodes.h"
 
 #include "Pine/ImGui/ImGuiLayer.h"
 
@@ -24,6 +23,7 @@
 #include "Pine/Renderer/VertexArray.h"
 
 #include "Pine/Renderer/OrthographicCamera.h"
+#include "Pine/Renderer/OrthographicCameraController.h"
 
 // Entry Point
-#include "Pine/EntryPoint.h"
+#include "Pine/Core/EntryPoint.h"

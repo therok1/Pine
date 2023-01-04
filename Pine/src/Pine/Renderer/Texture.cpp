@@ -1,7 +1,7 @@
 #include "pnpch.h"
 #include "Texture.h"
 
-#include "Renderer.h"
+#include "Pine/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 

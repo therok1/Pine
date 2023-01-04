@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Layer.h"
+#include "Pine/Core/Core.h"
+#include "Pine/Core/Layer.h"
 
 namespace Pine
 {

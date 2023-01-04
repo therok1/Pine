@@ -6,7 +6,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
 
-#include "Pine/Application.h"
+#include "Pine/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>

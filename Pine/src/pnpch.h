@@ -5,6 +5,7 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 
 #include <string>
 #include <sstream>
@@ -13,7 +14,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Pine/Log.h"
+#include "Pine/Core/Log.h"
 
 #ifdef PN_PLATFORM_WINDOWS
 	#include <Windows.h>

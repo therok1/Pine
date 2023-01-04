@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RenderCommand.h"
+#include "Pine/Renderer/RenderCommand.h"
 
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Pine/Renderer/OrthographicCamera.h"
+#include "Pine/Renderer/Shader.h"
 
 namespace Pine
 {

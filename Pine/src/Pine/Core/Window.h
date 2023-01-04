@@ -2,7 +2,7 @@
 
 #include "pnpch.h"
 
-#include "Pine/Core.h"
+#include "Pine/Core/Core.h"
 #include "Pine/Events/Event.h"
 
 namespace Pine

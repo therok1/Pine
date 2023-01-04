@@ -1,11 +1,10 @@
 #include "pnpch.h"
 #include "Application.h"
 
-#include "Log.h"
+#include "Pine/Core/Log.h"
+#include "Pine/Core/Input.h"
 
-#include "Renderer/Renderer.h"
-
-#include "Input.h"
+#include "Pine/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>
 

@@ -1,7 +1,8 @@
 #include "pnpch.h"
 #include "WindowsInput.h"
 
-#include "Pine/Application.h"
+#include "Pine/Core/Application.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Pine

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Buffer.h"
+#include "Pine/Renderer/Buffer.h"
 
 namespace Pine
 {

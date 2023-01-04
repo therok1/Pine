@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "VertexArray.h"
+#include "Pine/Renderer/VertexArray.h"
 
 namespace Pine
 {

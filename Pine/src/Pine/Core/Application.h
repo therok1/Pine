@@ -1,15 +1,14 @@
 #pragma once
 
-#include "Core.h"
+#include "Pine/Core/Core.h"
+#include "Pine/Core/Window.h"
+#include "Pine/Core/LayerStack.h"
+#include "Pine/Core/Timestep.h"
 
-#include "Window.h"
-#include "LayerStack.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Pine/Events/Event.h"
+#include "Pine/Events/ApplicationEvent.h"
 
-#include "Core/Timestep.h"
-
-#include "ImGui/ImGuiLayer.h"
+#include "Pine/ImGui/ImGuiLayer.h"
 
 namespace Pine
 {

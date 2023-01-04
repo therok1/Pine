@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pine/Window.h"
+#include "Pine/Core/Window.h"
 #include "Pine/Renderer/GraphicsContext.h"
 
 #include "GLFW/glfw3.h"

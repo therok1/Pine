@@ -1,8 +1,8 @@
 #include "pnpch.h"
 #include "OrthographicCameraController.h"
 
-#include "Pine/Input.h"
-#include "Pine/KeyCodes.h"
+#include "Pine/Core/Input.h"
+#include "Pine/Core/KeyCodes.h"
 
 namespace Pine
 {
