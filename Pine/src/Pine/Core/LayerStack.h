@@ -5,7 +5,7 @@
 
 namespace Pine
 {
-	class PINE_API LayerStack
+	class LayerStack
 	{
 	public:
 

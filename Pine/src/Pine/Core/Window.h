@@ -22,7 +22,7 @@ namespace Pine
 		}
 	};
 
-	class PINE_API Window
+	class Window
 	{
 	public:
 

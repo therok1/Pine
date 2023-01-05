@@ -4,7 +4,7 @@
 
 namespace Pine
 {
-	class PINE_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 
@@ -39,7 +39,7 @@ namespace Pine
 		unsigned int m_Width, m_Height;
 	};
 
-	class PINE_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
 
@@ -50,7 +50,7 @@ namespace Pine
 
 	};
 
-	class PINE_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
 
@@ -61,7 +61,7 @@ namespace Pine
 
 	};
 
-	class PINE_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 
@@ -72,7 +72,7 @@ namespace Pine
 
 	};
 
-	class PINE_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 

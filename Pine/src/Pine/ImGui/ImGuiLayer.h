@@ -8,7 +8,7 @@
 
 namespace Pine
 {
-	class PINE_API ImGuiLayer : public Layer
+	class ImGuiLayer : public Layer
 	{
 	public:
 

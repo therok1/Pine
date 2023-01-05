@@ -7,7 +7,7 @@
 
 namespace Pine
 {
-	class PINE_API Log
+	class Log
 	{
 	public:
 

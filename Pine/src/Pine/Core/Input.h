@@ -4,7 +4,7 @@
 
 namespace Pine
 {
-	class PINE_API Input
+	class Input
 	{
 	public:
 

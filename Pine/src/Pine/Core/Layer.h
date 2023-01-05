@@ -6,7 +6,7 @@
 
 namespace Pine
 {
-	class PINE_API Layer
+	class Layer
 	{
 	public:
 

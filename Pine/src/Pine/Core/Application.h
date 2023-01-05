@@ -12,7 +12,7 @@
 
 namespace Pine
 {
-	class PINE_API Application
+	class Application
 	{
 	public:
 

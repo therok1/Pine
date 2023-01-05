@@ -4,7 +4,7 @@
 
 namespace Pine
 {
-	class PINE_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 
@@ -39,7 +39,7 @@ namespace Pine
 		float m_MouseX, m_MouseY;
 	};
 
-	class PINE_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 
@@ -75,7 +75,7 @@ namespace Pine
 
 	};
 
-	class PINE_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 
@@ -100,7 +100,7 @@ namespace Pine
 
 	};
 
-	class PINE_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 
@@ -120,7 +120,7 @@ namespace Pine
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class PINE_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 
