@@ -18,6 +18,16 @@ public:
 
 private:
 
+	struct ProfileResult
+	{
+		const char* Name;
+		float Time;
+	};
+
+private:
+
+	std::vector<ProfileResult> m_ProfileResults;
+
 	Pine::OrthographicCameraController m_CameraController;
 
 	Pine::Ref<Pine::Texture2D> m_Texture;
