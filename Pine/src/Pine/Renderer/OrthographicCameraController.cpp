@@ -17,14 +17,21 @@ namespace Pine
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
+		glm::vec3 change = { 0.0f, 0.0f, 0.0f };
 		if (Input::IsKeyPressed(PN_KEY_A))
-			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
+			change.x -= 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_D))
-			m_CameraPosition.x += m_CameraTranslationSpeed * ts;
+			change.x += 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_W))
-			m_CameraPosition.y += m_CameraTranslationSpeed * ts;
+			change.y += 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_S))
-			m_CameraPosition.y -= m_CameraTranslationSpeed * ts;
+			change.y -= 1.0f;
+
+		if (glm::length(change) > 0.0f)
+			change = glm::normalize(change);
+
+		change *= m_CameraTranslationSpeed * ts;
+		m_CameraPosition += change;
 
 		if (m_Rotation)
 		{

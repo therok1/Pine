@@ -1,7 +1,5 @@
 #include "Sandbox2D.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,7 +14,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-	
+	m_Texture = Pine::Texture2D::Create("assets/textures/texture.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -32,11 +30,10 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 	Pine::RenderCommand::Clear();
 
 	Pine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Pine::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	Pine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	Pine::Renderer2D::DrawQuad({ 0.6f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+	Pine::Renderer2D::DrawQuad({ 0.2f, 0.5f }, { 0.5f, 0.5f }, m_Texture);
 	Pine::Renderer2D::EndScene();
-
-	//std::dynamic_pointer_cast<Pine::OpenGLShader>(m_Shader)->Bind();
-	//std::dynamic_pointer_cast<Pine::OpenGLShader>(m_Shader)->UploadUniformFloat4("u_Color", m_Color);
 }
 
 void Sandbox2D::OnImGuiRender()

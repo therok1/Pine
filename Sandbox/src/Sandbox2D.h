@@ -20,8 +20,7 @@ private:
 
 	Pine::OrthographicCameraController m_CameraController;
 
-	Pine::Ref<Pine::VertexArray> m_VertexArray;
-	Pine::Ref<Pine::Shader> m_Shader;
+	Pine::Ref<Pine::Texture2D> m_Texture;
 
 	glm::vec4 m_Color = { 0.0f, 0.0f, 0.0f, 1.0f };
 

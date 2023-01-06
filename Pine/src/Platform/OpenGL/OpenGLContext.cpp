@@ -17,6 +17,11 @@ namespace Pine
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 		PN_CORE_ASSERT(status, "Failed to initialize Glad!");
+		
+		PN_CORE_INFO("OpenGL Info:\n\tVendor: {0}\n\tRenderer: {1}\n\tVersion: {2}", 
+			reinterpret_cast<const char*>(glGetString(GL_VENDOR)), 
+			reinterpret_cast<const char*>(glGetString(GL_RENDERER)), 
+			reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 	}
 
 	void OpenGLContext::SwapBuffers()
