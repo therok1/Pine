@@ -14,6 +14,3 @@ Intermediates/
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
-/Sandbox/PineProfile-Startup.json
-/Sandbox/PineProfile-Runtime.json
-/Sandbox/PineProfile-Shutdown.json
