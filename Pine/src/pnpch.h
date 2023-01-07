@@ -16,6 +16,8 @@
 
 #include "Pine/Core/Log.h"
 
+#include "Pine/Debug/Instrumentor.h"
+
 #ifdef PN_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
