@@ -3,6 +3,10 @@
 **/bin-int/
 Intermediates/
 
+# Pine files
+*.log
+*.json
+
 # Visual Studio files and folder
 .vs/
 **.sln
