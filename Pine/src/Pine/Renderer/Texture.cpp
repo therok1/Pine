@@ -15,7 +15,7 @@ namespace Pine
 			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLTexture2D>(width, height);
+			return CreateRef<OpenGLTexture2D>(width, height);
 		}
 
 		PN_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -30,7 +30,7 @@ namespace Pine
 			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLTexture2D>(path);
+			return CreateRef<OpenGLTexture2D>(path);
 		}
 
 		PN_CORE_ASSERT(false, "Unknown RendererAPI!");

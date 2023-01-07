@@ -15,7 +15,7 @@ namespace Pine
 			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(path);
+			return CreateRef<OpenGLShader>(path);
 		}
 
 		PN_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -30,7 +30,7 @@ namespace Pine
 			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(name, vertexSource, fragmentSource);
+			return CreateRef<OpenGLShader>(name, vertexSource, fragmentSource);
 		}
 
 		PN_CORE_ASSERT(false, "Unknown RendererAPI!");

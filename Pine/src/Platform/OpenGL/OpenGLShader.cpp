@@ -20,6 +20,8 @@ namespace Pine
 
 	OpenGLShader::OpenGLShader(const std::string& path)
 	{
+		PN_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(path);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -34,6 +36,8 @@ namespace Pine
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
 		: m_Name(name)
 	{
+		PN_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSource;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSource;
@@ -42,11 +46,15 @@ namespace Pine
 
 	OpenGLShader::~OpenGLShader()
 	{
+		PN_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& path)
 	{
+		PN_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(path, std::ios::in | std::ios::binary);
 		if (in.is_open())
@@ -65,6 +73,8 @@ namespace Pine
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		PN_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		std::string delimiter = "#type";
@@ -87,6 +97,8 @@ namespace Pine
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		PN_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		PN_CORE_ASSERT(shaderSources.size() <= 2, "Maximum of 2 shaders are supported!");
 		std::array<GLenum, 2> glShaderIDs;
@@ -151,31 +163,43 @@ namespace Pine
 
 	void OpenGLShader::Bind() const
 	{
+		PN_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		PN_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		PN_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		PN_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		PN_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		PN_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 

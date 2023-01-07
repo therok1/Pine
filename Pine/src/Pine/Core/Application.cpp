@@ -10,18 +10,17 @@
 
 namespace Pine
 {
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
+		PN_PROFILE_FUNCTION();
+
 		PN_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window = Window::Create();
+		m_Window->SetEventCallback(PN_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -31,21 +30,31 @@ namespace Pine
 
 	Application::~Application()
 	{
+		PN_PROFILE_FUNCTION();
 
+		Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+		PN_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		PN_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(Event& event)
 	{
+		PN_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(PN_BIND_EVENT_FN(Application::OnWindowClosed));
 		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(Application::OnWindowResized));
@@ -60,22 +69,34 @@ namespace Pine
 
 	void Application::Run()
 	{
+		PN_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			PN_PROFILE_SCOPE("RunLoop");
+
 			float time = static_cast<float>(glfwGetTime());
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized)
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+			{
+				{
+					PN_PROFILE_SCOPE("LayerStack OnUpdate");
 
-			m_ImGuiLayer->Begin();
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
+				m_ImGuiLayer->Begin();
+				{
+					PN_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
-			m_ImGuiLayer->End();
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+			}
 
 			m_Window->OnUpdate();
 		}
@@ -89,6 +110,8 @@ namespace Pine
 
 	bool Application::OnWindowResized(WindowResizeEvent& event)
 	{
+		PN_PROFILE_FUNCTION();
+
 		if (!event.GetWidth() || !event.GetHeight())
 		{
 			m_Minimized = true;

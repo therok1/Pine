@@ -14,11 +14,14 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+	PN_PROFILE_FUNCTION();
+
 	m_Texture = Pine::Texture2D::Create("assets/textures/texture.png");
 }
 
 void Sandbox2D::OnDetach()
 {
+	PN_PROFILE_FUNCTION();
 
 }
 
@@ -26,19 +29,18 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 {
 	PN_PROFILE_FUNCTION();
 
-	{
-		PN_PROFILE_SCOPE("CameraController::OnUpdate");
-		m_CameraController.OnUpdate(ts);
-	}
+	m_CameraController.OnUpdate(ts);
 
 	{
 		PN_PROFILE_SCOPE("Renderer Prep");
+
 		Pine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		Pine::RenderCommand::Clear();
 	}
 
 	{
 		PN_PROFILE_SCOPE("Renderer Draw");
+
 		Pine::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		Pine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		Pine::Renderer2D::DrawQuad({ 0.6f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
