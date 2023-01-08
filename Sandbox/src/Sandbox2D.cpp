@@ -42,7 +42,7 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 		PN_PROFILE_SCOPE("Renderer Draw");
 
 		Pine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Pine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		Pine::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(45.0f), { 0.8f, 0.2f, 0.3f, 1.0f });
 		Pine::Renderer2D::DrawQuad({ 0.6f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
 		Pine::Renderer2D::DrawQuad({ 0.2f, 0.5f }, { 0.5f, 0.5f }, m_Texture);
 		Pine::Renderer2D::EndScene();
