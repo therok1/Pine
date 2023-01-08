@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 typedef unsigned int GLenum;
+typedef int GLint;
 
 namespace Pine
 {
@@ -52,6 +53,7 @@ namespace Pine
 
 		uint32_t m_RendererID;
 		std::string m_Name;
+		std::unordered_map<std::string, GLint> m_UniformLocationCache;
 
 	};
 }
