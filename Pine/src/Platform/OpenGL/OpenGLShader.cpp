@@ -182,6 +182,11 @@ namespace Pine
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		UploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::SetFloat(const std::string& name, float value)
 	{
 		PN_PROFILE_FUNCTION();
@@ -221,6 +226,19 @@ namespace Pine
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		m_UniformLocationCache[name] = location;
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+		{
+			glUniform1iv(m_UniformLocationCache[name], count, values);
+			return;
+		}
+
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		m_UniformLocationCache[name] = location;
+		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
