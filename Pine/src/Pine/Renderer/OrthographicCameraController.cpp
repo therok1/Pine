@@ -7,10 +7,11 @@
 namespace Pine
 {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: 
+		:
 		m_AspectRatio(aspectRatio),
-		m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel),
-		m_Rotation(true)
+		m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }),
+		m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top),
+		m_Rotation(rotation)
 	{
 
 	}
@@ -75,7 +76,8 @@ namespace Pine
 
 		m_ZoomLevel -= event.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 
 		return false;
 	}
@@ -85,7 +87,8 @@ namespace Pine
 		PN_PROFILE_FUNCTION();
 
 		m_AspectRatio = static_cast<float>(event.GetWidth()) / static_cast<float>(event.GetHeight());
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 
 		return false;
 	}

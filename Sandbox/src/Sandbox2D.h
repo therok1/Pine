@@ -2,6 +2,8 @@
 
 #include <Pine.h>
 
+#include "ParticleSystem.h"
+
 class Sandbox2D : public Pine::Layer
 {
 public:
@@ -22,6 +24,7 @@ private:
 
 	Pine::Ref<Pine::Texture2D> m_Texture;
 
-	glm::vec4 m_Color = { 0.0f, 0.0f, 0.0f, 1.0f };
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 
 };
