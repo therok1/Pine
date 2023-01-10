@@ -26,7 +26,7 @@ void ParticleSystem::OnUpdate(Pine::Timestep ts)
 		}
 
 		particle.LifeRemaining -= ts;
-		particle.Position += particle.Velocity * (float)ts;
+		particle.Position += particle.Velocity * static_cast<float>(ts);
 		particle.Rotation += 0.01f * ts;
 	}
 }
@@ -41,7 +41,7 @@ void ParticleSystem::OnRender(Pine::OrthographicCamera& camera)
 			continue;
 
 		float life = particle.LifeRemaining / particle.LifeTime;
-		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
+		float size = glm::lerp(particle.SizeBegin, particle.SizeEnd, life);
 		glm::vec3 position = glm::vec3(particle.Position, 0.1f);
 		glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
 

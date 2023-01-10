@@ -15,7 +15,7 @@ class ParticleSystem
 {
 public:
 
-	ParticleSystem(uint32_t maxParticles = 1000);
+	ParticleSystem(uint32_t maxParticles = 10000);
 
 	void OnUpdate(Pine::Timestep ts);
 	void OnRender(Pine::OrthographicCamera& camera);

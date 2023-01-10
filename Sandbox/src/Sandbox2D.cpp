@@ -88,7 +88,7 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
 		m_Particle.Position = glm::vec2(x + pos.x, y + pos.y);
 
-		for (uint32_t i = 0; i < 5; i++)
+		for (uint32_t i = 0; i < 50; i++)
 			m_ParticleSystem.Emit(m_Particle);
 	}
 
