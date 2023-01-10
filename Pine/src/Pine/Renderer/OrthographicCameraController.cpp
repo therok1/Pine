@@ -20,33 +20,33 @@ namespace Pine
 	{
 		PN_PROFILE_FUNCTION();
 
+		float cameraTranslationSpeed = m_CameraTranslationSpeed * ts;
+		float cameraRotationSpeed = m_CameraRotationSpeed * ts;
+		glm::vec2 move = glm::vec2(0.0f);
+
 		if (Input::IsKeyPressed(PN_KEY_A))
-		{
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
+			move.x -= 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_D))
-		{
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
+			move.x += 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_W))
-		{
-			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
+			move.y += 1.0f;
 		if (Input::IsKeyPressed(PN_KEY_S))
-		{
-			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
+			move.y -= 1.0f;
+
+		if (glm::length(move))
+			move = glm::normalize(move);
+		
+		m_CameraPosition.x += move.x * cos(glm::radians(m_CameraRotation)) * cameraTranslationSpeed;
+		m_CameraPosition.y += move.x * sin(glm::radians(m_CameraRotation)) * cameraTranslationSpeed;
+		m_CameraPosition.x += -move.y * sin(glm::radians(m_CameraRotation)) * cameraTranslationSpeed;
+		m_CameraPosition.y += move.y * cos(glm::radians(m_CameraRotation)) * cameraTranslationSpeed;
 
 		if (m_Rotation)
 		{
 			if (Input::IsKeyPressed(PN_KEY_Q))
-				m_CameraRotation += m_CameraRotationSpeed * ts;
+				m_CameraRotation += cameraRotationSpeed;
 			if (Input::IsKeyPressed(PN_KEY_E))
-				m_CameraRotation -= m_CameraRotationSpeed * ts;
+				m_CameraRotation -= cameraRotationSpeed;
 
 			if (m_CameraRotation > 180.0f)
 				m_CameraRotation -= 360.0f;
