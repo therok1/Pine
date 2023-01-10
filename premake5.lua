@@ -1,6 +1,5 @@
 workspace "Pine"
-	architecture "x64"
-
+	architecture "x86_x64"
 	startproject "Sandbox"
 
 	configurations
@@ -8,6 +7,11 @@ workspace "Pine"
 		"Debug",
 		"Release",
 		"Dist"
+	}
+
+	flags
+	{
+		"MultiProcessorCompile"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -51,7 +55,8 @@ project "Pine"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs
@@ -78,9 +83,6 @@ project "Pine"
 
 		defines
 		{
-			"PN_PLATFORM_WINDOWS",
-			"PN_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
 		}
 
 	filter "configurations:Debug"
@@ -129,11 +131,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines
-		{
-			"PN_PLATFORM_WINDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "PN_DEBUG"

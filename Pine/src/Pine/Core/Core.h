@@ -2,27 +2,52 @@
 
 #include <memory>
 
-#ifdef PN_PLATFORM_WINDOWS
-	#if PN_DYNAMIC_LINK
-		#ifdef PN_BUILD_DLL
-			#define PINE_API __declspec(dllexport)
-		#else
-			#define PINE_API __declspec(dllimport)
-		#endif
+#ifdef _WIN32
+	#ifdef _WIN64
+		#define PN_PLATFORM_WINDOW
 	#else
-		#define PINE_API
+		#error "x86 builds are not supported!"
 	#endif
+#elif defined(__APPLE__) || defined(__MACH__)
+	#include <TargetConditionals.h>
+	#if TARGET_IPHONE_SIMULATOR == 1
+		#error "IOS simulator is not supported!"
+	#elif TARGET_OS_PHONE == 1
+		#define PN_PLATFORM_IOS
+		#error "IOS is not supported!"
+	#elif TARGET_OS_MAC == 1
+		#define PN_PLATFORM_MACOS
+		#error "MacOS is not supported!"
+	#else
+		#error "Unknown Apple platform!"
+	#endif
+#elif defined(__ANDROID__)
+	#define PN_PLATFORM_ANDROID
+	#error "Android is not supported!"
+#elif defined(__linux__)
+	#define PN_PLATFORM_LINUX
+	#error "Linux is not supported!"
 #else
-	#error Pine only supports Windows!
+	#error "Unknown platform!"
 #endif
 
 #ifdef PN_DEBUG
+	#ifdef PN_PLATFORM_WINDOWS
+		#define PN_DEBUGBREAK() __debugbreak()
+	#elif defined(PN_PLATFORM_LINUX)
+		#include <signal.h>
+		#define PN_DEBUGBREAK() raise(SIGTRAP)
+	#else
+		#error "Platform doesn't support debugbreak yet!"
+	#endif
 	#define PN_ENABLE_ASSERTS
+#else
+	#define PN_DEBUGBREAK()
 #endif
 
 #ifdef PN_ENABLE_ASSERTS
-	#define PN_ASSERT(x, ...) { if (!(x)) { PN_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define PN_CORE_ASSERT(x, ...) { if (!(x)) { PN_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define PN_ASSERT(x, ...) { if (!(x)) { PN_ERROR("Assertion failed: {0}", __VA_ARGS__); PN_DEBUGBREAK(); } }
+	#define PN_CORE_ASSERT(x, ...) { if (!(x)) { PN_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); PN_DEBUGBREAK(); } }
 #else
 	#define PN_ASSERT(x, ...)
 	#define PN_CORE_ASSERT(x, ...)
