@@ -52,6 +52,7 @@ namespace Pine
 		void SetZoomLevel(float zoomLevel)
 		{
 			m_ZoomLevel = zoomLevel;
+			CalculateView();
 		}
 
 		const OrthographicCameraBounds& GetBounds() const
@@ -60,6 +61,8 @@ namespace Pine
 		}
 
 	private:
+
+		void CalculateView();
 
 		bool OnMouseScrolled(MouseScrolledEvent& event);
 		bool OnWindowResized(WindowResizeEvent& event);

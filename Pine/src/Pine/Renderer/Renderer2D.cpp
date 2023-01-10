@@ -128,7 +128,7 @@ namespace Pine
 	{
 		PN_PROFILE_FUNCTION();
 
-		uint32_t dataSize = reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferBase);
+		uint32_t dataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferBase));
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 		Flush();
@@ -202,7 +202,6 @@ namespace Pine
 			FlushAndReset();
 
 		constexpr uint32_t quadVertexCount = 4;
-		constexpr glm::vec4 color = glm::vec4(1.0f);
 		constexpr glm::vec2 textureCoordinates[] = {
 			glm::vec2(0.0f, 0.0f),
 			glm::vec2(1.0f, 0.0f),
@@ -233,7 +232,7 @@ namespace Pine
 		for (uint32_t i = 0; i < quadVertexCount; i++)
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoordinates[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -258,7 +257,6 @@ namespace Pine
 			FlushAndReset();
 
 		constexpr uint32_t quadVertexCount = 4;
-		constexpr glm::vec4 color = glm::vec4(1.0f);
 		const glm::vec2* textureCoordinates = subtexture->GetTextureCoordinates();
 		const Ref<Texture2D> texture = subtexture->GetTexture();
 
@@ -285,7 +283,7 @@ namespace Pine
 		for (uint32_t i = 0; i < quadVertexCount; i++)
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoordinates[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -347,7 +345,6 @@ namespace Pine
 			FlushAndReset();
 
 		constexpr uint32_t quadVertexCount = 4;
-		constexpr glm::vec4 color = glm::vec4(1.0f);
 		constexpr glm::vec2 textureCoordinates[] = { 
 			glm::vec2(0.0f, 0.0f), 
 			glm::vec2(1.0f, 0.0f), 
@@ -379,7 +376,7 @@ namespace Pine
 		for (uint32_t i = 0; i < quadVertexCount; i++)
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoordinates[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -404,7 +401,6 @@ namespace Pine
 			FlushAndReset();
 
 		constexpr uint32_t quadVertexCount = 4;
-		constexpr glm::vec4 color = glm::vec4(1.0f);
 		const glm::vec2* textureCoordinates = subtexture->GetTextureCoordinates();
 		const Ref<Texture2D> texture = subtexture->GetTexture();
 
@@ -432,7 +428,7 @@ namespace Pine
 		for (uint32_t i = 0; i < quadVertexCount; i++)
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoordinates[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
