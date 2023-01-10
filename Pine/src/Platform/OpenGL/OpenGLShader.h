@@ -24,6 +24,8 @@ namespace Pine
 		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
+		GLint GetUniformLocation(const std::string& name);
+
 	public:
 
 		virtual void Bind() const override;

@@ -68,7 +68,7 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 			for (float x = -5.0f; x < 5.0f; x += 0.5f)
 			{
 				glm::vec3 color = glm::vec3((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f);
-				Pine::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, glm::vec4(color, 0.7f));
+				Pine::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, glm::vec4(color, 0.1f));
 			}
 		}
 		Pine::Renderer2D::EndScene();
