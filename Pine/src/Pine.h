@@ -21,6 +21,7 @@
 #include "Pine/Renderer/Buffer.h"
 #include "Pine/Renderer/Shader.h"
 #include "Pine/Renderer/Texture.h"
+#include "Pine/Renderer/SubTexture2D.h"
 #include "Pine/Renderer/VertexArray.h"
 
 #include "Pine/Renderer/OrthographicCamera.h"
