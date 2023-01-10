@@ -8,10 +8,7 @@ namespace Pine
 	{
 	public:
 
-		inline int GetKeyCode() const
-		{
-			return m_KeyCode;
-		}
+		inline int GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
@@ -39,10 +36,7 @@ namespace Pine
 
 		}
 
-		inline int GetRepeatCount() const
-		{
-			return m_RepeatCount;
-		}
+		inline int GetRepeatCount() const { return m_RepeatCount; }
 
 		std::string ToString() const override
 		{

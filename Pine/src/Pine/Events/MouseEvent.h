@@ -14,15 +14,8 @@ namespace Pine
 
 		}
 
-		inline float GetX() const
-		{
-			return m_MouseX;
-		}
-
-		inline float GetY() const
-		{
-			return m_MouseY;
-		}
+		inline float GetX() const { return m_MouseX; }
+		inline float GetY() const { return m_MouseY; }
 
 		std::string ToString() const override
 		{
@@ -49,15 +42,8 @@ namespace Pine
 
 		}
 
-		inline float GetXOffset() const
-		{
-			return m_XOffset;
-		}
-
-		inline float GetYOffset() const
-		{
-			return m_YOffset;
-		}
+		inline float GetXOffset() const { return m_XOffset; }
+		inline float GetYOffset() const { return m_YOffset; }
 
 		std::string ToString() const override
 		{
@@ -79,10 +65,7 @@ namespace Pine
 	{
 	public:
 
-		inline int GetMouseButton() const
-		{
-			return m_Button;
-		}
+		inline int GetMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 

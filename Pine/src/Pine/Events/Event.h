@@ -37,15 +37,9 @@ namespace Pine
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
 
-		virtual std::string ToString() const
-		{
-			return GetName();
-		}
+		inline virtual std::string ToString() const { return GetName(); }
 
-		inline bool IsInCategory(EventCategory category)
-		{
-			return GetCategoryFlags() & category;
-		}
+		inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
 	private:
 
@@ -84,8 +78,5 @@ namespace Pine
 
 	};
 
-	inline std::ostream& operator<<(std::ostream& os, const Event& e)
-	{
-		return os << e.ToString();
-	}
+	inline std::ostream& operator<<(std::ostream& os, const Event& e) { return os << e.ToString(); }
 }
