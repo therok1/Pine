@@ -145,7 +145,7 @@ namespace Pine
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("Viewport");
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+		if (m_ViewportSize != *(reinterpret_cast<glm::vec2*>(&viewportPanelSize)))
 		{
 			m_Framebuffer->Resize(static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y));
 			m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
