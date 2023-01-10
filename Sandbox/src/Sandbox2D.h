@@ -21,5 +21,6 @@ private:
 	Pine::OrthographicCameraController m_CameraController;
 
 	Pine::Ref<Pine::Texture2D> m_Texture;
+	Pine::Ref<Pine::Texture2D> m_SpriteSheet;
 
 };

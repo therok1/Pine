@@ -17,6 +17,7 @@ void Sandbox2D::OnAttach()
 	PN_PROFILE_FUNCTION();
 
 	m_Texture = Pine::Texture2D::Create("assets/textures/checkerboard.png");
+	m_SpriteSheet = Pine::Texture2D::Create("assets/textures/RPGpack_sheet_2X.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -64,6 +65,10 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 		}
 		Pine::Renderer2D::EndScene();
 	}
+
+	Pine::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	Pine::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 1.0f, 1.0f }, m_SpriteSheet);
+	Pine::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
