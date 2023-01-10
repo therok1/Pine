@@ -1,6 +1,6 @@
 workspace "Pine"
 	architecture "x86_64"
-	startproject "Sandbox"
+	startproject "Pine-Editor"
 
 	configurations
 	{
@@ -102,6 +102,53 @@ project "Pine"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files 
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Pine/vendor/spdlog/include",
+		"Pine/src",
+		"Pine/vendor",
+		"%{includedir.glm}"
+	}
+
+	links
+	{
+		"Pine"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "PN_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "PN_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "PN_DIST"
+		runtime "Release"
+		optimize "on"
+
+project "Pine-Editor"
+	location "Pine-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
