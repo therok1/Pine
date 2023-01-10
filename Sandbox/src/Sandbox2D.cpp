@@ -17,16 +17,6 @@ void Sandbox2D::OnAttach()
 	PN_PROFILE_FUNCTION();
 
 	m_Texture = Pine::Texture2D::Create("assets/textures/checkerboard.png");
-
-	m_Particle.ColorBegin = glm::vec4(254.0f / 255.0f, 212.0f / 255.0f, 123.0f / 255.0f, 1.0f);
-	m_Particle.ColorEnd = glm::vec4(254.0f / 255.0f, 109.0f / 255.0f, 41.0f / 255.0f, 1.0f);
-	m_Particle.SizeBegin = 0.5f;
-	m_Particle.SizeVariation = 0.3f;
-	m_Particle.SizeEnd = 0.0f;
-	m_Particle.LifeTime = 1.0f;
-	m_Particle.Velocity = glm::vec2(0.0f, 0.0f);
-	m_Particle.VelocityVariation = glm::vec2(3.0f, 1.0f);
-	m_Particle.Position = glm::vec2(0.0f, 0.0f);
 }
 
 void Sandbox2D::OnDetach()
@@ -74,26 +64,6 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 		}
 		Pine::Renderer2D::EndScene();
 	}
-
-	if (Pine::Input::IsMouseButtonPressed(PN_MOUSE_BUTTON_LEFT))
-	{
-		auto [x, y] = Pine::Input::GetMousePosition();
-		auto width = Pine::Application::Get().GetWindow().GetWidth();
-		auto height = Pine::Application::Get().GetWindow().GetHeight();
-
-		auto bounds = m_CameraController.GetBounds();
-		auto pos = m_CameraController.GetCamera().GetPosition();
-
-		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-		m_Particle.Position = glm::vec2(x + pos.x, y + pos.y);
-
-		for (uint32_t i = 0; i < 50; i++)
-			m_ParticleSystem.Emit(m_Particle);
-	}
-
-	m_ParticleSystem.OnUpdate(ts);
-	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 }
 
 void Sandbox2D::OnImGuiRender()

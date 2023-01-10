@@ -2,8 +2,6 @@
 
 #include <Pine.h>
 
-#include "ParticleSystem.h"
-
 class Sandbox2D : public Pine::Layer
 {
 public:
@@ -23,8 +21,5 @@ private:
 	Pine::OrthographicCameraController m_CameraController;
 
 	Pine::Ref<Pine::Texture2D> m_Texture;
-
-	ParticleSystem m_ParticleSystem;
-	ParticleProps m_Particle;
 
 };
