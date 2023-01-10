@@ -20,6 +20,7 @@
 
 #include "Pine/Renderer/Buffer.h"
 #include "Pine/Renderer/Shader.h"
+#include "Pine/Renderer/Framebuffer.h"
 #include "Pine/Renderer/Texture.h"
 #include "Pine/Renderer/SubTexture2D.h"
 #include "Pine/Renderer/VertexArray.h"

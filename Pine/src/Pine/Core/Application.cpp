@@ -51,6 +51,11 @@ namespace Pine
 		overlay->OnAttach();
 	}
 
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
 	void Application::OnEvent(Event& event)
 	{
 		PN_PROFILE_FUNCTION();
