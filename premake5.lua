@@ -1,5 +1,5 @@
 workspace "Pine"
-	architecture "x86_x64"
+	architecture "x86_64"
 	startproject "Sandbox"
 
 	configurations

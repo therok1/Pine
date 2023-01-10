@@ -4,7 +4,7 @@
 
 #ifdef _WIN32
 	#ifdef _WIN64
-		#define PN_PLATFORM_WINDOW
+		#define PN_PLATFORM_WINDOWS
 	#else
 		#error "x86 builds are not supported!"
 	#endif
