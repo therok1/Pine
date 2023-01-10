@@ -16,7 +16,7 @@ namespace Pine
 	{
 	public:
 
-		Application();
+		Application(const std::string& name = "Pine Engine");
 		virtual ~Application();
 
 		void Run();

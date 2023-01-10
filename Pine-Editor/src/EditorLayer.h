@@ -2,25 +2,28 @@
 
 #include <Pine.h>
 
-class Sandbox2D : public Pine::Layer
+namespace Pine
 {
-public:
+	class EditorLayer : public Layer
+	{
+	public:
 
-	Sandbox2D();
-	virtual ~Sandbox2D() = default;
+		EditorLayer();
+		virtual ~EditorLayer() = default;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
 
-	virtual void OnUpdate(Pine::Timestep ts) override;
-	virtual void OnImGuiRender() override;
-	virtual void OnEvent(Pine::Event& event) override;
+		virtual void OnUpdate(Timestep ts) override;
+		virtual void OnImGuiRender() override;
+		virtual void OnEvent(Event& event) override;
 
-private:
+	private:
 
-	Pine::OrthographicCameraController m_CameraController;
+		OrthographicCameraController m_CameraController;
 
-	Pine::Ref<Pine::Texture2D> m_Texture;
-	Pine::Ref<Pine::Framebuffer> m_Framebuffer;
+		Ref<Texture2D> m_Texture;
+		Ref<Framebuffer> m_Framebuffer;
 
-};
+	};
+}

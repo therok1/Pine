@@ -18,12 +18,6 @@ void Sandbox2D::OnAttach()
 
 	m_Texture = Pine::Texture2D::Create("assets/textures/checkerboard.png");
 
-	Pine::FramebufferSpecification spec;
-	spec.Width = 1280;
-	spec.Height = 720;
-
-	m_Framebuffer = Pine::Framebuffer::Create(spec);
-
 	m_CameraController.SetZoomLevel(5.0f);
 }
 
@@ -43,7 +37,6 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 	{
 		PN_PROFILE_SCOPE("Renderer Prep");
 
-		m_Framebuffer->Bind();
 		Pine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		Pine::RenderCommand::Clear();
 	}
@@ -72,65 +65,12 @@ void Sandbox2D::OnUpdate(Pine::Timestep ts)
 			}
 		}
 		Pine::Renderer2D::EndScene();
-		m_Framebuffer->Unbind();
 	}
 }
 
 void Sandbox2D::OnImGuiRender()
 {
 	PN_PROFILE_FUNCTION();
-
-	static bool dockspaceOpen = true;
-	static bool opt_fullscreen = true;
-	static bool opt_padding = false;
-	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-	if (opt_fullscreen)
-	{
-		const ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::SetNextWindowPos(viewport->WorkPos);
-		ImGui::SetNextWindowSize(viewport->WorkSize);
-		ImGui::SetNextWindowViewport(viewport->ID);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-	}
-	else
-	{
-		dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-	}
-
-	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-		window_flags |= ImGuiWindowFlags_NoBackground;
-
-	if (!opt_padding)
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-	if (!opt_padding)
-		ImGui::PopStyleVar();
-
-	if (opt_fullscreen)
-		ImGui::PopStyleVar(2);
-
-	ImGuiIO& io = ImGui::GetIO();
-	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-	{
-		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-	}
-
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("Exit"))
-				Pine::Application::Get().Close();
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}
 
 	ImGui::Begin("Stats");
 
@@ -139,10 +79,6 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("Quads: %d", stats.QuadCount);
 	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-	ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(1280.0f, 720.0f), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-
-	ImGui::End();
 
 	ImGui::End();
 }

@@ -1,25 +1,29 @@
 #include <Pine.h>
 #include <Pine/Core/EntryPoint.h>
 
-#include "Sandbox2D.h"
+#include "EditorLayer.h"
 
-class Sandbox : public Pine::Application
+namespace Pine
 {
-public:
-
-	Sandbox()
+	class PineEditor : public Application
 	{
-		PushLayer(new Sandbox2D());
-	}
+	public:
 
-	~Sandbox()
+		PineEditor()
+			: Application("Pine Editor")
+		{
+			PushLayer(new EditorLayer());
+		}
+
+		~PineEditor()
+		{
+
+		}
+
+	};
+
+	Application* CreateApplication()
 	{
-
+		return new PineEditor();
 	}
-
-};
-
-Pine::Application* Pine::CreateApplication()
-{
-	return new Sandbox();
 }
