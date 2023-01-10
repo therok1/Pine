@@ -70,7 +70,7 @@ namespace Pine
 				for (float x = -5.0f; x < 5.0f; x += 0.5f)
 				{
 					glm::vec3 color = glm::vec3((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f);
-					Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, glm::vec4(color, 0.1f));
+					Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, glm::vec4(color, 0.5f));
 				}
 			}
 			Renderer2D::EndScene();
@@ -135,16 +135,26 @@ namespace Pine
 		}
 
 		ImGui::Begin("Stats");
-
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(1280.0f, 720.0f), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-
 		ImGui::End();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("Viewport");
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+		{
+			m_Framebuffer->Resize(static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y));
+			m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
+
+			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+		}
+		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+		ImGui::End();
+		ImGui::PopStyleVar();
 
 		ImGui::End();
 	}

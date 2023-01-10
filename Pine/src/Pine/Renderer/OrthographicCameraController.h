@@ -14,15 +14,8 @@ namespace Pine
 		float Left, Right;
 		float Bottom, Top;
 
-		float GetWidth()
-		{
-			return Right - Left;
-		}
-
-		float GetHeight()
-		{
-			return Top - Bottom;
-		}
+		float GetWidth() { return Right - Left; }
+		float GetHeight() { return Top - Bottom; }
 	};
 
 	class OrthographicCameraController
@@ -34,31 +27,15 @@ namespace Pine
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& event);
 
-		OrthographicCamera& GetCamera()
-		{
-			return m_Camera;
-		}
+		void OnResize(float width, float height);
 
-		const OrthographicCamera& GetCamera() const
-		{
-			return m_Camera;
-		}
+		OrthographicCamera& GetCamera() { return m_Camera; }
+		const OrthographicCamera& GetCamera() const { return m_Camera; }
 
-		float GetZoomLevel() const
-		{
-			return m_ZoomLevel;
-		}
+		float GetZoomLevel() const { return m_ZoomLevel; }
+		void SetZoomLevel(float zoomLevel){ m_ZoomLevel = zoomLevel; CalculateView(); }
 
-		void SetZoomLevel(float zoomLevel)
-		{
-			m_ZoomLevel = zoomLevel;
-			CalculateView();
-		}
-
-		const OrthographicCameraBounds& GetBounds() const
-		{
-			return m_Bounds;
-		}
+		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
 	private:
 

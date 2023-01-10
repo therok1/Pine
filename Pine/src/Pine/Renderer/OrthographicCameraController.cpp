@@ -70,6 +70,12 @@ namespace Pine
 		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		CalculateView();
+	}
+
 	void OrthographicCameraController::CalculateView()
 	{
 		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
@@ -91,8 +97,7 @@ namespace Pine
 	{
 		PN_PROFILE_FUNCTION();
 
-		m_AspectRatio = static_cast<float>(event.GetWidth()) / static_cast<float>(event.GetHeight());
-		CalculateView();
+		OnResize(static_cast<float>(event.GetWidth()), static_cast<float>(event.GetHeight()));
 
 		return false;
 	}

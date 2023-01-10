@@ -25,5 +25,7 @@ namespace Pine
 		Ref<Texture2D> m_Texture;
 		Ref<Framebuffer> m_Framebuffer;
 
+		glm::vec2 m_ViewportSize = glm::vec2(0.0f);
+
 	};
 }
