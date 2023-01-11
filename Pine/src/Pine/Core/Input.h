@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Pine/Core/Core.h"
+#include "Pine/Core/KeyCodes.h"
+#include "Pine/Core/MouseButtonCodes.h"
 
 namespace Pine
 {
@@ -8,8 +10,8 @@ namespace Pine
 	{
 	public:
 
-		static bool IsKeyPressed(int keycode);
-		static bool IsMouseButtonPressed(int button);
+		static bool IsKeyPressed(KeyCode keycode);
+		static bool IsMouseButtonPressed(MouseButtonCode button);
 
 		static float GetMouseX();
 		static float GetMouseY();
