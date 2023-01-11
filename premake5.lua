@@ -22,12 +22,12 @@ includedir["Glad"] = "Pine/vendor/Glad/include"
 includedir["ImGui"] = "Pine/vendor/imgui"
 includedir["glm"] = "Pine/vendor/glm"
 includedir["stb_image"] = "Pine/vendor/stb_image"
+includedir["entt"] = "Pine/vendor/entt/include"
 
 group "Dependencies"
 	include "Pine/vendor/GLFW"
 	include "Pine/vendor/Glad"
 	include "Pine/vendor/imgui"
-
 group ""
 
 project "Pine"
@@ -67,7 +67,8 @@ project "Pine"
 		"%{includedir.Glad}",
 		"%{includedir.ImGui}",
 		"%{includedir.glm}",
-		"%{includedir.stb_image}"
+		"%{includedir.stb_image}",
+		"%{includedir.entt}"
 	}
 
 	links
@@ -168,7 +169,8 @@ project "Pine-Editor"
 		"Pine/vendor/spdlog/include",
 		"Pine/src",
 		"Pine/vendor",
-		"%{includedir.glm}"
+		"%{includedir.glm}",
+		"%{includedir.entt}"
 	}
 
 	links
