@@ -2,6 +2,7 @@
 **/bin/
 bin-int/
 Intermediates/
+!vendor/bin/premake
 
 # Pine files
 *.log
