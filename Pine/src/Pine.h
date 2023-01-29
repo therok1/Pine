@@ -13,6 +13,10 @@
 
 #include "Pine/ImGui/ImGuiLayer.h"
 
+#include "Pine/Scene/Scene.h"
+#include "Pine/Scene/Entity.h"
+#include "Pine/Scene/Components.h"
+
 // Renderer
 #include "Pine/Renderer/Renderer.h"
 #include "Pine/Renderer/Renderer2D.h"

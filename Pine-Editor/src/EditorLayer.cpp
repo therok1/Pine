@@ -23,10 +23,14 @@ namespace Pine
 		FramebufferSpecification spec;
 		spec.Width = 1280;
 		spec.Height = 720;
-
 		m_Framebuffer = Framebuffer::Create(spec);
 
-		m_CameraController.SetZoomLevel(5.0f);
+		m_ActiveScene = CreateRef<Scene>();
+
+		auto square = m_ActiveScene->CreateEntity("Green Square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+		m_SquareEntity = square;
 	}
 
 	void EditorLayer::OnDetach()
@@ -51,39 +55,17 @@ namespace Pine
 			m_CameraController.OnUpdate(ts);
 
 		Renderer2D::ResetStats();
-		{
-			PN_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		RenderCommand::Clear();
 
-			m_Framebuffer->Bind();
-			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-			RenderCommand::Clear();
-		}
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		{
-			PN_PROFILE_SCOPE("Renderer Draw");
+		m_ActiveScene->OnUpdate(ts);
+		
+		Renderer2D::EndScene();
 
-			static float rot = 0.0f;
-			rot += ts * 20.0f;
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(rot), { 0.8f, 0.2f, 0.3f, 1.0f });
-			Renderer2D::DrawQuad({ 0.6f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-			Renderer2D::DrawQuad({ 0.0f, -0.5f }, { 0.5f, 0.75f }, { 0.9f, 0.3f, 0.8f, 1.0f });
-			Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_Texture, 10.0f);
-			Renderer2D::EndScene();
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f)
-			{
-				for (float x = -5.0f; x < 5.0f; x += 0.5f)
-				{
-					glm::vec3 color = glm::vec3((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f);
-					Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, glm::vec4(color, 0.5f));
-				}
-			}
-			Renderer2D::EndScene();
-			m_Framebuffer->Unbind();
-		}
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -115,7 +97,9 @@ namespace Pine
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
 		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -140,14 +124,27 @@ namespace Pine
 		}
 
 		ImGui::Begin("Stats");
+
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+		ImGui::Separator();
+
+		if (m_SquareEntity)
+		{
+			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
+
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Color", glm::value_ptr(squareColor));
+		}
+
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
 		ImGui::Begin("Viewport");
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
@@ -159,7 +156,9 @@ namespace Pine
 		m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
 
 		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+
 		ImGui::End();
+
 		ImGui::PopStyleVar();
 
 		ImGui::End();

@@ -22,6 +22,9 @@ namespace Pine
 
 		OrthographicCameraController m_CameraController;
 
+		Ref<Scene> m_ActiveScene;
+		Entity m_SquareEntity;
+
 		Ref<Texture2D> m_Texture;
 		Ref<Framebuffer> m_Framebuffer;
 
