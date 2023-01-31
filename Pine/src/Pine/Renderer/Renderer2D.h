@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Pine/Renderer/OrthographicCamera.h"
+#include "Pine/Renderer/Camera.h"
 #include "Pine/Renderer/Texture.h"
 #include "Pine/Renderer/SubTexture2D.h"
 
@@ -13,6 +14,7 @@ namespace Pine
 		static void Init();
 		static void Shutdown();
 
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
 		static void Flush();

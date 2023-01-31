@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Pine/Renderer/Camera.h"
+
 #include <glm/glm.hpp>
 
 namespace Pine
@@ -35,5 +37,16 @@ namespace Pine
 		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+	};
+
+	struct CameraComponent
+	{
+		Pine::Camera Camera;
+		bool Primary = true;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent& other) = default;
+		CameraComponent(const glm::mat4& projection)
+			: Camera(projection) {}
 	};
 }
