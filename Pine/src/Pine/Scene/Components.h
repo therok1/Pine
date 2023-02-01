@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pine/Renderer/Camera.h"
+#include "Pine/Scene/SceneCamera.h"
 
 #include <glm/glm.hpp>
 
@@ -41,12 +41,11 @@ namespace Pine
 
 	struct CameraComponent
 	{
-		Pine::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true;
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) = default;
-		CameraComponent(const glm::mat4& projection)
-			: Camera(projection) {}
 	};
 }
