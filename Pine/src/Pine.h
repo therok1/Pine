@@ -15,6 +15,7 @@
 
 #include "Pine/Scene/Scene.h"
 #include "Pine/Scene/Entity.h"
+#include "Pine/Scene/ScriptableEntity.h"
 #include "Pine/Scene/Components.h"
 
 // Renderer
