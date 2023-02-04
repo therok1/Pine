@@ -1,3 +1,5 @@
+include "./vendor/premake/premake_customization/solution_items.lua"
+
 workspace "Pine"
 	architecture "x86_64"
 	startproject "Pine-Editor"
@@ -9,6 +11,11 @@ workspace "Pine"
 		"Dist"
 	}
 
+	solution_items 
+	{
+		".editorconfig"
+	}
+
 	flags
 	{
 		"MultiProcessorCompile"
@@ -17,182 +24,20 @@ workspace "Pine"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includedir = {}
-includedir["GLFW"] = "Pine/vendor/GLFW/include"
-includedir["Glad"] = "Pine/vendor/Glad/include"
-includedir["ImGui"] = "Pine/vendor/imgui"
-includedir["glm"] = "Pine/vendor/glm"
-includedir["stb_image"] = "Pine/vendor/stb_image"
-includedir["entt"] = "Pine/vendor/entt/include"
+includedir["GLFW"] = "%{wks.location}/Pine/vendor/GLFW/include"
+includedir["Glad"] = "%{wks.location}/Pine/vendor/Glad/include"
+includedir["ImGui"] = "%{wks.location}/Pine/vendor/imgui"
+includedir["glm"] = "%{wks.location}/Pine/vendor/glm"
+includedir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
+includedir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
 
 group "Dependencies"
+	include "vendor/premake"
 	include "Pine/vendor/GLFW"
 	include "Pine/vendor/Glad"
 	include "Pine/vendor/imgui"
 group ""
 
-project "Pine"
-	location "Pine"
-	kind "StaticLib"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	pchheader "pnpch.h"
-	pchsource "Pine/src/pnpch.cpp"
-
-	files 
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/stb_image/**.cpp",
-		"%{prj.name}/vendor/stb_image/**.h",
-		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
-	}
-
-	defines
-	{
-		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
-	}
-
-	includedirs
-	{
-		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include",
-		"%{includedir.GLFW}",
-		"%{includedir.Glad}",
-		"%{includedir.ImGui}",
-		"%{includedir.glm}",
-		"%{includedir.stb_image}",
-		"%{includedir.entt}"
-	}
-
-	links
-	{
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"opengl32.lib"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-		}
-
-	filter "configurations:Debug"
-		defines "PN_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "PN_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "PN_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "Sandbox"
-	location "Sandbox"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files 
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"Pine/vendor/spdlog/include",
-		"Pine/src",
-		"Pine/vendor",
-		"%{includedir.glm}",
-		"%{includedir.entt}"
-	}
-
-	links
-	{
-		"Pine"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "PN_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "PN_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "PN_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "Pine-Editor"
-	location "Pine-Editor"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files 
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"Pine/vendor/spdlog/include",
-		"Pine/src",
-		"Pine/vendor",
-		"%{includedir.glm}",
-		"%{includedir.entt}"
-	}
-
-	links
-	{
-		"Pine"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "PN_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "PN_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "PN_DIST"
-		runtime "Release"
-		optimize "on"
+include "Pine"
+include "Sandbox"
+include "Pine-Editor"

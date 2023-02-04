@@ -25,6 +25,7 @@ namespace Pine
 	private:
 
 		Entity m_Entity;
+
 		friend class Scene;
 
 	};
