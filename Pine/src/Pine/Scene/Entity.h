@@ -5,6 +5,8 @@
 
 #include <entt.hpp>
 
+#include <iostream>
+
 namespace Pine
 {
 	class Entity
@@ -42,7 +44,9 @@ namespace Pine
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
-		operator bool() const { return m_EntityHandle != entt::null; }
+		bool BoolOperator() const { return m_EntityHandle != entt::null; } // Since uint32_t operator overload takes priority, this was needed
+
+		operator bool() const { return BoolOperator(); }
 		operator entt::entity() const { return m_EntityHandle; }
 		operator uint32_t() { return static_cast<uint32_t>(m_EntityHandle); }
 		

@@ -40,10 +40,8 @@ namespace Pine
 		ImGui::End();
 
 		ImGui::Begin("Properties");
-
-		Entity blank = {}; //TODO: make it work without blank entity
 		
-		if (m_SelectionContext != blank)
+		if (m_SelectionContext.BoolOperator())
 			DrawComponents(m_SelectionContext);
 
 		ImGui::End();
