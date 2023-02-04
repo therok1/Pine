@@ -3,6 +3,7 @@
 
 #include "Pine/Scene/Entity.h"
 #include "Pine/Scene/Components.h"
+#include "Pine/Scene/ScriptableEntity.h"
 
 #include "Pine/Renderer/Renderer2D.h"
 
@@ -22,7 +23,7 @@ namespace Pine
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity entity(m_Registry.create(), this);
+		Entity entity{ m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -38,7 +39,7 @@ namespace Pine
 					if (!nsc.Instance)
 					{
 						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity(entity, this);
+						nsc.Instance->m_Entity = Entity{ entity, this };
 						nsc.Instance->OnCreate();
 					}
 

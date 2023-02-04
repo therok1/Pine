@@ -164,10 +164,9 @@ namespace Pine
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::Separator();
-
 		if (m_SquareEntity)
 		{
+			ImGui::Separator();
 			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
 
 			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;

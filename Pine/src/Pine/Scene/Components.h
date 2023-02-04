@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Pine/Scene/SceneCamera.h"
-#include "Pine/Scene/ScriptableEntity.h"
 
 #include <glm/glm.hpp>
 
@@ -49,6 +48,8 @@ namespace Pine
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) = default;
 	};
+
+	class ScriptableEntity;
 
 	struct NativeScriptComponent
 	{
