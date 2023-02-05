@@ -24,6 +24,8 @@ namespace Pine
 
 		void BlockEvents(bool blockEvents) { m_BlockEvents = blockEvents; }
 
+		void SetDarkThemeColors();
+
 	private:
 
 		bool m_BlockEvents = true;
