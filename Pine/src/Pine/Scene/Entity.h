@@ -21,7 +21,9 @@ namespace Pine
 		T& AddComponent(Args&&... args)
 		{
 			PN_CORE_ASSERT(!HasComponent<T>(), "Component already exists!");
-			return m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
+			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded<T>(*this, component);
+			return component;
 		}
 
 		template<typename T>
@@ -44,11 +46,9 @@ namespace Pine
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
-		bool Valid() const { return m_EntityHandle != entt::null; } // Since uint32_t operator overload takes priority, this was needed
-
-		operator bool() const { return Valid(); }
+		operator bool() const { return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }
-		operator uint32_t() { return static_cast<uint32_t>(m_EntityHandle); }
+		operator uint32_t() const { return static_cast<uint32_t>(m_EntityHandle); }
 		
 		bool operator==(const Entity& other) const 
 		{ 
@@ -62,7 +62,7 @@ namespace Pine
 
 	private:
 
-		entt::entity m_EntityHandle{ entt::null };
+		entt::entity m_EntityHandle = entt::entity(entt::null);
 		Scene* m_Scene = nullptr;
 
 	};
