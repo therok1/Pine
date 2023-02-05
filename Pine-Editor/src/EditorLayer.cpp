@@ -164,7 +164,7 @@ namespace Pine
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		if (m_SquareEntity)
+		if (m_SquareEntity.BoolOperator())
 		{
 			ImGui::Separator();
 			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
