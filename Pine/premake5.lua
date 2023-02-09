@@ -35,7 +35,8 @@ project "Pine"
 		"%{includedir.ImGui}",
 		"%{includedir.glm}",
 		"%{includedir.stb_image}",
-		"%{includedir.entt}"
+		"%{includedir.entt}",
+		"%{includedir.yaml_cpp}"
 	}
 
 	links
@@ -43,6 +44,7 @@ project "Pine"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 
