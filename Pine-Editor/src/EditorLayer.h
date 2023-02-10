@@ -22,6 +22,14 @@ namespace Pine
 
 	private:
 
+		bool OnKeyPressed(KeyPressedEvent& event);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
+
+	private:
+
 		OrthographicCameraController m_CameraController;
 
 		Ref<Scene> m_ActiveScene;

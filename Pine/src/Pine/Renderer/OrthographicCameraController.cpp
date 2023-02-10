@@ -24,13 +24,13 @@ namespace Pine
 		float cameraRotationSpeed = m_CameraRotationSpeed * ts;
 		glm::vec2 move = glm::vec2(0.0f);
 
-		if (Input::IsKeyPressed(PN_KEY_A))
+		if (Input::IsKeyPressed(Key::A))
 			move.x -= 1.0f;
-		if (Input::IsKeyPressed(PN_KEY_D))
+		if (Input::IsKeyPressed(Key::D))
 			move.x += 1.0f;
-		if (Input::IsKeyPressed(PN_KEY_W))
+		if (Input::IsKeyPressed(Key::W))
 			move.y += 1.0f;
-		if (Input::IsKeyPressed(PN_KEY_S))
+		if (Input::IsKeyPressed(Key::S))
 			move.y -= 1.0f;
 
 		if (glm::length(move))
@@ -43,9 +43,9 @@ namespace Pine
 
 		if (m_Rotation)
 		{
-			if (Input::IsKeyPressed(PN_KEY_Q))
+			if (Input::IsKeyPressed(Key::Q))
 				m_CameraRotation += cameraRotationSpeed;
-			if (Input::IsKeyPressed(PN_KEY_E))
+			if (Input::IsKeyPressed(Key::E))
 				m_CameraRotation -= cameraRotationSpeed;
 
 			if (m_CameraRotation > 180.0f)
