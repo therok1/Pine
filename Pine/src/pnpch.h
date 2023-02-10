@@ -14,6 +14,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Pine/Core/Core.h"
+
 #include "Pine/Core/Log.h"
 
 #include "Pine/Debug/Instrumentor.h"

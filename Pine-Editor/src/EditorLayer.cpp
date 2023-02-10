@@ -1,5 +1,7 @@
 #include "EditorLayer.h"
 
+#include "Pine/Scene/SceneSerializer.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,6 +28,8 @@ namespace Pine
 		m_Framebuffer = Framebuffer::Create(spec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+#if 0
 
 		m_SquareEntity = m_ActiveScene->CreateEntity("Green Square");
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
@@ -65,7 +69,12 @@ namespace Pine
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
+#endif
+
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.Deserialize("assets/scenes/Example.pine");
 	}
 
 	void EditorLayer::OnDetach()

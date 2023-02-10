@@ -53,6 +53,9 @@
 	#define PN_CORE_ASSERT(x, ...)
 #endif
 
+#define PN_EXPAND_MACRO(x) x
+#define PN_STRINGIFY_MACRO(x) #x
+
 #define BIT(x) (1 << x)
 
 #define PN_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
@@ -75,3 +78,6 @@ namespace Pine
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }
+
+#include "Pine/Core/Log.h"
+#include "Pine/Core/Assert.h"
