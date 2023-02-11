@@ -13,3 +13,6 @@
 [submodule "Pine/vendor/yaml-cpp"]
 	path = Pine/vendor/yaml-cpp
 	url = https://github.com/therok1/yaml-cpp
+[submodule "Pine/vendor/ImGuizmo"]
+	path = Pine/vendor/ImGuizmo
+	url = https://github.com/therok1/ImGuizmo
