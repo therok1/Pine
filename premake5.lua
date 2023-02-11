@@ -31,6 +31,7 @@ includedir["glm"] = "%{wks.location}/Pine/vendor/glm"
 includedir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
 includedir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
 includedir["yaml_cpp"] = "%{wks.location}/Pine/vendor/yaml-cpp/include"
+includedir["ImGuizmo"] = "%{wks.location}/Pine/vendor/ImGuizmo"
 
 group "Dependencies"
 	include "vendor/premake"

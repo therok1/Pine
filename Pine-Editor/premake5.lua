@@ -19,7 +19,8 @@ project "Pine-Editor"
 		"%{wks.location}/Pine/src",
 		"%{wks.location}/Pine/vendor",
 		"%{includedir.glm}",
-		"%{includedir.entt}"
+		"%{includedir.entt}",
+		"%{includedir.ImGuizmo}"
 	}
 
 	links

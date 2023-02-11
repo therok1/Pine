@@ -302,6 +302,9 @@ namespace Pine
 					if (ImGui::DragFloat("Far", &farClip))
 						camera.SetOrthographicFarClip(farClip);
 				}
+
+				ImGui::Checkbox("Primary", &component.Primary);
+				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
 			}
 		);
 

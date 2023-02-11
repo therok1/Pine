@@ -17,7 +17,9 @@ project "Pine"
 		"vendor/stb_image/**.h",
 		"vendor/stb_image/**.cpp",
 		"vendor/glm/glm/**.hpp",
-		"vendor/glm/glm/**.inl"
+		"vendor/glm/glm/**.inl",
+		"vendor/ImGuizmo/ImGuizmo.h",
+		"vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -37,7 +39,8 @@ project "Pine"
 		"%{includedir.glm}",
 		"%{includedir.stb_image}",
 		"%{includedir.entt}",
-		"%{includedir.yaml_cpp}"
+		"%{includedir.yaml_cpp}",
+		"%{includedir.ImGuizmo}"
 	}
 
 	links
@@ -48,6 +51,9 @@ project "Pine"
 		"yaml-cpp",
 		"opengl32.lib"
 	}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
