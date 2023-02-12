@@ -34,7 +34,7 @@ namespace Pine
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
 				MouseZoom(delta.y);
 		}
-
+		
 		UpdateView();
 	}
 
