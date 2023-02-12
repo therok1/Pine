@@ -2,6 +2,8 @@
 
 #include "Pine/Events/Event.h"
 
+#include "Pine/Core/KeyCodes.h"
+
 namespace Pine
 {
 	class KeyEvent : public Event

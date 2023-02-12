@@ -2,6 +2,8 @@
 
 #include "Pine/Events/Event.h"
 
+#include "Pine/Core/MouseButtonCodes.h"
+
 namespace Pine
 {
 	class MouseMovedEvent : public Event

@@ -26,12 +26,7 @@ namespace Pine
 			reinterpret_cast<const char*>(glGetString(GL_VERSION))
 		);
 
-		int versionMajor;
-		int versionMinor;
-		glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
-		glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
-
-		PN_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5), "Pine requires at least OpenGL version 4.5!");
+		PN_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 6), "Pine requires at least OpenGL version 4.6!");
 	}
 
 	void OpenGLContext::SwapBuffers()

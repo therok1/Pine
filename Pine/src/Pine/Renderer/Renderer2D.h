@@ -4,6 +4,7 @@
 #include "Pine/Renderer/Camera.h"
 #include "Pine/Renderer/Texture.h"
 #include "Pine/Renderer/SubTexture2D.h"
+#include "Pine/Renderer/EditorCamera.h"
 
 namespace Pine
 {
@@ -15,9 +16,17 @@ namespace Pine
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
 		static void Flush();
+
+	private:
+
+		static void StartBatch();
+		static void NextBatch();
+
+	public:
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
@@ -48,10 +57,6 @@ namespace Pine
 
 		static void ResetStats();
 		static Statistics GetStats();
-
-	private:
-
-		static void FlushAndReset();
 
 	};
 }

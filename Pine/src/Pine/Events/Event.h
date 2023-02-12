@@ -2,6 +2,8 @@
 
 #include "Pine/Core/Core.h"
 
+#include "Pine/Debug/Instrumentor.h"
+
 namespace Pine
 {
 	enum class EventType
