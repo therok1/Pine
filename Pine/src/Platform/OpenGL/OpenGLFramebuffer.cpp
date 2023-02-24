@@ -74,6 +74,18 @@ namespace Pine
 			}
 			return false;
 		}
+
+		static GLenum PineFramebufferTextureFormatToGL(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+			case Pine::FramebufferTextureFormat::RGBA8:				return GL_RGBA8;
+			case Pine::FramebufferTextureFormat::RED_INTEGER:		return GL_RED_INTEGER;
+			}
+
+			PN_CORE_ASSERT(false, "Invalid framebuffer texture format!");
+			return false;
+		}
 	}
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
@@ -225,5 +237,12 @@ namespace Pine
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 
 		return pixelData;
+	}
+
+	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+	{
+		PN_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "Index is out of range!");
+		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
+		glClearTexImage(m_ColorAttachments[attachmentIndex], 0, Utils::PineFramebufferTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
 	}
 }

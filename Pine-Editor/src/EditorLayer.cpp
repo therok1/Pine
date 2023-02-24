@@ -112,6 +112,8 @@ namespace Pine
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		RenderCommand::Clear();
 
+		m_Framebuffer->ClearAttachment(1, -1);
+
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
 		auto [mx, my] = ImGui::GetMousePos();
@@ -127,7 +129,7 @@ namespace Pine
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < static_cast<int>(viewportSize.x) && mouseY < static_cast<int>(viewportSize.y))	
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			//PN_CORE_WARN("Pixel Data: {0}", pixelData);
+			PN_CORE_WARN("Pixel Data: {0}", pixelData);
 		}
 
 		m_Framebuffer->Unbind();
