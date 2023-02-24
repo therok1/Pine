@@ -27,6 +27,7 @@ void main()
 #version 460 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out int color2;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;
@@ -42,4 +43,5 @@ void main()
 	int texIndex = int(v_TexIndex) % textureNum;
 	texColor *= texture(u_Textures[texIndex], v_TexCoord * v_TilingFactor);
 	color = texColor;
+	color2 = 50;
 }
