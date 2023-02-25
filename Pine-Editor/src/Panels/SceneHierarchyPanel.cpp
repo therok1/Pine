@@ -248,8 +248,6 @@ namespace Pine
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
-			ImGui::Separator();
-
 			float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
 			bool opened = ImGui::TreeNodeEx(reinterpret_cast<void*>(typeid(T).hash_code()), treeNodeFlags, label.c_str());
 
@@ -276,6 +274,8 @@ namespace Pine
 
 			if (componentRemoved)
 				entity.RemoveComponent<T>();
+
+			ImGui::Spacing();
 		}
 	}
 
@@ -328,7 +328,6 @@ namespace Pine
 				ImGui::Spacing();
 				component.Rotation = glm::radians(rotation);
 				DrawVec3Control("Scale", component.Scale, 1.0f);
-				ImGui::Spacing();
 			}
 		);
 
