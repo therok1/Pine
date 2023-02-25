@@ -274,8 +274,6 @@ namespace Pine
 
 			if (componentRemoved)
 				entity.RemoveComponent<T>();
-
-			ImGui::Spacing();
 		}
 	}
 
@@ -328,6 +326,7 @@ namespace Pine
 				ImGui::Spacing();
 				component.Rotation = glm::radians(rotation);
 				DrawVec3Control("Scale", component.Scale, 1.0f);
+				ImGui::Spacing();
 			}
 		);
 
