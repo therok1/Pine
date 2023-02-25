@@ -88,7 +88,7 @@ namespace Pine
 		}
 	}
 
-	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f, bool buttons = false)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		auto boldFont = io.Fonts->Fonts[0];
@@ -100,51 +100,133 @@ namespace Pine
 		ImGui::Text(label.c_str());
 		ImGui::NextColumn();
 
-		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+		ImGui::PushMultiItemsWidths(3, buttons ? ImGui::CalcItemWidth() : ImGui::GetContentRegionAvail().x);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5.0f, 0.0f));
+
+		constexpr float lineThickness = 3.0f;
+
+		constexpr ImVec4 textBase(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 textLabel(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
+
+		constexpr ImVec4 redBase(203.0f / 255.0f, 38.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 redHovered(255.0f / 255.0f, 47.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 redActive(203.0f / 255.0f, 38.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+
+		constexpr ImVec4 greenBase(103.0f / 255.0f, 169.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 greenHovered(126.0f / 255.0f, 207.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 greenActive(103.0f / 255.0f, 169.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+
+		constexpr ImVec4 blueBase(44.0f / 255.0f, 126.0f / 255.0f, 237.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 blueHovered(90.0f / 255.0f, 152.0f / 255.0f, 237.0f / 255.0f, 255.0f / 255.0f);
+		constexpr ImVec4 blueActive(44.0f / 255.0f, 126.0f / 255.0f, 237.0f / 255.0f, 255.0f / 255.0f);
+
 
 		float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
-		ImVec2 buttonSize = ImVec2(lineHeight + 3.0f, lineHeight);
+		ImVec2 buttonSize = ImVec2(lineHeight, lineHeight);
 
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.15f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.2f, 0.2f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.1f, 0.15f, 1.0f));
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("X", buttonSize))
-			values.x = resetValue;
-		ImGui::PopFont();
-		ImGui::PopStyleColor(3);
+		if (buttons)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+			ImGui::PushStyleColor(ImGuiCol_Button, redBase);
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, redHovered);
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, redActive);
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("X", buttonSize))
+				values.x = resetValue;
+			ImGui::PopFont();
+			ImGui::PopStyleColor(4);
 
-		ImGui::SameLine();
+			ImGui::SameLine();
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, ImGui::GetStyle().FramePadding.y));
 		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
+
+		if (!buttons)
+		{
+			ImVec2 buttonPos = ImGui::GetItemRectMin();
+			ImVec2 buttonDimensions = ImGui::GetItemRectSize();
+
+			ImVec2 lineStart(buttonPos.x + 4, buttonPos.y + 2);
+			ImVec2 lineEnd(buttonPos.x + 4, buttonPos.y + buttonDimensions.y - 4);
+
+			ImDrawList* drawList = ImGui::GetWindowDrawList();
+			drawList->AddLine(lineStart, lineEnd, ImGui::GetColorU32(redBase), lineThickness);
+		}
+
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Y", buttonSize))
-			values.y = resetValue;
-		ImGui::PopFont();
-		ImGui::PopStyleColor(3);
+		if (buttons)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+			ImGui::PushStyleColor(ImGuiCol_Button, greenBase);
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, greenHovered);
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, greenActive);
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("Y", buttonSize))
+				values.y = resetValue;
+			ImGui::PopFont();
+			ImGui::PopStyleColor(4);
+			ImGui::SameLine();
+		}
 
-		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, ImGui::GetStyle().FramePadding.y));
 		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
+		
+		if (!buttons)
+		{
+			ImVec2 buttonPos = ImGui::GetItemRectMin();
+			ImVec2 buttonDimensions = ImGui::GetItemRectSize();
+
+			ImVec2 lineStart(buttonPos.x + 4, buttonPos.y + 2);
+			ImVec2 lineEnd(buttonPos.x + 4, buttonPos.y + buttonDimensions.y - 4);
+
+			ImDrawList* drawList = ImGui::GetWindowDrawList();
+			drawList->AddLine(lineStart, lineEnd, ImGui::GetColorU32(greenBase), lineThickness);
+		}
+
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.25f, 0.9f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.35f, 0.9f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.25f, 0.9f, 1.0f));
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Z", buttonSize))
-			values.z = resetValue;
-		ImGui::PopFont();
-		ImGui::PopStyleColor(3);
+		if (buttons)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+			ImGui::PushStyleColor(ImGuiCol_Button, blueBase);
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, blueHovered);
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, blueActive);
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("Z", buttonSize))
+				values.z = resetValue;
+			ImGui::PopFont();
+			ImGui::PopStyleColor(4);
+			ImGui::SameLine();
+		}
 
-		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Text, textBase);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, ImGui::GetStyle().FramePadding.y));
 		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
+		
+		if (!buttons)
+		{
+			ImVec2 buttonPos = ImGui::GetItemRectMin();
+			ImVec2 buttonDimensions = ImGui::GetItemRectSize();
+
+			ImVec2 lineStart(buttonPos.x + 4, buttonPos.y + 2);
+			ImVec2 lineEnd(buttonPos.x + 4, buttonPos.y + buttonDimensions.y - 4);
+
+			ImDrawList* drawList = ImGui::GetWindowDrawList();
+			drawList->AddLine(lineStart, lineEnd, ImGui::GetColorU32(blueBase), lineThickness);
+		}
+
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
@@ -240,10 +322,13 @@ namespace Pine
 			[](auto& component)
 			{
 				DrawVec3Control("Translation", component.Translation);
+				ImGui::Spacing();
 				glm::vec3 rotation = glm::degrees(component.Rotation);
 				DrawVec3Control("Rotation", rotation);
+				ImGui::Spacing();
 				component.Rotation = glm::radians(rotation);
 				DrawVec3Control("Scale", component.Scale, 1.0f);
+				ImGui::Spacing();
 			}
 		);
 

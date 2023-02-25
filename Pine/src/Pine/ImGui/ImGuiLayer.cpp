@@ -39,8 +39,10 @@ namespace Pine
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Bold.ttf", 18.0f);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Regular.ttf", 18.0f);
+		float fontSize = 18.0f;
+
+		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Bold.ttf", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Regular.ttf", fontSize);
 		io.FontGlobalScale = 1.0f;
 
 		ImGui::StyleColorsDark();
@@ -49,6 +51,7 @@ namespace Pine
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
+			style.GrabRounding = style.FrameRounding = 2.5f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
@@ -113,35 +116,36 @@ namespace Pine
 	void ImGuiLayer::SetDarkThemeColors()
 	{
 		auto& style = ImGui::GetStyle();
-
-		style.Colors[ImGuiCol_WindowBg] =ImVec4(0.1f, 0.105f, 0.11f, 1.0f);
-
+		
+		style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_WindowBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_Border] = ImVec4(0.1f, 0.105f, 0.11f, 1.0f);
+		
 		// Headers
-		style.Colors[ImGuiCol_Header] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
-		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.0f);
-		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
+		style.Colors[ImGuiCol_Header] = ImVec4(47.0f / 255.0f, 47.0f / 255.0f, 47.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(47.0f / 255.0f, 47.0f / 255.0f, 47.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_HeaderActive] = ImVec4(47.0f / 255.0f, 47.0f / 255.0f, 47.0f / 255.0f, 255.0f / 255.0f);
 		
 		// Buttons
-		style.Colors[ImGuiCol_Button] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
-		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.0f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
+		style.Colors[ImGuiCol_Button] = ImVec4(47.0f / 255.0f, 47.0f / 255.0f, 47.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(87.0f / 255.0f, 87.0f / 255.0f, 87.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.0f / 255.0f, 112.0f / 255.0f, 224.0f / 255.0f, 255.0f / 255.0f);
 
 		// Frame BG
-		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
-		style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.0f);
-		style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
+		style.Colors[ImGuiCol_FrameBg] = ImVec4(15.0f / 255.0f, 15.0f / 255.0f, 15.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(15.0f / 255.0f, 15.0f / 255.0f, 15.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_FrameBgActive] = ImVec4(15.0f / 255.0f, 15.0f / 255.0f, 15.0f / 255.0f, 255.0f / 255.0f);
 
 		// Tabs
-		style.Colors[ImGuiCol_Tab] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
-		style.Colors[ImGuiCol_TabHovered] = ImVec4(0.38f, 0.3805f, 0.381f, 1.0f);
-		style.Colors[ImGuiCol_TabActive] = ImVec4(0.28f, 0.2805f, 0.281f, 1.0f);
-		style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
-		style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
-
+		style.Colors[ImGuiCol_Tab] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TabHovered] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TabActive] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TabUnfocused] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
+		
 		// Title
-		style.Colors[ImGuiCol_TitleBg] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
-		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
-		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
+		style.Colors[ImGuiCol_TitleBg] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 	}
-
 }
