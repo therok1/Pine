@@ -210,7 +210,7 @@ namespace Pine
 		}
 
 		ImGui::PushStyleColor(ImGuiCol_Text, textBase);
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, ImGui::GetStyle().FramePadding.y));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, GImGui->Style.FramePadding.y));
 		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
@@ -287,14 +287,17 @@ namespace Pine
 			memset(buffer, 0, sizeof(buffer));
 			strncpy_s(buffer, sizeof(buffer), tag.c_str(), sizeof(buffer));
 
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 150.0f - GImGui->Style.ItemSpacing.x);
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 				tag = std::string(buffer);
+			ImGui::PopItemWidth();
 		}
 
 		ImGui::SameLine();
-		ImGui::PushItemWidth(-1);
 
-		if (ImGui::Button("Add Component"))
+		float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
+
+		if (ImGui::Button("Add Component", ImVec2(150.0f, lineHeight)))
 			ImGui::OpenPopup("AddComponent");
 
 		if (ImGui::BeginPopup("AddComponent"))
@@ -313,8 +316,6 @@ namespace Pine
 
 			ImGui::EndPopup();
 		}
-
-		ImGui::PopItemWidth();
 
 		DrawComponent<TransformComponent>("Transform", entity, 
 			[](auto& component)

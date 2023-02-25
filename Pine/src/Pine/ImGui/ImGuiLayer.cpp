@@ -39,10 +39,10 @@ namespace Pine
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-		float fontSize = 16.0f;
+		float fontSize = 18.0f;
 
 		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Bold.ttf", fontSize);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/roboto/Roboto-Regular.ttf", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Regular.ttf", fontSize);
 		io.FontGlobalScale = 1.0f;
 
 		ImGui::StyleColorsDark();
@@ -51,7 +51,8 @@ namespace Pine
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
-			style.GrabRounding = style.FrameRounding = 2.5f;
+			style.GrabRounding = style.FrameRounding = 2.3f;
+			style.WindowBorderSize = style.TabBorderSize = style.ChildBorderSize = style.FrameBorderSize = style.PopupBorderSize = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
@@ -117,9 +118,13 @@ namespace Pine
 	{
 		auto& style = ImGui::GetStyle();
 		
+		// General
 		style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_Border] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+
+		// Scrollbar
+		style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
 
 		// Separator
 		style.Colors[ImGuiCol_Separator] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
