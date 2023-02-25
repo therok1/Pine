@@ -39,10 +39,10 @@ namespace Pine
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-		float fontSize = 18.0f;
+		float fontSize = 16.0f;
 
 		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Bold.ttf", fontSize);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Regular.ttf", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/roboto/Roboto-Regular.ttf", fontSize);
 		io.FontGlobalScale = 1.0f;
 
 		ImGui::StyleColorsDark();
@@ -119,7 +119,12 @@ namespace Pine
 		
 		style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
-		style.Colors[ImGuiCol_Border] = ImVec4(0.1f, 0.105f, 0.11f, 1.0f);
+		style.Colors[ImGuiCol_Border] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+
+		// Separator
+		style.Colors[ImGuiCol_Separator] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_SeparatorActive] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 		
 		// Headers
 		style.Colors[ImGuiCol_Header] = ImVec4(47.0f / 255.0f, 47.0f / 255.0f, 47.0f / 255.0f, 255.0f / 255.0f);

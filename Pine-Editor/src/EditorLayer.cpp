@@ -194,12 +194,16 @@ namespace Pine
 				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					OpenScene();
 
+				ImGui::PushStyleColor(ImGuiCol_Separator, ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f));
 				ImGui::Separator();
+				ImGui::PopStyleColor();
 
 				if (ImGui::MenuItem("Save as...", "Ctrl+Shift+S"))
 					SaveSceneAs();
 
+				ImGui::PushStyleColor(ImGuiCol_Separator, ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f));
 				ImGui::Separator();
+				ImGui::PopStyleColor();
 
 				if (ImGui::MenuItem("Exit", "Alt+F4"))
 					Application::Get().Close();
