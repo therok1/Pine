@@ -122,7 +122,7 @@ namespace Pine
 
 
 		float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
-		ImVec2 buttonSize = ImVec2(lineHeight, lineHeight);
+		ImVec2 buttonSize(lineHeight, lineHeight);
 
 		if (buttons)
 		{
