@@ -129,7 +129,7 @@ namespace Pine
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < static_cast<int>(viewportSize.x) && mouseY < static_cast<int>(viewportSize.y))	
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			PN_CORE_WARN("Pixel Data: {0}", pixelData);
+			m_HoveredEntity = pixelData == -1 ? Entity() : Entity(static_cast<entt::entity>(pixelData), m_ActiveScene.get());
 		}
 
 		m_Framebuffer->Unbind();
@@ -217,6 +217,12 @@ namespace Pine
 		
 		ImGui::Begin("Render Stats");
 
+		std::string name = "None";
+		if (m_HoveredEntity)
+			name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
+
+		ImGui::Text("Hovered Entity: %s", name.c_str());
+
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
@@ -227,7 +233,12 @@ namespace Pine
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("Viewport");
-		ImVec2 viewportOffset = ImGui::GetCursorPos();
+		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		ImVec2 viewportOffset = ImGui::GetWindowPos();
+
+		m_ViewportBounds[0] = glm::vec2(viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y);
+		m_ViewportBounds[1] = glm::vec2(viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y);
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
@@ -241,15 +252,6 @@ namespace Pine
 		m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
 
 		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-
-		ImVec2 windowSize = ImGui::GetWindowSize();
-		ImVec2 minBound = ImGui::GetWindowPos();
-		minBound.x += viewportOffset.x;
-		minBound.y += viewportOffset.y;
-
-		ImVec2 maxBound = ImVec2(minBound.x + windowSize.x, minBound.y + windowSize.y);
-		m_ViewportBounds[0] = glm::vec2(minBound.x, minBound.y);
-		m_ViewportBounds[1] = glm::vec2(maxBound.x, maxBound.y);
 
 		// Gizmos
 
