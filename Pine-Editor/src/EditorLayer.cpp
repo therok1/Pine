@@ -147,6 +147,8 @@ namespace Pine
 	{
 		PN_PROFILE_FUNCTION();
 
+		ImGui::ShowDemoWindow();
+
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen = true;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -260,7 +262,7 @@ namespace Pine
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
 
-		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+		ImGui::Image(reinterpret_cast<ImTextureID>(m_Framebuffer->GetColorAttachmentRendererID()), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 
 		// Gizmos
 
