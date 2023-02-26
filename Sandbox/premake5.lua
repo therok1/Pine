@@ -18,8 +18,8 @@ project "Sandbox"
 		"%{wks.location}/Pine/vendor/spdlog/include",
 		"%{wks.location}/Pine/src",
 		"%{wks.location}/Pine/vendor",
-		"%{includedir.glm}",
-		"%{includedir.entt}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links

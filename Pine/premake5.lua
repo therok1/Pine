@@ -33,14 +33,15 @@ project "Pine"
 	{
 		"src",
 		"vendor/spdlog/include",
-		"%{includedir.GLFW}",
-		"%{includedir.Glad}",
-		"%{includedir.ImGui}",
-		"%{includedir.glm}",
-		"%{includedir.stb_image}",
-		"%{includedir.entt}",
-		"%{includedir.yaml_cpp}",
-		"%{includedir.ImGuizmo}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.VulkanSDK}"
 	}
 
 	links
@@ -67,12 +68,33 @@ project "Pine"
 		runtime "Debug"
 		symbols "on"
 
+		links 
+		{
+			"%{Library.ShaderC_Debug}",
+			"%{Library.SPIRV_Cross_Debug}",
+			"%{Library.SPIRV_Cross_GLSL_Debug}"
+		}
+
 	filter "configurations:Release"
 		defines "PN_RELEASE"
 		runtime "Release"
 		optimize "on"
 
+		links
+		{
+			"%{Library.ShaderC_Release}",
+			"%{Library.SPIRV_Cross_Release}",
+			"%{Library.SPIRV_Cross_GLSL_Release}"
+		}
+
 	filter "configurations:Dist"
 		defines "PN_DIST"
 		runtime "Release"
 		optimize "on"
+
+		links
+		{
+			"%{Library.ShaderC_Release}",
+			"%{Library.SPIRV_Cross_Release}",
+			"%{Library.SPIRV_Cross_GLSL_Release}"
+		}

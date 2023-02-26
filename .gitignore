@@ -13,3 +13,8 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+
+# Directories
+Pine/vendor/VulkanSDK
+Pine-Editor/assets/cache
+scripts/__pycache__

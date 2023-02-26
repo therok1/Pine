@@ -9,8 +9,8 @@ namespace Pine
 	{
 	public:
 
-		PineEditor()
-			: Application("Pine Editor")
+		PineEditor(ApplicationCommandLineArgs args)
+			: Application("Pine Editor", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -22,8 +22,8 @@ namespace Pine
 
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new PineEditor();
+		return new PineEditor(args);
 	}
 }

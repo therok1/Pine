@@ -10,13 +10,27 @@
 
 #include "Pine/ImGui/ImGuiLayer.h"
 
+int main(int argc, char** argv);
+
 namespace Pine
 {
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			PN_CORE_ASSERT(index < Count, "");
+			return Args[index];
+		}
+	};
+
 	class Application
 	{
 	public:
 
-		Application(const std::string& name = "Pine Engine");
+		Application(const std::string& name = "Pine Engine", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 
 		void Run();
@@ -34,12 +48,16 @@ namespace Pine
 
 		inline static Application& Get() { return *s_Instance; }
 
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
+
 	private:
 
 		bool OnWindowClosed(WindowCloseEvent& event);
 		bool OnWindowResized(WindowResizeEvent& event);
 
 	private:
+
+		ApplicationCommandLineArgs m_CommandLineArgs;
 
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
@@ -54,6 +72,6 @@ namespace Pine
 
 	};
 
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
 }
 

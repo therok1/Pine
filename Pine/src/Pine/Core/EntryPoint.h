@@ -1,15 +1,18 @@
 #pragma once
 
+#include "Pine/Core/Core.h"
+#include "Pine/Core/Application.h"
+
 #ifdef PN_PLATFORM_WINDOWS
 
-extern Pine::Application* Pine::CreateApplication();
+extern Pine::Application* Pine::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
 {
 	Pine::Log::Init();
 
 	PN_PROFILE_BEGIN_SESSION("Startup", "PineProfile-Startup.json");
-	auto app = Pine::CreateApplication();
+	auto app = Pine::CreateApplication({ argc, argv });
 	PN_PROFILE_END_SESSION();
 
 	PN_PROFILE_BEGIN_SESSION("Runtime", "PineProfile-Runtime.json");

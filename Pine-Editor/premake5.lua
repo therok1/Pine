@@ -18,9 +18,9 @@ project "Pine-Editor"
 		"%{wks.location}/Pine/vendor/spdlog/include",
 		"%{wks.location}/Pine/src",
 		"%{wks.location}/Pine/vendor",
-		"%{includedir.glm}",
-		"%{includedir.entt}",
-		"%{includedir.ImGuizmo}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
