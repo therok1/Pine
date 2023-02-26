@@ -352,14 +352,18 @@ namespace Pine
 
 	void EditorLayer::UI_Toolbar()
 	{
+		auto toolbarFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+
+		ImGui::SetNextWindowBgAlpha(0.0f);
+		
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 2.0f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
-		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		ImGui::Begin("##toolbar", nullptr, toolbarFlags);
 
-		float size = ImGui::GetWindowHeight() - 4.0f;
+		float size = ImGui::GetWindowHeight() - 8.0f;
 		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
 		Ref<Texture2D> icon = m_SceneState == SceneState::Edit ? m_PlayIcon : m_StopIcon;
