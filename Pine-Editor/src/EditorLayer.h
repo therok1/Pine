@@ -25,6 +25,10 @@ namespace Pine
 
 	private:
 
+		void UI_Toolbar();
+
+	private:
+
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
@@ -32,6 +36,9 @@ namespace Pine
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
+
+		void OnScenePlay();
+		void OnSceneStop();
 
 	private:
 
@@ -55,6 +62,17 @@ namespace Pine
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+
+		Ref<Texture2D> m_PlayIcon, m_StopIcon;
+
+	private:
+
+		enum class SceneState
+		{
+			Edit = 0, Play = 1
+		};
+
+		SceneState m_SceneState = SceneState::Edit;
 
 	};
 }

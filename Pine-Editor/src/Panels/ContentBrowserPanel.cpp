@@ -19,8 +19,9 @@ namespace Pine
 	void ContentBrowserPanel::OnImGuiRender()
 	{
 		// TODO: Divide into 2 panels; left, with the directory view, and right, with all the files within specified directory.
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(30.0f, 30.0f));
 		ImGui::Begin("Content Browser");
-
+		ImGui::PopStyleVar();
 		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath))
 			if (ImGui::Button("<"))
 				m_CurrentDirectory = m_CurrentDirectory.parent_path();
