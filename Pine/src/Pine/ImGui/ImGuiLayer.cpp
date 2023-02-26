@@ -52,7 +52,8 @@ namespace Pine
 		{
 			style.WindowRounding = 0.0f;
 			style.GrabRounding = style.FrameRounding = 2.3f;
-			style.WindowBorderSize = style.TabBorderSize = style.ChildBorderSize = style.FrameBorderSize = style.PopupBorderSize = 0.0f;
+			style.TabBorderSize = style.ChildBorderSize = style.FrameBorderSize = style.PopupBorderSize = 0.0f;
+			style.WindowBorderSize = 2.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
@@ -122,6 +123,11 @@ namespace Pine
 		style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_Border] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+
+		// Resize Grip
+		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 
 		// Scrollbar
 		style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);

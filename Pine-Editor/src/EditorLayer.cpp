@@ -222,6 +222,7 @@ namespace Pine
 		}
 
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 		
 		ImGui::Begin("Render Stats");
 
@@ -264,7 +265,7 @@ namespace Pine
 		// Gizmos
 
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-		if (selectedEntity && m_GizmoType != -1)
+		if (selectedEntity && m_GizmoType != -1 && !Input::IsKeyPressed(Key::LeftAlt))
 		{
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
@@ -377,8 +378,18 @@ namespace Pine
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 	{
 		if (event.GetMouseButton() == Mouse::ButtonLeft)
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
-				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		{
+			if (m_SceneHierarchyPanel.GetSelectedEntity())
+			{
+				if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+					m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+			}
+			else
+			{
+				if (m_ViewportHovered && !Input::IsKeyPressed(Key::LeftAlt))
+					m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+			}
+		}
 		return false;
 	}
 
