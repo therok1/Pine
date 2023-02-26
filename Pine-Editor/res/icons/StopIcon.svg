@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="512"
-   height="512"
-   viewBox="0 0 135.46666 135.46667"
+   width="64"
+   height="64"
+   viewBox="0 0 16.933332 16.933334"
    version="1.1"
    id="svg5"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
@@ -28,9 +28,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.914906"
-     inkscape:cx="97.824257"
-     inkscape:cy="189.09046"
+     inkscape:zoom="3.659624"
+     inkscape:cx="33.200132"
+     inkscape:cy="6.5580508"
      inkscape:window-width="2560"
      inkscape:window-height="1369"
      inkscape:window-x="-8"
@@ -39,6 +39,23 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect323"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="0"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient1025">
@@ -75,9 +92,9 @@
        x1="63.979267"
        y1="67.733337"
        x2="120.65001"
-       y2="67.733334"
+       y2="67.733337"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-2.6666667e-6)" />
+       gradientTransform="matrix(0.12499998,0,0,0.12499998,8.1666667e-7,1.4666667e-6)" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -85,9 +102,9 @@
      id="layer1">
     <path
        id="rect234"
-       style="opacity:1;fill:url(#linearGradient1027);fill-opacity:1;stroke-width:0.270092"
-       d="M 16.816657,14.816657 H 118.65001 a 2,2 45 0 1 2,2 l 0,101.833353 a 2,2 135 0 1 -2,2 l -101.833353,0 a 2,2 45 0 1 -2,-2 V 16.816657 a 2,2 135 0 1 2,-2 z"
-       inkscape:path-effect="#path-effect345"
-       inkscape:original-d="M 14.816657,14.816657 H 120.65001 V 120.65001 H 14.816657 Z" />
+       style="opacity:1;fill:url(#linearGradient1027);fill-opacity:1;stroke-width:0.0337615"
+       d="M 3.8520836,1.8520835 H 13.08125 a 2,2 45 0 1 2,2 V 13.08125 a 2,2 135 0 1 -2,2 l -9.2291664,0 a 2,2 45 0 1 -2,-2 l 0,-9.2291665 a 2,2 135 0 1 2,-2 z"
+       inkscape:path-effect="#path-effect323"
+       inkscape:original-d="M 1.8520836,1.8520835 H 15.08125 V 15.08125 H 1.8520836 Z" />
   </g>
 </svg>
