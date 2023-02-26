@@ -19,7 +19,7 @@ public:
 
 };
 
-Pine::Application* Pine::CreateApplication()
+Pine::Application* Pine::CreateApplication(ApplicationCommandLineArgs args)
 {
 	return new Sandbox();
 }
