@@ -15,11 +15,7 @@
 	url = https://github.com/therok1/yaml-cpp.git
 [submodule "Pine/vendor/ImGuizmo"]
 	path = Pine/vendor/ImGuizmo
-<<<<<<< Updated upstream
 	url = https://github.com/therok1/ImGuizmo.git
 [submodule "Pine/vendor/Box2D"]
 	path = Pine/vendor/Box2D
 	url = https://github.com/therok1/box2d.git
-=======
-	url = https://github.com/therok1/ImGuizmo
->>>>>>> Stashed changes
