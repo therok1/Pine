@@ -452,16 +452,25 @@ namespace Pine
 	{
 		std::string filepath = FileDialogs::OpenFile("Pine Scene (*.pine)\0*.pine\0");
 		if (!filepath.empty())
-		{
 			OpenScene(filepath);
-		}
 	}
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		NewScene();
-		SceneSerializer serializer(m_ActiveScene);
-		serializer.Deserialize(path.string());
+		if (path.extension().string() != ".pine")
+		{
+			PN_CORE_WARN("Couldn't load scene '{0}' - unsupported file extension!", path.filename().string());
+			return;
+		}
+
+		Ref<Scene> newScene = CreateRef<Scene>();
+		SceneSerializer serializer(newScene);
+		if (serializer.Deserialize(path.string()))
+		{
+			m_ActiveScene = newScene;
+			m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		}
 	}
 
 	void EditorLayer::SaveSceneAs()
