@@ -33,7 +33,7 @@ project "Pine"
 	{
 		"src",
 		"vendor/spdlog/include",
-		--"%{IncludeDir.Box2D}",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
@@ -47,7 +47,7 @@ project "Pine"
 
 	links
 	{
-		--"Box2D",
+		"Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",

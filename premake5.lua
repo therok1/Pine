@@ -26,7 +26,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
 	include "vendor/premake"
-	--include "Pine/vendor/Box2D"
+	include "Pine/vendor/Box2D"
 	include "Pine/vendor/GLFW"
 	include "Pine/vendor/Glad"
 	include "Pine/vendor/imgui"
