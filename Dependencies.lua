@@ -1,14 +1,15 @@
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 
 IncludeDir = {}
+IncludeDir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
+IncludeDir["yaml_cpp"] = "%{wks.location}/Pine/vendor/yaml-cpp/include"
+--IncludeDir["Box2D"] = "%{wks.location}/Pine/vendor/Box2D/include"
 IncludeDir["GLFW"] = "%{wks.location}/Pine/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/Pine/vendor/Glad/include"
 IncludeDir["ImGui"] = "%{wks.location}/Pine/vendor/imgui"
-IncludeDir["glm"] = "%{wks.location}/Pine/vendor/glm"
-IncludeDir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
-IncludeDir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
-IncludeDir["yaml_cpp"] = "%{wks.location}/Pine/vendor/yaml-cpp/include"
 IncludeDir["ImGuizmo"] = "%{wks.location}/Pine/vendor/ImGuizmo"
+IncludeDir["glm"] = "%{wks.location}/Pine/vendor/glm"
+IncludeDir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
 IncludeDir["shaderc"] = "%{wks.location}/Pine/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{wks.location}/Pine/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
