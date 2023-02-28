@@ -1,0 +1,58 @@
+Scene: Untitled
+Entities:
+  - Entity: 32861531231
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 32861531231
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [-0.040797472, -1.69420242, 0]
+      Rotation: [0, 0, -0.385306776]
+      Scale: [7.76316738, 0.346846938, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+    RigidBody2DComponent:
+      BodyType: Static
+      FixedRotation: true
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 32861531231
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [-1.85787082, 1.76190615, -2.72971101e-05]
+      Rotation: [0, -1.69873351e-06, -1.57079637]
+      Scale: [0.999887645, 0.999888957, 0.99999994]
+    SpriteRendererComponent:
+      Color: [1, 0.413127422, 0.413127422, 1]
+    RigidBody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.100000001
+      Restitution: 0
+      RestitutionThreshold: 0.5
