@@ -253,6 +253,7 @@ namespace Pine
 			auto& component = entity.GetComponent<T>();
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
+			ImGui::Dummy(ImVec2(0.0f, 4.0f));
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
 			float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
@@ -263,6 +264,9 @@ namespace Pine
 				ImGui::OpenPopup("ComponentSettings");
 
 			ImGui::PopStyleVar();
+
+			if (opened)
+				ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
 			bool componentRemoved = false;
 			if (ImGui::BeginPopup("ComponentSettings"))
