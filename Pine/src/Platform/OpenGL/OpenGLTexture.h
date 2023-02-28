@@ -22,6 +22,7 @@ namespace Pine
 
 		virtual void Bind(uint32_t slot = 0) const override;
 
+		virtual const std::string& GetPath() const override { return m_Path; }
 		virtual bool IsLoaded() const override { return m_IsLoaded; }
 
 		virtual bool operator==(const Texture& other) const override

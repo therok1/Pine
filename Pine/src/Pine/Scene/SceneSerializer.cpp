@@ -201,6 +201,11 @@ namespace Pine
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 
+			if (spriteRendererComponent.Texture)
+				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.Texture->GetPath();
+
+			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
+
 			out << YAML::EndMap;
 		}
 
@@ -331,6 +336,12 @@ namespace Pine
 				{
 					auto& spriteRendererComponent_ = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					spriteRendererComponent_.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+
+					if (spriteRendererComponent["TexturePath"])
+						spriteRendererComponent_.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
+
+					if (spriteRendererComponent["TilingFactor"])
+						spriteRendererComponent_.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
 				}
 
 				auto rigidBody2DComponent = entity["RigidBody2DComponent"];
