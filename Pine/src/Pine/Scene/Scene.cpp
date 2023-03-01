@@ -4,7 +4,6 @@
 #include "Pine/Scene/Entity.h"
 #include "Pine/Scene/Components.h"
 #include "Pine/Scene/ScriptableEntity.h"
-
 #include "Pine/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
@@ -41,7 +40,13 @@ namespace Pine
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+	{
 		Entity entity = Entity(m_Registry.create(), this);
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -213,6 +218,12 @@ namespace Pine
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
 		static_assert(sizeof(T) == 0);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
+		
 	}
 
 	template<>

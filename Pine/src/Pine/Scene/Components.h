@@ -2,6 +2,7 @@
 
 #include "Pine/Scene/SceneCamera.h"
 #include "Pine/Renderer/Texture.h"
+#include "Pine/Core/UUID.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,6 +12,14 @@
 
 namespace Pine
 {
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;

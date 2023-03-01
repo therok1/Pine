@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Pine/Core/UUID.h"
 #include "Pine/Core/Timestep.h"
-
 #include "Pine/Renderer/EditorCamera.h"
 
 #include <entt.hpp>
@@ -20,6 +20,7 @@ namespace Pine
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();

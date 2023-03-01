@@ -139,8 +139,10 @@ namespace Pine
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		PN_CORE_ASSERT(entity.HasComponent<IDComponent>(), "Entity doesn't have an IDComponent!");
+
 		out << YAML::BeginMap;
-		out << YAML::Key << "Entity" << YAML::Value << "32861531231";
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
 		
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -300,7 +302,7 @@ namespace Pine
 
 				PN_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
