@@ -441,6 +441,12 @@ namespace Pine
 
 	void EditorLayer::NewScene()
 	{
+		if (m_SceneState != SceneState::Edit)
+		{
+			PN_CORE_WARN("Couldn't load new scene - scene already running!");
+			return;
+		}
+
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -458,6 +464,12 @@ namespace Pine
 		if (path.extension().string() != ".pine")
 		{
 			PN_CORE_WARN("Couldn't load scene '{0}' - unsupported file extension!", path.filename().string());
+			return;
+		}
+
+		if (m_SceneState != SceneState::Edit)
+		{
+			PN_CORE_WARN("Couldn't load scene '{0}' - scene already running!", path.filename().string());
 			return;
 		}
 
@@ -484,10 +496,12 @@ namespace Pine
 	void EditorLayer::OnScenePlay()
 	{
 		m_SceneState = SceneState::Play;
+		m_ActiveScene->OnRuntimeStart();
 	}
 
 	void EditorLayer::OnSceneStop()
 	{
 		m_SceneState = SceneState::Edit;
+		m_ActiveScene->OnRuntimeStop();
 	}
 }

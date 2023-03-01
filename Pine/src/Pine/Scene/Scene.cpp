@@ -9,8 +9,26 @@
 
 #include <glm/glm.hpp>
 
+#include <box2d/b2_world.h>
+#include <box2d/b2_body.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_polygon_shape.h>
+
 namespace Pine
 {
+	static b2BodyType RigidBody2DTypeToBox2DBody(RigidBody2DComponent::BodyType bodyType)
+	{
+		switch (bodyType)
+		{
+		case RigidBody2DComponent::BodyType::Static:	return b2_staticBody;
+		case RigidBody2DComponent::BodyType::Dynamic:	return b2_dynamicBody;
+		case RigidBody2DComponent::BodyType::Kinematic:	return b2_kinematicBody;
+		}
+
+		PN_CORE_ASSERT(false, "Invalid body type!");
+		return b2_staticBody;
+	}
+
 	Scene::Scene()
 	{
 		
@@ -35,18 +53,48 @@ namespace Pine
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	void Scene::OnRuntimeStart()
 	{
-		Renderer2D::BeginScene(camera);
+		m_PhysicsWorld = new b2World(b2Vec2(0.0f, -9.8f));
 
-		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-		for (auto entity : group)
+		auto view = m_Registry.view<RigidBody2DComponent>();
+		for (auto entity : view)
 		{
-			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::DrawSprite(transform.GetTransform(), sprite, static_cast<int>(entity));
-		}
+			Entity newEntity(entity, this);
+			auto& transform = newEntity.GetComponent<TransformComponent>();
+			auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
 
-		Renderer2D::EndScene();
+			b2BodyDef bodyDef;
+			bodyDef.type = RigidBody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
+			bodyDef.angle = transform.Rotation.z;
+
+			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+			body->SetFixedRotation(rb2d.FixedRotation);
+			rb2d.RuntimeBody = body;
+
+			if (newEntity.HasComponent<BoxCollider2DComponent>())
+			{
+				auto& bc2d = newEntity.GetComponent<BoxCollider2DComponent>();
+
+				b2PolygonShape boxShape;
+				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &boxShape;
+				fixtureDef.density = bc2d.Density;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
+			}
+		}
+	}
+
+	void Scene::OnRuntimeStop()
+	{
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts)
@@ -65,6 +113,26 @@ namespace Pine
 					nsc.Instance->OnUpdate(ts);
 				}
 			);
+		}
+
+		{
+			const int32_t velocityIterations = 6;
+			const int32_t positionIterations = 2;
+			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
+
+			auto view = m_Registry.view<RigidBody2DComponent>();
+			for (auto entity : view)
+			{
+				Entity newEntity(entity, this);
+				auto& transform = newEntity.GetComponent<TransformComponent>();
+				auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
+
+				b2Body* body = static_cast<b2Body*>(rb2d.RuntimeBody);
+				const auto& position = body->GetPosition();
+				transform.Translation.x = position.x;
+				transform.Translation.y = position.y;
+				transform.Rotation.z = body->GetAngle();
+			}
 		}
 
 		Camera* mainCamera = nullptr;
@@ -96,6 +164,20 @@ namespace Pine
 
 			Renderer2D::EndScene();
 		}
+	}
+
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, static_cast<int>(entity));
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
@@ -162,5 +244,15 @@ namespace Pine
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 	{
 		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<RigidBody2DComponent>(Entity entity, RigidBody2DComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
+	{
 	}
 }
