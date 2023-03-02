@@ -397,8 +397,15 @@ namespace Pine
 				OpenScene();
 			break;
 		case Key::S:
-			if (ctrl && shift)
-				SaveSceneAs();
+			if (ctrl)
+				if (shift)
+					SaveSceneAs();
+				else
+					SaveScene();
+			break;
+		case Key::D:
+			if (ctrl)
+				OnDuplicateEntity();
 			break;
 		case Key::Q:
 			if (!ImGuizmo::IsUsing())
@@ -441,15 +448,11 @@ namespace Pine
 
 	void EditorLayer::NewScene()
 	{
-		if (m_SceneState != SceneState::Edit)
-		{
-			PN_CORE_WARN("Couldn't load new scene - scene already running!");
-			return;
-		}
-
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorScenePath = std::filesystem::path();
 	}
 
 	void EditorLayer::OpenScene()
@@ -461,15 +464,12 @@ namespace Pine
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
+		if (m_SceneState != SceneState::Edit)
+			OnSceneStop();
+
 		if (path.extension().string() != ".pine")
 		{
 			PN_CORE_WARN("Couldn't load scene '{0}' - unsupported file extension!", path.filename().string());
-			return;
-		}
-
-		if (m_SceneState != SceneState::Edit)
-		{
-			PN_CORE_WARN("Couldn't load scene '{0}' - scene already running!", path.filename().string());
 			return;
 		}
 
@@ -477,10 +477,21 @@ namespace Pine
 		SceneSerializer serializer(newScene);
 		if (serializer.Deserialize(path.string()))
 		{
-			m_ActiveScene = newScene;
-			m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_EditorScene = newScene;
+			m_EditorScene->OnViewportResize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+			m_ActiveScene = m_EditorScene;
+			m_EditorScenePath = path;
 		}
+	}
+
+	void EditorLayer::SaveScene()
+	{
+		if (!m_EditorScenePath.empty())
+			SerializeScene(m_ActiveScene, m_EditorScenePath);
+		else
+			SaveSceneAs();
 	}
 
 	void EditorLayer::SaveSceneAs()
@@ -488,20 +499,44 @@ namespace Pine
 		std::string filepath = FileDialogs::SaveFile("Pine Scene (*.pine)\0*.pine\0");
 		if (!filepath.empty())
 		{
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(filepath);
+			SerializeScene(m_ActiveScene, filepath);
+			m_EditorScenePath = filepath;
 		}
+	}
+
+	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneSerializer serializer(scene);
+		serializer.Serialize(path.string());
 	}
 
 	void EditorLayer::OnScenePlay()
 	{
 		m_SceneState = SceneState::Play;
+
+		m_ActiveScene = Scene::Copy(m_EditorScene);
 		m_ActiveScene->OnRuntimeStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnSceneStop()
 	{
 		m_SceneState = SceneState::Edit;
+
 		m_ActiveScene->OnRuntimeStop();
+		m_ActiveScene = m_EditorScene;
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnDuplicateEntity()
+	{
+		if (m_SceneState != SceneState::Edit)
+			return;
+
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity)
+			m_EditorScene->DuplicateEntity(selectedEntity);
 	}
 }

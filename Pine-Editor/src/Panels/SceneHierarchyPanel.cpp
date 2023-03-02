@@ -333,7 +333,7 @@ namespace Pine
 
 			if (!m_SelectionContext.HasComponent<RigidBody2DComponent>())
 			{
-				if (ImGui::MenuItem("RigidBody 2D"))
+				if (ImGui::MenuItem("Rigid Body 2D"))
 				{
 					m_SelectionContext.AddComponent<RigidBody2DComponent>();
 					ImGui::CloseCurrentPopup();
@@ -482,7 +482,7 @@ namespace Pine
 			[](auto& component)
 			{
 				ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-				ImGui::DragFloat2("Size", glm::value_ptr(component.Offset));
+				ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
 				ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
 				ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 				ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
