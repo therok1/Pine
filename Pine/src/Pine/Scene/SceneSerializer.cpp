@@ -252,6 +252,22 @@ namespace Pine
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			out << YAML::Key << "CircleCollider2DComponent";
+			out << YAML::BeginMap;
+
+			auto& cc2dComponent = entity.GetComponent<CircleCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << cc2dComponent.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << cc2dComponent.Radius;
+			out << YAML::Key << "Density" << YAML::Value << cc2dComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
+
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -371,21 +387,33 @@ namespace Pine
 				auto rigidBody2DComponent = entity["RigidBody2DComponent"];
 				if (rigidBody2DComponent)
 				{
-					auto& rb2d = deserializedEntity.AddComponent<RigidBody2DComponent>();
-					rb2d.Type = RigidBody2DBodyTypeFromString(rigidBody2DComponent["BodyType"].as<std::string>());
-					rb2d.FixedRotation = rigidBody2DComponent["FixedRotation"].as<bool>();
+					auto& rigidBody2DComponent_ = deserializedEntity.AddComponent<RigidBody2DComponent>();
+					rigidBody2DComponent_.Type = RigidBody2DBodyTypeFromString(rigidBody2DComponent["BodyType"].as<std::string>());
+					rigidBody2DComponent_.FixedRotation = rigidBody2DComponent["FixedRotation"].as<bool>();
 				}
 
 				auto boxCollider2DComponent = entity["BoxCollider2DComponent"];
 				if (boxCollider2DComponent)
 				{
-					auto& bc2d = deserializedEntity.AddComponent<BoxCollider2DComponent>();
-					bc2d.Offset = boxCollider2DComponent["Offset"].as<glm::vec2>();
-					bc2d.Size = boxCollider2DComponent["Size"].as<glm::vec2>();
-					bc2d.Density = boxCollider2DComponent["Density"].as<float>();
-					bc2d.Friction = boxCollider2DComponent["Friction"].as<float>();
-					bc2d.Restitution = boxCollider2DComponent["Restitution"].as<float>();
-					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+					auto& boxCollider2DComponent_ = deserializedEntity.AddComponent<BoxCollider2DComponent>();
+					boxCollider2DComponent_.Offset = boxCollider2DComponent["Offset"].as<glm::vec2>();
+					boxCollider2DComponent_.Size = boxCollider2DComponent["Size"].as<glm::vec2>();
+					boxCollider2DComponent_.Density = boxCollider2DComponent["Density"].as<float>();
+					boxCollider2DComponent_.Friction = boxCollider2DComponent["Friction"].as<float>();
+					boxCollider2DComponent_.Restitution = boxCollider2DComponent["Restitution"].as<float>();
+					boxCollider2DComponent_.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
+				if (circleCollider2DComponent)
+				{
+					auto& circleCollider2DComponent_ = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					circleCollider2DComponent_.Offset = circleCollider2DComponent["Offset"].as<glm::vec2>();
+					circleCollider2DComponent_.Radius = circleCollider2DComponent["Radius"].as<float>();
+					circleCollider2DComponent_.Density = circleCollider2DComponent["Density"].as<float>();
+					circleCollider2DComponent_.Friction = circleCollider2DComponent["Friction"].as<float>();
+					circleCollider2DComponent_.Restitution = circleCollider2DComponent["Restitution"].as<float>();
+					circleCollider2DComponent_.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}
