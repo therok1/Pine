@@ -51,6 +51,16 @@ namespace Pine
 		}
 	};
 
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true;
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent& other) = default;
+	};
+
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4(1.0f);
@@ -63,14 +73,14 @@ namespace Pine
 			: Color(color) {}
 	};
 
-	struct CameraComponent
+	struct CircleRendererComponent
 	{
-		SceneCamera Camera;
-		bool Primary = true;
-		bool FixedAspectRatio = false;
+		glm::vec4 Color = glm::vec4(1.0f);
+		float Thickness = 1.0f;
+		float Fade = 0.005f;
 
-		CameraComponent() = default;
-		CameraComponent(const CameraComponent& other) = default;
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent&) = default;
 	};
 
 	class ScriptableEntity;
