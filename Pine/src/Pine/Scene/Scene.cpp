@@ -247,8 +247,7 @@ namespace Pine
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				//Renderer2D::DrawSprite(transform.GetTransform(), sprite, static_cast<int>(entity));
-				Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f), static_cast<int>(entity));
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, static_cast<int>(entity));
 			}
 		}
 
