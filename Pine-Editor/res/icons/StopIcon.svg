@@ -28,9 +28,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="3.659624"
-     inkscape:cx="-1.5028866"
-     inkscape:cy="6.8313029"
+     inkscape:zoom="7.319248"
+     inkscape:cx="7.3094941"
+     inkscape:cy="-9.7004501"
      inkscape:window-width="2560"
      inkscape:window-height="1369"
      inkscape:window-x="-8"
@@ -39,6 +39,23 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect14472"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="0"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
     <inkscape:path-effect
        effect="fillet_chamfer"
        id="path-effect323"
@@ -96,7 +113,7 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.09904103,0,0,0.09904103,1.7582869,1.7582875)" />
     <filter
-       style="color-interpolation-filters:sRGB;"
+       style="color-interpolation-filters:sRGB"
        inkscape:label="Drop Shadow"
        id="filter14436"
        x="-0.11448367"
@@ -140,8 +157,8 @@
        id="rect234"
        style="opacity:1;fill:url(#linearGradient1027);fill-opacity:1;stroke-width:0.0267502;filter:url(#filter14436)"
        d="m 5.2257448,3.2257447 h 6.4818442 a 2,2 45 0 1 2,2 v 6.4818443 a 2,2 135 0 1 -2,2 H 5.2257448 a 2,2 45 0 1 -2,-2 V 5.2257447 a 2,2 135 0 1 2,-2 z"
-       inkscape:path-effect="#path-effect323"
-       inkscape:original-d="M 3.2257448,3.2257447 H 13.707589 V 13.707589 H 3.2257448 Z"
-       transform="matrix(1.1010231,0,0,1.1010231,-0.85532852,-0.85532851)" />
+       transform="matrix(1.1010231,0,0,1.1010231,-0.85532852,-0.85532851)"
+       inkscape:path-effect="#path-effect14472"
+       inkscape:original-d="M 3.2257448,3.2257447 H 13.707589 V 13.707589 H 3.2257448 Z" />
   </g>
 </svg>
