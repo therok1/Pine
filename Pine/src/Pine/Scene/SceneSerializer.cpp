@@ -308,6 +308,7 @@ namespace Pine
 		}
 		catch (const std::exception& e)
 		{
+			PN_CORE_ERROR("Failed to load .pine file '{0}'\n     {1}", filepath, e.what());
 			return false;
 		}
 
