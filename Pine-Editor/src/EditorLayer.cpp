@@ -305,10 +305,11 @@ namespace Pine
 			}
 		}
 
+		UI_Toolbar();
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 
-		UI_Toolbar();
 
 		ImGui::End();
 	}
@@ -327,27 +328,40 @@ namespace Pine
 
 	void EditorLayer::UI_Toolbar()
 	{
-		auto toolbarFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
-		
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 2.0f));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0.0f, 0.0f));
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
-		auto& colors = ImGui::GetStyle().Colors;
-		const auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
-		const auto& buttonActive = colors[ImGuiCol_ButtonActive];
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, buttonHovered.w));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, buttonActive.w));
-		ImGui::Begin("Toolbar", nullptr, toolbarFlags);
+		ImGuiStyle& style = ImGui::GetStyle();
+		ImVec2 corner = ImGui::GetCursorPos();
+		ImVec2 size = ImGui::GetContentRegionAvail();
 
-		bool toolbarEnabled = static_cast<bool>(m_ActiveScene);
-		float size = ImGui::GetWindowHeight() - 9.0f;
-			ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+		constexpr float buttonSize = 40.0f;
+		constexpr float padding = 8.0f;
+		
+		ImVec4 containerColor = style.Colors[ImGuiCol_TitleBg];
+		containerColor.w = 127.5f / 255.0f;
+
+		ImVec4 buttonColor = style.Colors[ImGuiCol_Button];
+		buttonColor.w = 0.0f / 255.0f;
+
+		ImGui::SameLine();
+		ImGui::SetCursorPos(ImVec2((ImGui::GetWindowContentRegionMax().x * 0.5f) - ((2 * buttonSize + 3 * padding + 4 * style.FramePadding.x) * 0.5f), 2 * padding));
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
+		
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, containerColor);
+		ImGui::BeginChild("##SceneButtons", ImVec2((buttonSize + style.FramePadding.x * 2) * 2 + padding * 3, buttonSize + 2 * style.FramePadding.y + 2 * padding));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		ImGui::SameLine(padding, 0.0f);
+
+		ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, buttonColor);
 
 		// Play Button
 
 		{
+			ImGui::SetCursorPosY(padding);
 			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_PlayIcon : m_StopIcon;
-			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(size, size), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)) && toolbarEnabled)
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(buttonSize, buttonSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)))
 			{
 				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
 					OnScenePlay();
@@ -356,13 +370,14 @@ namespace Pine
 			}
 		}
 
-		ImGui::SameLine();
+		ImGui::SameLine(0.0f, padding);
 
 		// Simulate Button
 
 		{
+			ImGui::SetCursorPosY(padding);
 			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_SimulateIcon : m_StopIcon;
-			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(size, size), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)) && toolbarEnabled)
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(buttonSize, buttonSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)))
 			{
 				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
 					OnSceneSimulate();
@@ -371,9 +386,57 @@ namespace Pine
 			}
 		}
 
-		ImGui::End();
-		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);
+
+		ImGui::EndChild();
+
+		//auto toolbarFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+		//
+		//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 2.0f));
+		//ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0.0f, 0.0f));
+		//ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
+		//auto& colors = ImGui::GetStyle().Colors;
+		//const auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		//const auto& buttonActive = colors[ImGuiCol_ButtonActive];
+		//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, buttonHovered.w));
+		//ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, buttonActive.w));
+		//ImGui::Begin("Toolbar", nullptr, toolbarFlags);
+
+		//bool toolbarEnabled = static_cast<bool>(m_ActiveScene);
+		//float size = ImGui::GetWindowHeight() - 9.0f;
+		//ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+
+		//// Play Button
+
+		//{
+		//	Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_PlayIcon : m_StopIcon;
+		//	if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(size, size), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)) && toolbarEnabled)
+		//	{
+		//		if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
+		//			OnScenePlay();
+		//		else if (m_SceneState == SceneState::Play)
+		//			OnSceneStop();
+		//	}
+		//}
+
+		//ImGui::SameLine();
+
+		//// Simulate Button
+
+		//{
+		//	Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_SimulateIcon : m_StopIcon;
+		//	if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(size, size), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)) && toolbarEnabled)
+		//	{
+		//		if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
+		//			OnSceneSimulate();
+		//		else if (m_SceneState == SceneState::Simulate)
+		//			OnSceneStop();
+		//	}
+		//}
+
+		//ImGui::End();
+		//ImGui::PopStyleVar(2);
+		//ImGui::PopStyleColor(3);
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
