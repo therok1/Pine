@@ -266,12 +266,17 @@ namespace Pine
 			auto& component = entity.GetComponent<T>();
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
+			ImGuiIO& io = ImGui::GetIO();
+			auto boldFont = io.Fonts->Fonts[0];
+
 			ImGui::Dummy(ImVec2(0.0f, 4.0f));
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
+			ImGui::PushFont(boldFont);
 
 			float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
 			bool opened = ImGui::TreeNodeEx(reinterpret_cast<void*>(typeid(T).hash_code()), treeNodeFlags, label.c_str());
 
+			ImGui::PopFont();
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 			if (ImGui::Button("...", ImVec2(lineHeight, lineHeight)))
 				ImGui::OpenPopup("ComponentSettings");
