@@ -9,8 +9,8 @@ namespace Pine
 	{
 	public:
 
-		PineEditor(ApplicationCommandLineArgs args)
-			: Application("Pine Editor", args)
+		PineEditor(const ApplicationSpecification& specification)
+			: Application(specification)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -24,6 +24,10 @@ namespace Pine
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new PineEditor(args);
+		ApplicationSpecification spec;
+		spec.Name = "Pine-Editor";
+		spec.CommandLineArgs = args;
+
+		return new PineEditor(spec);
 	}
 }

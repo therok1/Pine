@@ -7,7 +7,8 @@ class Sandbox : public Pine::Application
 {
 public:
 
-	Sandbox()
+	Sandbox(const Pine::ApplicationSpecification& specification)
+		: Pine::Application(specification)
 	{
 		PushLayer(new Sandbox2D());
 	}
@@ -21,5 +22,10 @@ public:
 
 Pine::Application* Pine::CreateApplication(ApplicationCommandLineArgs args)
 {
-	return new Sandbox();
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../Pine-Editor";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }
