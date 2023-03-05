@@ -419,7 +419,7 @@ namespace Pine
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 	{
-		if (event.GetRepeatCount() > 0)
+		if (event.IsRepeat())
 			return false;
 
 		bool ctrl = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
