@@ -3,10 +3,8 @@
 
 #include "Pine/Core/Log.h"
 #include "Pine/Core/Input.h"
-
 #include "Pine/Renderer/Renderer.h"
-
-#include <GLFW/glfw3.h>
+#include "Pine/Utils/PlatformUtils.h"
 
 namespace Pine
 {
@@ -81,7 +79,7 @@ namespace Pine
 		{
 			PN_PROFILE_SCOPE("RunLoop");
 
-			float time = static_cast<float>(glfwGetTime());
+			float time = static_cast<float>(Time::GetTime());
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
