@@ -1,9 +1,7 @@
 #include "EditorLayer.h"
 
 #include "Pine/Scene/SceneSerializer.h"
-
 #include "Pine/Utils/PlatformUtils.h"
-
 #include "Pine/Math/Math.h"
 
 #include <imgui/imgui.h>

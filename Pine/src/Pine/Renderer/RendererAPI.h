@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "Pine/Renderer/VertexArray.h"
+
+#include <glm/glm.hpp>
 
 namespace Pine
 {

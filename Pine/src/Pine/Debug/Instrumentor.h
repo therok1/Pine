@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Pine/Core/Log.h"
+
 #include <algorithm>
 #include <chrono>
 #include <fstream>

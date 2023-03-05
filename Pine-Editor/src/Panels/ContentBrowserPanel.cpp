@@ -1,4 +1,3 @@
-#include "pnpch.h"
 #include "ContentBrowserPanel.h"
 
 #include <imgui/imgui.h>
