@@ -47,48 +47,7 @@ namespace Pine
 		}
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-#if 0
-
-		m_SquareEntity = m_ActiveScene->CreateEntity("Green Square");
-		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
-		m_CameraEntity.AddComponent<CameraComponent>();
-
-		class CameraController : public ScriptableEntity
-		{
-		public:
-
-			void OnCreate()
-			{
-
-			}
-
-			void OnDestroy()
-			{
-
-			}
-
-			void OnUpdate(Timestep ts)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-
-				if (Input::IsKeyPressed(Key::A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(Key::D))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(Key::W))
-					translation.y += speed * ts;
-				if (Input::IsKeyPressed(Key::S))
-					translation.y -= speed * ts;
-			}
-		};
-
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
-#endif
+		Renderer2D::SetLineWidth(4.0f);
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
@@ -515,7 +474,7 @@ namespace Pine
 						* glm::rotate(glm::mat4(1.0f), transformComponent.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
 						* glm::scale(glm::mat4(1.0f), scale);
 
-					Renderer2D::DrawRect(transform, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+					Renderer2D::DrawRect(transform, glm::vec4(0.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f));
 				}
 			}
 
@@ -531,9 +490,15 @@ namespace Pine
 					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
 						* glm::scale(glm::mat4(1.0f), scale);
 
-					Renderer2D::DrawCircle(transform, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.01f);
+					Renderer2D::DrawCircle(transform, glm::vec4(0.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f), 0.03f);
 				}
 			}
+		}
+
+		if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity()) 
+		{
+			TransformComponent transformComponent = selectedEntity.GetComponent<TransformComponent>();
+			Renderer2D::DrawRect(transformComponent.GetTransform(), glm::vec4(82.0f / 255.0f, 171.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f));
 		}
 
 		Renderer2D::EndScene();
