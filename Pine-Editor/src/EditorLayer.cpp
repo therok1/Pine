@@ -357,7 +357,9 @@ namespace Pine
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_CameraController.OnEvent(event);
-		m_EditorCamera.OnEvent(event);
+
+		if (m_SceneState == SceneState::Edit)
+			m_EditorCamera.OnEvent(event);
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(PN_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
