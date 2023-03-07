@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="5.1754899"
-     inkscape:cx="105.30404"
+     inkscape:cx="80.668692"
      inkscape:cy="43.860582"
      inkscape:window-width="2560"
      inkscape:window-height="1369"
@@ -142,6 +142,42 @@
        x2="-5.1849866"
        y2="-2.5237219"
        gradientUnits="userSpaceOnUse" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter14253"
+       x="-0.14628385"
+       y="-0.13201658"
+       width="1.2925677"
+       height="1.2640332">
+      <feFlood
+         flood-opacity="0.4"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood14243" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite14245" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="0.5"
+         result="blur"
+         id="feGaussianBlur14247" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset14249" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite14251" />
+    </filter>
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -149,7 +185,7 @@
      id="layer1">
     <path
        sodipodi:type="star"
-       style="fill:url(#linearGradient1284);fill-opacity:1;stroke-width:0.264583"
+       style="fill:url(#linearGradient1284);fill-opacity:1;stroke-width:0.264583;filter:url(#filter14253)"
        id="path721"
        inkscape:flatsided="false"
        sodipodi:sides="3"
