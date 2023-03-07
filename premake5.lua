@@ -35,6 +35,7 @@ group ""
 
 group "Core"
 	include "Pine"
+	include "Pine-ScriptCore"
 group ""
 
 group "Tools"

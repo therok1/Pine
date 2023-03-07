@@ -4,6 +4,7 @@
 #include "Pine/Core/Log.h"
 #include "Pine/Core/Input.h"
 #include "Pine/Renderer/Renderer.h"
+#include "Pine/Scripting/ScriptEngine.h"
 #include "Pine/Utils/PlatformUtils.h"
 
 namespace Pine
@@ -25,6 +26,7 @@ namespace Pine
 		m_Window->SetEventCallback(PN_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -35,6 +37,7 @@ namespace Pine
 		PN_PROFILE_FUNCTION();
 
 		Renderer::Shutdown();
+		ScriptEngine::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
