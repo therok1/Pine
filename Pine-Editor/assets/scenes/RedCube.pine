@@ -1,6 +1,36 @@
 Scene: Untitled
 Entities:
-  - Entity: 32861531231
+  - Entity: 5245598459891964281
+    TagComponent:
+      Tag: Right
+    TransformComponent:
+      Translation: [0.349999994, 0, 0.349999994]
+      Rotation: [0, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.803088784, 0.0868204087, 0.0868204087, 1]
+      TilingFactor: 1
+  - Entity: 9205789813073926572
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [-0.349999994, 0, 0.349999994]
+      Rotation: [0, -0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.911196887, 0.158316046, 0.158316046, 1]
+      TilingFactor: 1
+  - Entity: 4197178549278693400
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.57079637, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.845559835, 0.10447073, 0.10447073, 1]
+      TilingFactor: 1
+  - Entity: 401900878075015430
     TagComponent:
       Tag: Camera
     TransformComponent:
@@ -18,30 +48,3 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 32861531231
-    TagComponent:
-      Tag: Top
-    TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.57079637, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.845559835, 0.10447073, 0.10447073, 1]
-  - Entity: 32861531231
-    TagComponent:
-      Tag: Left
-    TransformComponent:
-      Translation: [-0.349999994, 0, 0.349999994]
-      Rotation: [0, -0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.911196887, 0.158316046, 0.158316046, 1]
-  - Entity: 32861531231
-    TagComponent:
-      Tag: Right
-    TransformComponent:
-      Translation: [0.349999994, 0, 0.349999994]
-      Rotation: [0, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.803088784, 0.0868204087, 0.0868204087, 1]

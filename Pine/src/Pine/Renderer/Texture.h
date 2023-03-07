@@ -18,6 +18,7 @@ namespace Pine
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
 
+		virtual const std::string& GetPath() const = 0;
 		virtual bool IsLoaded() const = 0;
 
 		virtual bool operator==(const Texture& other) const = 0;

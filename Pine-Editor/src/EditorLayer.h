@@ -32,19 +32,30 @@ namespace Pine
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
+		void OnOverlayRender();
+
 		void NewScene();
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
+		void SaveScene();
 		void SaveSceneAs();
 
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+
 		void OnScenePlay();
+		void OnSceneSimulate();
 		void OnSceneStop();
+
+		void OnDuplicateEntity();
 
 	private:
 
 		OrthographicCameraController m_CameraController;
 
 		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene;
+		std::filesystem::path m_EditorScenePath;
+
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_HoveredEntity;
@@ -60,16 +71,18 @@ namespace Pine
 
 		int m_GizmoType = -1;
 
+		bool m_ShowPhysicsColliders = false;
+
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 
-		Ref<Texture2D> m_PlayIcon, m_StopIcon;
+		Ref<Texture2D> m_PlayIcon, m_StopIcon, m_SimulateIcon;
 
 	private:
 
 		enum class SceneState
 		{
-			Edit = 0, Play = 1
+			Edit = 0, Play = 1, Simulate = 2
 		};
 
 		SceneState m_SceneState = SceneState::Edit;

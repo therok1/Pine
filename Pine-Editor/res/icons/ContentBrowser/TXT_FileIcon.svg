@@ -8,7 +8,10 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   sodipodi:docname="FileIcon.svg"
+   sodipodi:docname="TXT_FileIcon.svg"
+   inkscape:export-filename="TXT_FileIcon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -25,9 +28,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.2938725"
-     inkscape:cx="160.37129"
-     inkscape:cy="291.37338"
+     inkscape:zoom="1.829812"
+     inkscape:cx="132.25402"
+     inkscape:cy="298.93781"
      inkscape:window-width="2560"
      inkscape:window-height="1369"
      inkscape:window-x="-8"
@@ -36,6 +39,81 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient5970">
+      <stop
+         style="stop-color:#000080;stop-opacity:1;"
+         offset="0"
+         id="stop5966" />
+      <stop
+         style="stop-color:#4949ff;stop-opacity:1;"
+         offset="1"
+         id="stop5968" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect5964"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="0"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect5578"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="0"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2658">
+      <stop
+         style="stop-color:#005283;stop-opacity:1;"
+         offset="0"
+         id="stop2654" />
+      <stop
+         style="stop-color:#0084d3;stop-opacity:1;"
+         offset="1"
+         id="stop2656" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect2556"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1 @ F,0,0,1,0,2,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="0"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient7731">
@@ -498,6 +576,60 @@
          result="composite2"
          id="feComposite7354" />
     </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2658"
+       id="linearGradient2660"
+       x1="20.966871"
+       y1="49.331655"
+       x2="73.479189"
+       y2="49.331655"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter3761"
+       x="-0.13711069"
+       y="-0.31829477"
+       width="1.2742214"
+       height="1.6365895">
+      <feFlood
+         flood-opacity="0.4"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood3751" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite3753" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="3"
+         result="blur"
+         id="feGaussianBlur3755" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset3757" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite3759" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5970"
+       id="linearGradient5972"
+       x1="32.9769"
+       y1="91.068498"
+       x2="61.469162"
+       y2="91.068498"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -515,5 +647,23 @@
        d="M 109.97537,34.757222 94.094862,18.876714 A 0.82842697,0.82842697 157.5 0 0 92.680649,19.4625 v 14.708936 a 2,2 45 0 0 2,2 h 14.708931 a 0.82842728,0.82842728 112.5 0 0 0.58579,-1.414214 z"
        inkscape:path-effect="#path-effect5141"
        inkscape:original-d="M 111.38958,36.171436 92.680649,17.4625 v 18.708936 z" />
+    <path
+       id="rect530"
+       style="fill:url(#linearGradient2660);fill-opacity:1;stroke-width:0.17064;filter:url(#filter3761)"
+       d="m 22.966871,38.021385 48.512318,0 a 2,2 45 0 1 2,2 l 0,18.620541 a 2,2 135 0 1 -2,2 H 22.966871 a 2,2 45 0 1 -2,-2 V 40.021385 a 2,2 135 0 1 2,-2 z"
+       transform="matrix(1,0,0,1.1171749,0,35.956407)"
+       inkscape:path-effect="#path-effect5964"
+       inkscape:original-d="M 20.966871,38.021385 H 73.479189 V 60.641926 H 20.966871 Z" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.9333px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="25.911711"
+       y="96.856247"
+       id="text5758"><tspan
+         sodipodi:role="line"
+         id="tspan5756"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.9333px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="25.911711"
+         y="96.856247">.TXT</tspan></text>
   </g>
 </svg>

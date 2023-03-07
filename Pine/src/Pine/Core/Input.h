@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Pine/Core/Core.h"
 #include "Pine/Core/KeyCodes.h"
 #include "Pine/Core/MouseButtonCodes.h"
 

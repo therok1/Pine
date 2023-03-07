@@ -1,4 +1,3 @@
-#include "pnpch.h"
 #include "ContentBrowserPanel.h"
 
 #include <imgui/imgui.h>
@@ -11,9 +10,12 @@ namespace Pine
 		: m_CurrentDirectory(g_AssetPath)
 	{
 		m_DirectoryIcon = Texture2D::Create("res/icons/ContentBrowser/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("res/icons/ContentBrowser/FileIcon_NoText.png");
+		m_FileIcon = Texture2D::Create("res/icons/ContentBrowser/FileIcon.png");
+		m_TXT_FileIcon = Texture2D::Create("res/icons/ContentBrowser/TXT_FileIcon.png");
+		m_PINE_FileIcon = Texture2D::Create("res/icons/ContentBrowser/PINE_FileIcon.png");
 
-		m_FileExtensionIcons.emplace(".txt", m_FileIcon);
+		m_FileExtensionIcons.emplace(".txt", m_TXT_FileIcon);
+		m_FileExtensionIcons.emplace(".pine", m_PINE_FileIcon);
 	}
 
 	void ContentBrowserPanel::OnImGuiRender()
@@ -40,8 +42,7 @@ namespace Pine
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			const auto& path = directoryEntry.path();
-			auto relativePath = std::filesystem::relative(path, g_AssetPath);
-			std::string filenameString = relativePath.filename().string();
+			std::string filenameString = path.filename().string();
 			
 			ImGui::PushID(filenameString.c_str());
 			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : GetFileExtensionIcon(path.extension().string());
@@ -51,6 +52,7 @@ namespace Pine
 
 			if (ImGui::BeginDragDropSource())
 			{
+				auto relativePath = std::filesystem::relative(path, g_AssetPath);
 				const wchar_t* itemPath = relativePath.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();

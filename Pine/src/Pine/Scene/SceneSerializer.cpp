@@ -9,6 +9,29 @@
 namespace YAML 
 {
 	template<>
+	struct convert<glm::vec2>
+	{
+		static Node encode(const glm::vec2& rhs)
+		{
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 2)
+				return false;
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+	template<>
 	struct convert<glm::vec3>
 	{
 		static Node encode(const glm::vec3& rhs)
@@ -17,6 +40,7 @@ namespace YAML
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -42,6 +66,7 @@ namespace YAML
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
 			node.push_back(rhs.w);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -62,6 +87,13 @@ namespace YAML
 
 namespace Pine
 {
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& v)
+	{
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
+		return out;
+	}
+
 	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v)
 	{
 		out << YAML::Flow;
@@ -76,6 +108,29 @@ namespace Pine
 		return out;
 	}
 
+	static std::string RigidBody2DBodyTypeToString(RigidBody2DComponent::BodyType bodyType)
+	{
+		switch (bodyType)
+		{
+		case RigidBody2DComponent::BodyType::Static:	return "Static";
+		case RigidBody2DComponent::BodyType::Dynamic:	return "Dynamic";
+		case RigidBody2DComponent::BodyType::Kinematic:	return "Kinematic";
+		}
+
+		PN_CORE_ASSERT(false, "Invalid body type!");
+		return std::string();
+	}
+
+	static RigidBody2DComponent::BodyType RigidBody2DBodyTypeFromString(const std::string& bodyTypeString)
+	{
+		if (bodyTypeString == "Static")		return RigidBody2DComponent::BodyType::Static;
+		if (bodyTypeString == "Dynamic")	return RigidBody2DComponent::BodyType::Dynamic;
+		if (bodyTypeString == "Kinematic")	return RigidBody2DComponent::BodyType::Kinematic;
+
+		PN_CORE_ASSERT(false, "Invalid body type!");
+		return RigidBody2DComponent::BodyType::Static;
+	}
+
 	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
 		: m_Scene(scene)
 	{
@@ -84,8 +139,10 @@ namespace Pine
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		PN_CORE_ASSERT(entity.HasComponent<IDComponent>(), "Entity doesn't have an IDComponent!");
+
 		out << YAML::BeginMap;
-		out << YAML::Key << "Entity" << YAML::Value << "32861531231";
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
 		
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -146,6 +203,68 @@ namespace Pine
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 
+			if (spriteRendererComponent.Texture)
+				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.Texture->GetPath();
+
+			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
+
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<CircleRendererComponent>())
+		{
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap;
+
+			auto& circleRendererComponent = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << circleRendererComponent.Color;
+			out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
+			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
+
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<RigidBody2DComponent>())
+		{
+			out << YAML::Key << "RigidBody2DComponent";
+			out << YAML::BeginMap;
+
+			auto& rb2dComponent = entity.GetComponent<RigidBody2DComponent>();
+			out << YAML::Key << "BodyType" << YAML::Value << RigidBody2DBodyTypeToString(rb2dComponent.Type);
+			out << YAML::Key << "FixedRotation" << YAML::Value << rb2dComponent.FixedRotation;
+
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<BoxCollider2DComponent>())
+		{
+			out << YAML::Key << "BoxCollider2DComponent";
+			out << YAML::BeginMap;
+
+			auto& bc2dComponent = entity.GetComponent<BoxCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << bc2dComponent.Offset;
+			out << YAML::Key << "Size" << YAML::Value << bc2dComponent.Size;
+			out << YAML::Key << "Density" << YAML::Value << bc2dComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << bc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << bc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << bc2dComponent.RestitutionThreshold;
+
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			out << YAML::Key << "CircleCollider2DComponent";
+			out << YAML::BeginMap;
+
+			auto& cc2dComponent = entity.GetComponent<CircleCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << cc2dComponent.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << cc2dComponent.Radius;
+			out << YAML::Key << "Density" << YAML::Value << cc2dComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
+
 			out << YAML::EndMap;
 		}
 
@@ -189,6 +308,7 @@ namespace Pine
 		}
 		catch (const std::exception& e)
 		{
+			PN_CORE_ERROR("Failed to load .pine file '{0}'\n     {1}", filepath, e.what());
 			return false;
 		}
 
@@ -212,7 +332,7 @@ namespace Pine
 
 				PN_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
@@ -248,6 +368,53 @@ namespace Pine
 				{
 					auto& spriteRendererComponent_ = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					spriteRendererComponent_.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+
+					if (spriteRendererComponent["TexturePath"])
+						spriteRendererComponent_.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
+
+					if (spriteRendererComponent["TilingFactor"])
+						spriteRendererComponent_.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
+				}
+
+				auto circleRendererComponent = entity["CircleRendererComponent"];
+				if (circleRendererComponent)
+				{
+					auto& circleRendererComponent_ = deserializedEntity.AddComponent<CircleRendererComponent>();
+					circleRendererComponent_.Color = circleRendererComponent["Color"].as<glm::vec4>();
+					circleRendererComponent_.Thickness = circleRendererComponent["Thickness"].as<float>();
+					circleRendererComponent_.Fade = circleRendererComponent["Fade"].as<float>();
+				}
+
+				auto rigidBody2DComponent = entity["RigidBody2DComponent"];
+				if (rigidBody2DComponent)
+				{
+					auto& rigidBody2DComponent_ = deserializedEntity.AddComponent<RigidBody2DComponent>();
+					rigidBody2DComponent_.Type = RigidBody2DBodyTypeFromString(rigidBody2DComponent["BodyType"].as<std::string>());
+					rigidBody2DComponent_.FixedRotation = rigidBody2DComponent["FixedRotation"].as<bool>();
+				}
+
+				auto boxCollider2DComponent = entity["BoxCollider2DComponent"];
+				if (boxCollider2DComponent)
+				{
+					auto& boxCollider2DComponent_ = deserializedEntity.AddComponent<BoxCollider2DComponent>();
+					boxCollider2DComponent_.Offset = boxCollider2DComponent["Offset"].as<glm::vec2>();
+					boxCollider2DComponent_.Size = boxCollider2DComponent["Size"].as<glm::vec2>();
+					boxCollider2DComponent_.Density = boxCollider2DComponent["Density"].as<float>();
+					boxCollider2DComponent_.Friction = boxCollider2DComponent["Friction"].as<float>();
+					boxCollider2DComponent_.Restitution = boxCollider2DComponent["Restitution"].as<float>();
+					boxCollider2DComponent_.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
+				if (circleCollider2DComponent)
+				{
+					auto& circleCollider2DComponent_ = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					circleCollider2DComponent_.Offset = circleCollider2DComponent["Offset"].as<glm::vec2>();
+					circleCollider2DComponent_.Radius = circleCollider2DComponent["Radius"].as<float>();
+					circleCollider2DComponent_.Density = circleCollider2DComponent["Density"].as<float>();
+					circleCollider2DComponent_.Friction = circleCollider2DComponent["Friction"].as<float>();
+					circleCollider2DComponent_.Restitution = circleCollider2DComponent["Restitution"].as<float>();
+					circleCollider2DComponent_.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

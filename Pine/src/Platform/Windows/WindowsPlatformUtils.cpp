@@ -12,6 +12,11 @@
 
 namespace Pine
 {
+	float Time::GetTime()
+	{
+		return glfwGetTime();
+	}
+
 	std::string FileDialogs::OpenFile(const char* filter)
 	{
 		OPENFILENAMEA ofn;
@@ -41,6 +46,7 @@ namespace Pine
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+		ofn.lpstrDefExt = strchr(filter, '\0') + 1;
 		if (GetSaveFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
 		return std::string();
