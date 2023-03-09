@@ -5,6 +5,7 @@
 #include "Pine/Scene/Components.h"
 #include "Pine/Scene/ScriptableEntity.h"
 #include "Pine/Renderer/Renderer2D.h"
+#include "Pine/Scripting/ScriptEngine.h"
 
 #include <glm/glm.hpp>
 
@@ -116,22 +117,39 @@ namespace Pine
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		m_EntityMap[uuid] = entity;
+
 		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
+		m_EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::OnRuntimeStart()
 	{
 		OnPhysics2DStart();
+
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto entity : view)
+			{
+				Entity newEntity(entity, this);
+				ScriptEngine::OnCreateEntity(newEntity);
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
 		OnPhysics2DStop();
+
+		ScriptEngine::OnRuntimeStop();
 	}
 
 	void Scene::OnSimulationStart()
@@ -147,6 +165,13 @@ namespace Pine
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		{
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto entity : view)
+			{
+				Entity newEntity(entity, this);
+				ScriptEngine::OnUpdateEntity(newEntity, ts);
+			}
+
 			m_Registry.view<NativeScriptComponent>().each(
 				[=](auto entity, auto& nsc)
 				{
@@ -279,6 +304,14 @@ namespace Pine
 		Entity newEntity = CreateEntity(name);
 
 		CopyComponentIfExists(AllComponents(), newEntity, entity);
+	}
+
+	Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return Entity(m_EntityMap.at(uuid), this);
+
+		return {};
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -420,6 +453,11 @@ namespace Pine
 
 	template<>
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
 	{
 	}
 

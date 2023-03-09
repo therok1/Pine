@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 
 #include "Pine/Scene/Components.h"
+#include "Pine/Scripting/ScriptEngine.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -334,6 +335,7 @@ namespace Pine
 			DisplayAddComponentEntry<CameraComponent>("Camera");
 			DisplayAddComponentEntry<SpriteRendererComponent>("Sprite Renderer");
 			DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer");
+			DisplayAddComponentEntry<ScriptComponent>("Script");
 			DisplayAddComponentEntry<RigidBody2DComponent>("Rigid Body 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
 			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Collider 2D");
@@ -448,6 +450,24 @@ namespace Pine
 				ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
 			}
 		);
+
+		DrawComponent<ScriptComponent>("Script", entity, 
+			[](auto& component)
+			{
+				bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+				static char buffer[64];
+				strcpy(buffer, component.ClassName.c_str());
+
+				if (!scriptClassExists)
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+
+				if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+					component.ClassName = buffer;
+
+				if (!scriptClassExists)
+					ImGui::PopStyleColor();
+			});
 
 		DrawComponent<RigidBody2DComponent>("Rigid Body 2D", entity,
 			[](auto& component)

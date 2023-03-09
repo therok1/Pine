@@ -1,5 +1,37 @@
 Scene: Untitled
 Entities:
+  - Entity: 10993519087552936194
+    TagComponent:
+      Tag: Right
+    TransformComponent:
+      Translation: [0.349999994, 0, 0.349999994]
+      Rotation: [0, 0.785398245, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.274875462, 0.803088784, 0.0868204087, 1]
+      TilingFactor: 1
+    ScriptComponent:
+      ClassName: Sandbox.Player
+  - Entity: 8938813904133903705
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [-0.349999994, 0, 0.349999994]
+      Rotation: [0, -0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.216453597, 0.911196887, 0.158316106, 1]
+      TilingFactor: 1
+  - Entity: 2649957090124523465
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.57079637, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.24753809, 0.845559835, 0.10447073, 1]
+      TilingFactor: 1
   - Entity: 14748003684615201143
     TagComponent:
       Tag: Camera
@@ -18,33 +50,3 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 2649957090124523465
-    TagComponent:
-      Tag: Top
-    TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.57079637, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.24753809, 0.845559835, 0.10447073, 1]
-      TilingFactor: 1
-  - Entity: 8938813904133903705
-    TagComponent:
-      Tag: Left
-    TransformComponent:
-      Translation: [-0.349999994, 0, 0.349999994]
-      Rotation: [0, -0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.216453597, 0.911196887, 0.158316106, 1]
-      TilingFactor: 1
-  - Entity: 10993519087552936194
-    TagComponent:
-      Tag: Right
-    TransformComponent:
-      Translation: [0.349999994, 0, 0.349999994]
-      Rotation: [0, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.274875462, 0.803088784, 0.0868204087, 1]
-      TilingFactor: 1

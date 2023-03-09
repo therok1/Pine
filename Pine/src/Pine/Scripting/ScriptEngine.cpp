@@ -84,6 +84,11 @@ namespace Pine
 		MonoImage* CoreAssemblyImage = nullptr;
 
 		ScriptClass EntityClass;
+
+		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
+		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
+
+		Scene* SceneContext = nullptr;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -94,12 +99,14 @@ namespace Pine
 
 		InitMono();
 		LoadAssembly("Resources/Scripts/Pine-ScriptCore.dll");
+		LoadAssemblyClasses(s_Data->CoreAssembly);
 
+		ScriptGlue::RegisterComponents();
 		ScriptGlue::RegisterFunctions();
 
 		s_Data->EntityClass = ScriptClass("Pine", "Entity");
 
-		MonoObject* instance = s_Data->EntityClass.Instantiate();
+		/*MonoObject* instance = s_Data->EntityClass.Instantiate();
 
 		MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod("PrintMessage", 0);
 		s_Data->EntityClass.InvokeMethod(instance, printMessageFunc);
@@ -125,7 +132,7 @@ namespace Pine
 		void* stringParam = monoString;
 		s_Data->EntityClass.InvokeMethod(instance, printCustomMessageFunc, &stringParam);
 
-		PN_CORE_ASSERT(false);
+		PN_CORE_ASSERT(false);*/
 	}
 
 	void ScriptEngine::Shutdown()
@@ -141,6 +148,57 @@ namespace Pine
 
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath);
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
+	}
+
+	void ScriptEngine::OnRuntimeStart(Scene* scene)
+	{
+		s_Data->SceneContext = scene;
+	}
+
+	void ScriptEngine::OnRuntimeStop()
+	{
+		s_Data->SceneContext = nullptr;
+		s_Data->EntityInstances.clear();
+	}
+
+	bool ScriptEngine::EntityClassExists(const std::string& fullClassName)
+	{
+		return s_Data->EntityClasses.find(fullClassName) != s_Data->EntityClasses.end();
+	}
+
+	void ScriptEngine::OnCreateEntity(Entity entity)
+	{
+		const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+		if (ScriptEngine::EntityClassExists(scriptComponent.ClassName))
+		{
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[scriptComponent.ClassName], entity);
+			s_Data->EntityInstances[entity.GetUUID()] = instance;
+			instance->InvokeOnCreate();
+		}
+	}
+
+	void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts)
+	{
+		UUID entityUUID = entity.GetUUID();
+		PN_CORE_ASSERT(s_Data->EntityInstances.find(entityUUID) != s_Data->EntityInstances.end());
+
+		Ref<ScriptInstance> instance = s_Data->EntityInstances[entityUUID];
+		instance->InvokeOnUpdate(static_cast<float>(ts));
+	}
+
+	Scene* ScriptEngine::GetSceneContext()
+	{
+		return s_Data->SceneContext;
+	}
+
+	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
+	{
+		return s_Data->EntityClasses;
+	}
+
+	MonoImage* ScriptEngine::GetCoreAssemblyImage()
+	{
+		return s_Data->CoreAssemblyImage;
 	}
 
 	void ScriptEngine::InitMono()
@@ -159,13 +217,45 @@ namespace Pine
 		s_Data->RootDomain = nullptr;
 	}
 
-
-
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
 	{
 		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
 		mono_runtime_object_init(instance);
 		return instance;
+	}
+
+	void ScriptEngine::LoadAssemblyClasses(MonoAssembly* assembly)
+	{
+		s_Data->EntityClasses.clear();
+
+		MonoImage* image = mono_assembly_get_image(assembly);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+		MonoClass* entityClass = mono_class_from_name(image, "Pine", "Entity");
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+			std::string fullName;
+
+			if (strlen(nameSpace) != 0)
+				fullName = fmt::format("{}.{}", nameSpace, name);
+			else
+				fullName = name;
+
+			MonoClass* monoClass = mono_class_from_name(image, nameSpace, name);
+
+			if (monoClass == entityClass)
+				continue;
+
+			bool isEntity = mono_class_is_subclass_of(monoClass, entityClass, false);
+			if (isEntity)
+				s_Data->EntityClasses[fullName] = CreateRef<ScriptClass>(nameSpace, name);
+		}
 	}
 
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className)
@@ -187,5 +277,36 @@ namespace Pine
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params)
 	{
 		return mono_runtime_invoke(method, instance, params, nullptr);
+	}
+
+	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass, Entity entity)
+		: m_ScriptClass(scriptClass)
+	{
+		m_Instance = scriptClass->Instantiate();
+
+		m_Constructor = s_Data->EntityClass.GetMethod(".ctor", 1);
+		m_OnCreateMethod = scriptClass->GetMethod("OnCreate", 0);
+		m_OnUpdateMethod = scriptClass->GetMethod("OnUpdate", 1);
+
+		{
+			UUID entityID = entity.GetUUID();
+			void* param = &entityID;
+			m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
+		}
+	}
+
+	void ScriptInstance::InvokeOnCreate()
+	{
+		if (m_OnCreateMethod)
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+	}
+
+	void ScriptInstance::InvokeOnUpdate(float ts)
+	{
+		if (m_OnUpdateMethod)
+		{
+			void* param = &ts;
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		}
 	}
 }

@@ -83,6 +83,14 @@ namespace Pine
 		CircleRendererComponent(const CircleRendererComponent&) = default;
 	};
 
+	struct ScriptComponent
+	{
+		std::string ClassName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent&) = default;
+	};
+
 	class ScriptableEntity;
 
 	struct NativeScriptComponent
@@ -155,6 +163,6 @@ namespace Pine
 	};
 
 	using AllComponents = ComponentGroup<TransformComponent, SpriteRendererComponent,
-		CircleRendererComponent, CameraComponent, NativeScriptComponent,
+		CircleRendererComponent, CameraComponent, NativeScriptComponent, ScriptComponent,
 		RigidBody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent>;
 }
