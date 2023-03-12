@@ -31,10 +31,10 @@ namespace Pine
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_CurrentDirectory(g_AssetPath)
 	{
-		m_DirectoryIcon = Texture2D::Create("res/icons/ContentBrowser/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("res/icons/ContentBrowser/FileIcon.png");
-		m_TXT_FileIcon = Texture2D::Create("res/icons/ContentBrowser/TXT_FileIcon.png");
-		m_PINE_FileIcon = Texture2D::Create("res/icons/ContentBrowser/PINE_FileIcon.png");
+		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
+		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
+		m_TXT_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/TXT_FileIcon.png");
+		m_PINE_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/PINE_FileIcon.png");
 
 		m_FileExtensionIcons.emplace(".txt", m_TXT_FileIcon);
 		m_FileExtensionIcons.emplace(".pine", m_PINE_FileIcon);

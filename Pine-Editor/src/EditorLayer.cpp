@@ -25,9 +25,9 @@ namespace Pine
 		PN_PROFILE_FUNCTION();
 
 		m_Texture = Texture2D::Create("assets/textures/checkerboard.png");
-		m_PlayIcon = Texture2D::Create("res/icons/PlayIcon.png");
-		m_StopIcon = Texture2D::Create("res/icons/StopIcon.png");
-		m_SimulateIcon = Texture2D::Create("res/icons/SimulateIcon.png");
+		m_PlayIcon = Texture2D::Create("Resources/Icons/PlayIcon.png");
+		m_StopIcon = Texture2D::Create("Resources/Icons/StopIcon.png");
+		m_SimulateIcon = Texture2D::Create("Resources/Icons/SimulateIcon.png");
 
 		FramebufferSpecification spec;
 		spec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
