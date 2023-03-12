@@ -73,7 +73,7 @@ namespace Pine
 		entity.GetComponent<TransformComponent>().Translation = *translation;
 	}
 
-	static void Rigidbody2DComponent_ApplyLinearImpulse(UUID entityID, glm::vec2* impulse, glm::vec2* point, bool wake)
+	static void RigidBody2DComponent_ApplyLinearImpulse(UUID entityID, glm::vec2* impulse, glm::vec2* point, bool wake)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
 		PN_CORE_ASSERT(scene);
@@ -85,7 +85,7 @@ namespace Pine
 		body->ApplyLinearImpulse(b2Vec2(impulse->x, impulse->y), b2Vec2(point->x, point->y), wake);
 	}
 
-	static void Rigidbody2DComponent_ApplyLinearImpulseToCenter(UUID entityID, glm::vec2* impulse, bool wake)
+	static void RigidBody2DComponent_ApplyLinearImpulseToCenter(UUID entityID, glm::vec2* impulse, bool wake)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
 		PN_CORE_ASSERT(scene);
@@ -143,8 +143,8 @@ namespace Pine
 		PN_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		PN_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 		
-		PN_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
-		PN_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
+		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulse);
+		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulseToCenter);
 		
 		PN_ADD_INTERNAL_CALL(Input_IsKeyDown);
 	}

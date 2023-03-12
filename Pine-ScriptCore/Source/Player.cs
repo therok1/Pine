@@ -21,7 +21,7 @@ namespace Sandbox {
 
 		void OnUpdate(float ts)
 		{
-			float speed = 1.0f;
+			float speed = 0.1f;
 			Vector3 velocity = Vector3.Zero;
 
 			if (Input.IsKeyDown(KeyCode.W))
@@ -36,11 +36,11 @@ namespace Sandbox {
 
 			velocity *= speed;
 
-			Vector3 translation = Translation;
+			/*Vector3 translation = Translation;
 			translation += velocity * ts;
-			Translation = translation;
-
-			//m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
+			Translation = translation;*/
+			
+			m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
 		}
 
 	}

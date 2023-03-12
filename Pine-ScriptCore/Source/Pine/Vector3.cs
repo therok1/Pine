@@ -18,7 +18,6 @@
 			Z = z;
 		}
 
-
 		public Vector2 XY
 		{
 			get => new Vector2(X, Y);

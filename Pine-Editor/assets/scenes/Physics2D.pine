@@ -1,15 +1,97 @@
 Scene: Untitled
 Entities:
-  - Entity: 644128664916942443
+  - Entity: 16625722153071786204
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [-0.040797472, -1.69420242, 0]
+      Rotation: [0, 0, -0.385306776]
+      Scale: [7.76316738, 0.346846938, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 4814664052812126570
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+  - Entity: 10503516585476750412
+    TagComponent:
+      Tag: Floor 2
+    TransformComponent:
+      Translation: [5.90110159, 0.292943269, 0]
+      Rotation: [0, 0, 0.811594486]
+      Scale: [10.447319, 0.339559466, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 4228694664144536152
+    TagComponent:
+      Tag: Circle
+    TransformComponent:
+      Translation: [1.55022955, 4.51793098, -6.06965102e-07]
+      Rotation: [2.41584693e-13, -1.69873692e-06, 0]
+      Scale: [0.75, 0.75, 1]
+    CircleRendererComponent:
+      Color: [1, 0.980392158, 0.298039228, 1]
+      Thickness: 0.275000006
+      Fade: 0.00499999989
+    ScriptComponent:
+      ClassName: Sandbox.Player
+    RigidBody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 15446281535214444279
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [1.27813637, 2.87826347, -4.38797288e-05]
-      Rotation: [2.4158453e-13, -1.6987334e-06, 0.0027599996]
-      Scale: [0.999881089, 0.9998824, 0.99999994]
+      Translation: [1.8247962, 6.48314905, -4.29342108e-05]
+      Rotation: [2.37809772e-13, -1.69873488e-06, 0.00276000286]
+      Scale: [0.549934626, 0.549935341, 1]
     SpriteRendererComponent:
-      Color: [1, 0.413127422, 0.413127422, 1]
-      TexturePath: assets\textures\checkerboard.png
+      Color: [0.822393835, 0.482640386, 0.821082234, 1]
       TilingFactor: 1
     RigidBody2DComponent:
       BodyType: Dynamic
@@ -42,15 +124,16 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 15446281535214444279
+  - Entity: 644128664916942443
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [1.8247962, 6.48314905, -4.29342108e-05]
-      Rotation: [2.37809772e-13, -1.69873488e-06, 0.00276000286]
-      Scale: [0.549934626, 0.549935341, 1]
+      Translation: [1.27813637, 2.87826347, -4.38797288e-05]
+      Rotation: [2.4158453e-13, -1.6987334e-06, 0.0027599996]
+      Scale: [0.999881089, 0.9998824, 0.99999994]
     SpriteRendererComponent:
-      Color: [0.822393835, 0.482640386, 0.821082234, 1]
+      Color: [1, 0.413127422, 0.413127422, 1]
+      TexturePath: assets\textures\checkerboard.png
       TilingFactor: 1
     RigidBody2DComponent:
       BodyType: Dynamic
@@ -60,84 +143,5 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.100000001
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 4228694664144536152
-    TagComponent:
-      Tag: Circle
-    TransformComponent:
-      Translation: [1.55022955, 4.51793098, -6.06965102e-07]
-      Rotation: [2.41584693e-13, -1.69873692e-06, 0]
-      Scale: [0.75, 0.75, 1]
-    CircleRendererComponent:
-      Color: [1, 0.980392158, 0.298039228, 1]
-      Thickness: 0.275000006
-      Fade: 0.00499999989
-    RigidBody2DComponent:
-      BodyType: Dynamic
-      FixedRotation: false
-    CircleCollider2DComponent:
-      Offset: [0, 0]
-      Radius: 0.5
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 10503516585476750412
-    TagComponent:
-      Tag: Floor 2
-    TransformComponent:
-      Translation: [5.90110159, 0.292943269, 0]
-      Rotation: [0, 0, 0.811594486]
-      Scale: [10.447319, 0.339559466, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
-    RigidBody2DComponent:
-      BodyType: Static
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 4814664052812126570
-    TagComponent:
-      Tag: Camera
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.785398185
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-      Primary: true
-      FixedAspectRatio: false
-  - Entity: 16625722153071786204
-    TagComponent:
-      Tag: Floor
-    TransformComponent:
-      Translation: [-0.040797472, -1.69420242, 0]
-      Rotation: [0, 0, -0.385306776]
-      Scale: [7.76316738, 0.346846938, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
-    RigidBody2DComponent:
-      BodyType: Static
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5

@@ -24,7 +24,7 @@ namespace Sandbox {
 				velocity.X = 1.0f;
 
 			velocity *= speed;
-
+			
 			Vector3 translation = Translation;
 			translation += velocity * ts;
 			Translation = translation;

@@ -18,6 +18,7 @@ namespace Pine
 		void GoToFolder(const std::string& directory);
 
 		void DrawToolbar();
+		void DrawFolderTreeView();
 
 	public:
 

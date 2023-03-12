@@ -111,9 +111,7 @@ namespace Pine
 				ImGui::SameLine(0.0f, 8.0f);
 
 				if (ImGui::Button(directory.c_str(), ImVec2(0.0f, 28.0f)))
-				{
 					GoToFolder(directory);
-				}
 			}
 		}
 
@@ -129,6 +127,11 @@ namespace Pine
 		ImGui::Dummy(ImVec2(size.x, 2.0f));
 	}
 
+	void ContentBrowserPanel::DrawFolderTreeView()
+	{
+		
+	}
+
 	void ContentBrowserPanel::OnImGuiRender()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5.0f, 5.0f));
@@ -136,6 +139,7 @@ namespace Pine
 		ImGui::PopStyleVar();
 
 		DrawToolbar();
+		DrawFolderTreeView();
 
 		static float thumbnailSize = 128.0f;
 		static float padding = 16.0f;
