@@ -12,6 +12,15 @@ namespace Pine
 
 		ContentBrowserPanel();
 
+	private:
+
+		void Refresh();
+		void GoToFolder(const std::string& directory);
+
+		void DrawToolbar();
+
+	public:
+
 		void OnImGuiRender();
 
 	private:

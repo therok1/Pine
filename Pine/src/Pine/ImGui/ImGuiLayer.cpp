@@ -12,6 +12,8 @@
 #include <imgui.h>
 #include <ImGuizmo.h>
 
+#include <IconsForkAwesome.h>
+
 namespace Pine
 {
 	ImGuiLayer::ImGuiLayer()
@@ -33,15 +35,24 @@ namespace Pine
 
 		ImGui::CreateContext();
 
-		ImGuiIO& io = ImGui::GetIO(); static_cast<void>(io);
+		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 		float fontSize = 18.0f;
 
-		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Bold.ttf", fontSize);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Regular.ttf", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-Medium.ttf", fontSize);
+
+		ImFontConfig config;
+		config.MergeMode = true;
+		config.PixelSnapH = true;
+		config.GlyphMinAdvanceX = fontSize;
+
+		static const ImWchar iconRanges[] = { ICON_MIN_FK, ICON_MAX_16_FK, 0 };
+
+		io.Fonts->AddFontFromFileTTF("assets/fonts/" FONT_ICON_FILE_NAME_FK, fontSize - 2.0f, &config, iconRanges);
+		io.Fonts->AddFontFromFileTTF("assets/fonts/poppins/Poppins-SemiBold.ttf", fontSize);
 		io.FontGlobalScale = 1.0f;
 
 		ImGui::StyleColorsDark();
@@ -119,7 +130,8 @@ namespace Pine
 		auto& style = ImGui::GetStyle();
 		
 		// General
-		style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
+		//style.Colors[ImGuiCol_Text] = ImVec4(192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f, 255.0f / 255.0f);
+		style.Colors[ImGuiCol_Text] = ImVec4(186.0f / 255.0f, 186.0f / 255.0f, 186.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(36.0f / 255.0f, 36.0f / 255.0f, 36.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_Border] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 
