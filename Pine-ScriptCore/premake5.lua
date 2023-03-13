@@ -3,8 +3,8 @@ project "Pine-ScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/Pine-Editor/Resources/Scripts")
-	objdir ("%{wks.location}/Pine-Editor/Resources/Scripts/Intermediates")
+	targetdir ("../Pine-Editor/Resources/Scripts")
+	objdir ("../Pine-Editor/Resources/Scripts/Intermediates")
 
 
 	files 
