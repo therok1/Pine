@@ -4,8 +4,6 @@
 
 #include <IconsForkAwesome.h>
 
-#include <iostream>
-
 namespace Pine
 {
 	extern const std::filesystem::path g_AssetPath = "assets";

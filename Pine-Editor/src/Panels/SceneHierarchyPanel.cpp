@@ -6,6 +6,8 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
+#include <IconsForkAwesome.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Pine
@@ -279,7 +281,7 @@ namespace Pine
 
 			ImGui::PopFont();
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-			if (ImGui::Button("...", ImVec2(lineHeight, lineHeight)))
+			if (ImGui::Button(ICON_FK_COG, ImVec2(lineHeight, lineHeight)))
 				ImGui::OpenPopup("ComponentSettings");
 
 			ImGui::PopStyleVar();
@@ -317,7 +319,7 @@ namespace Pine
 			memset(buffer, 0, sizeof(buffer));
 			strncpy_s(buffer, sizeof(buffer), tag.c_str(), sizeof(buffer));
 
-			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 150.0f - GImGui->Style.ItemSpacing.x);
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 75.0f - GImGui->Style.ItemSpacing.x);
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 				tag = std::string(buffer);
 			ImGui::PopItemWidth();
@@ -326,8 +328,8 @@ namespace Pine
 		ImGui::SameLine();
 
 		float lineHeight = GImGui->Font->FontSize * ImGui::GetIO().FontGlobalScale + GImGui->Style.FramePadding.y * 2.0f;
-
-		if (ImGui::Button("Add Component", ImVec2(150.0f, lineHeight)))
+		
+		if (ImGui::Button(ICON_FK_PLUS " Add", ImVec2(75.0f, lineHeight)))
 			ImGui::OpenPopup("AddComponent");
 
 		if (ImGui::BeginPopup("AddComponent"))
