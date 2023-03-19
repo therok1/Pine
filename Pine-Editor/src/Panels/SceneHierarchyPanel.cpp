@@ -467,6 +467,9 @@ namespace Pine
 				if (ImGui::InputText("Class", buffer, sizeof(buffer)))
 				{
 					component.ClassName = buffer;
+
+					if (!scriptClassExists)
+						ImGui::PopStyleColor();
 					return;
 				}
 

@@ -132,6 +132,8 @@ namespace Pine
 			SetFieldValueInternal(name, &value);
 		}
 
+		MonoObject* GetManagedObject() { return m_Instance; }
+
 	private:
 
 		bool GetFieldValueInternal(const std::string& name, void* buffer);
@@ -178,6 +180,8 @@ namespace Pine
 		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
 
 		static MonoImage* GetCoreAssemblyImage();
+
+		static MonoObject* GetManagedInstance(UUID uuid);
 
 	private:
 

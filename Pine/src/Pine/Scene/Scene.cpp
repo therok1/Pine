@@ -310,6 +310,18 @@ namespace Pine
 		CopyComponentIfExists(AllComponents(), newEntity, entity);
 	}
 
+	Entity Scene::FindEntityByName(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			const TagComponent& tagComponent = view.get<TagComponent>(entity);
+			if (tagComponent.Tag == name)
+				return Entity(entity, this);
+		}
+		return {};
+	}
+
 	Entity Scene::GetEntityByUUID(UUID uuid)
 	{
 		if (m_EntityMap.find(uuid) != m_EntityMap.end())
