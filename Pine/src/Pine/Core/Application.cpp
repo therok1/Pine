@@ -67,7 +67,7 @@ namespace Pine
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(PN_BIND_EVENT_FN(Application::OnWindowClosed));
-		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(Application::OnWindowResized));
+		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
@@ -88,6 +88,8 @@ namespace Pine
 			float time = static_cast<float>(Time::GetTime());
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
+
+			ExecuteMainThreadQueue();
 
 			if (!m_Minimized)
 			{
@@ -112,13 +114,20 @@ namespace Pine
 		}
 	}
 
+	void Application::SubmitToMainThread(const std::function<void()>& function)
+	{
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+
+		m_MainThreadQueue.emplace_back(function);
+	}
+
 	bool Application::OnWindowClosed(WindowCloseEvent& event)
 	{
 		m_Running = false;
 		return true;
 	}
 
-	bool Application::OnWindowResized(WindowResizeEvent& event)
+	bool Application::OnWindowResize(WindowResizeEvent& event)
 	{
 		PN_PROFILE_FUNCTION();
 
@@ -132,5 +141,15 @@ namespace Pine
 		Renderer::OnWindowResize(event.GetWidth(), event.GetHeight());
 
 		return false;
+	}
+
+	void Application::ExecuteMainThreadQueue()
+	{
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+
+		for (auto& func : m_MainThreadQueue)
+			func();
+
+		m_MainThreadQueue.clear();
 	}
 }

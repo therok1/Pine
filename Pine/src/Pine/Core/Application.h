@@ -57,10 +57,14 @@ namespace Pine
 
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 
+		void SubmitToMainThread(const std::function<void()>& function);
+
 	private:
 
 		bool OnWindowClosed(WindowCloseEvent& event);
-		bool OnWindowResized(WindowResizeEvent& event);
+		bool OnWindowResize(WindowResizeEvent& event);
+
+		void ExecuteMainThreadQueue();
 
 	private:
 
@@ -72,6 +76,9 @@ namespace Pine
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;
+
+		std::vector<std::function<void()>> m_MainThreadQueue;
+		std::mutex m_MainThreadQueueMutex;
 
 	private:
 

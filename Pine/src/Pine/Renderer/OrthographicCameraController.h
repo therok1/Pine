@@ -42,7 +42,7 @@ namespace Pine
 		void CalculateView();
 
 		bool OnMouseScrolled(MouseScrolledEvent& event);
-		bool OnWindowResized(WindowResizeEvent& event);
+		bool OnWindowResize(WindowResizeEvent& event);
 
 	private:
 

@@ -34,17 +34,18 @@ project "Pine"
 		"src",
 		"vendor/spdlog/include",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.glm}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}",
-		"%{IncludeDir.mono}",
 		"%{IncludeDir.IconFont}",
-		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.VulkanSDK}"
+		"%{IncludeDir.mono}",
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links

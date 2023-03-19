@@ -18,9 +18,10 @@ project "Pine-Editor"
 		"%{wks.location}/Pine/vendor/spdlog/include",
 		"%{wks.location}/Pine/src",
 		"%{wks.location}/Pine/vendor",
-		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.IconFont}"
 	}
 

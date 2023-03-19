@@ -1,25 +1,26 @@
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 
 IncludeDir = {}
-IncludeDir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
-IncludeDir["yaml_cpp"] = "%{wks.location}/Pine/vendor/yaml-cpp/include"
 IncludeDir["Box2D"] = "%{wks.location}/Pine/vendor/Box2D/include"
+IncludeDir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
+IncludeDir["filewatch"] = "%{wks.location}/Pine/vendor/filewatch"
+IncludeDir["glm"] = "%{wks.location}/Pine/vendor/glm"
 IncludeDir["GLFW"] = "%{wks.location}/Pine/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/Pine/vendor/Glad/include"
+IncludeDir["IconFont"] = "%{wks.location}/Pine/vendor/IconFont/include"
 IncludeDir["ImGui"] = "%{wks.location}/Pine/vendor/imgui"
 IncludeDir["ImGuizmo"] = "%{wks.location}/Pine/vendor/ImGuizmo"
-IncludeDir["glm"] = "%{wks.location}/Pine/vendor/glm"
-IncludeDir["entt"] = "%{wks.location}/Pine/vendor/entt/include"
 IncludeDir["mono"] = "%{wks.location}/Pine/vendor/mono/include"
-IncludeDir["IconFont"] = "%{wks.location}/Pine/vendor/IconFont/include"
 IncludeDir["shaderc"] = "%{wks.location}/Pine/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{wks.location}/Pine/vendor/SPIRV-Cross"
+IncludeDir["stb_image"] = "%{wks.location}/Pine/vendor/stb_image"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
+IncludeDir["yaml_cpp"] = "%{wks.location}/Pine/vendor/yaml-cpp/include"
 
 LibraryDir = {}
 
-LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
 LibraryDir["mono"] = "%{wks.location}/Pine/vendor/mono/lib/%{cfg.buildcfg}"
+LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
 
 Library = {}
 

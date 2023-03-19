@@ -67,7 +67,7 @@ namespace Pine
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<MouseScrolledEvent>(PN_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
-		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
+		dispatcher.Dispatch<WindowResizeEvent>(PN_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
 	}
 
 	void OrthographicCameraController::OnResize(float width, float height)
@@ -93,7 +93,7 @@ namespace Pine
 		return false;
 	}
 
-	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& event)
+	bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& event)
 	{
 		PN_PROFILE_FUNCTION();
 
