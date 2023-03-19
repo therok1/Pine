@@ -12,23 +12,23 @@ namespace Pine
 {
 	static std::unordered_map<std::string, ScriptFieldType> s_ScriptFieldTypeMap =
 	{
-		{ "System.Single", ScriptFieldType::Float },
-		{ "System.Double", ScriptFieldType::Double },
-		{ "System.Boolean", ScriptFieldType::Bool },
-		{ "System.Char", ScriptFieldType::Char },
-		{ "System.Int16", ScriptFieldType::Short },
-		{ "System.Int32", ScriptFieldType::Int },
-		{ "System.Int64", ScriptFieldType::Long },
-		{ "System.Byte", ScriptFieldType::Byte },
-		{ "System.UInt16", ScriptFieldType::UShort },
-		{ "System.UInt32", ScriptFieldType::UInt },
-		{ "System.UInt64", ScriptFieldType::ULong },
+		{ "System.Single",	ScriptFieldType::Float		},
+		{ "System.Double",	ScriptFieldType::Double		},
+		{ "System.Boolean",	ScriptFieldType::Bool		},
+		{ "System.Char",	ScriptFieldType::Char		},
+		{ "System.Int16",	ScriptFieldType::Short		},
+		{ "System.Int32",	ScriptFieldType::Int		},
+		{ "System.Int64",	ScriptFieldType::Long		},
+		{ "System.Byte",	ScriptFieldType::Byte		},
+		{ "System.UInt16",	ScriptFieldType::UShort		},
+		{ "System.UInt32",	ScriptFieldType::UInt		},
+		{ "System.UInt64",	ScriptFieldType::ULong		},
 
-		{ "Pine.Vector2", ScriptFieldType::Vector2 },
-		{ "Pine.Vector3", ScriptFieldType::Vector3 },
-		{ "Pine.Vector4", ScriptFieldType::Vector4 },
+		{ "Pine.Vector2",	ScriptFieldType::Vector2	},
+		{ "Pine.Vector3",	ScriptFieldType::Vector3	},
+		{ "Pine.Vector4",	ScriptFieldType::Vector4	},
 
-		{ "Pine.Entity", ScriptFieldType::Entity },
+		{ "Pine.Entity",	ScriptFieldType::Entity		}
 	};
 
 	namespace Utils
@@ -122,6 +122,9 @@ namespace Pine
 		MonoAssembly* AppAssembly = nullptr;
 		MonoImage* AppAssemblyImage = nullptr;
 
+		std::filesystem::path CoreAssemblyFilepath;
+		std::filesystem::path AppAssemblyFilepath;
+
 		ScriptClass EntityClass;
 
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
@@ -138,6 +141,8 @@ namespace Pine
 		s_Data = new ScriptEngineData();
 
 		InitMono();
+		ScriptGlue::RegisterFunctions();
+
 		LoadAssembly("Resources/Scripts/Pine-ScriptCore.dll");
 		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
 		LoadAssemblyClasses();
@@ -159,16 +164,33 @@ namespace Pine
 		s_Data->AppDomain = mono_domain_create_appdomain("PineScriptRuntime", nullptr);
 		mono_domain_set(s_Data->AppDomain, true);
 
+		s_Data->CoreAssemblyFilepath = filepath;
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath);
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
 	}
 
 	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
 	{
+		s_Data->AppAssemblyFilepath = filepath;
 		s_Data->AppAssembly = Utils::LoadMonoAssembly(filepath);
 		auto assemb = s_Data->AppAssembly;
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 		auto assembi = s_Data->AppAssemblyImage;
+	}
+
+	void ScriptEngine::ReloadAssembly()
+	{
+		mono_domain_set(mono_get_root_domain(), false);
+
+		mono_domain_unload(s_Data->AppDomain);
+
+		LoadAssembly(s_Data->CoreAssemblyFilepath);
+		LoadAppAssembly(s_Data->AppAssemblyFilepath);
+		LoadAssemblyClasses();
+
+		ScriptGlue::RegisterComponents();
+
+		s_Data->EntityClass = ScriptClass("Pine", "Entity", true);
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)
@@ -273,7 +295,12 @@ namespace Pine
 
 	void ScriptEngine::ShutdownMono()
 	{
+		mono_domain_set(mono_get_root_domain(), false);
+
+		mono_domain_unload(s_Data->AppDomain);
 		s_Data->AppDomain = nullptr;
+
+		mono_jit_cleanup(s_Data->RootDomain);
 		s_Data->RootDomain = nullptr;
 	}
 

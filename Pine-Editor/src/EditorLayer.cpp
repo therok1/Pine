@@ -3,6 +3,7 @@
 #include "Pine/Scene/SceneSerializer.h"
 #include "Pine/Utils/PlatformUtils.h"
 #include "Pine/Math/Math.h"
+#include "Pine/Scripting/ScriptEngine.h"
 
 #include <imgui/imgui.h>
 #include <ImGuizmo.h>
@@ -196,6 +197,15 @@ namespace Pine
 
 				ImGui::EndMenu();
 			}
+
+			if (ImGui::BeginMenu("Script"))
+			{
+				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
+					ScriptEngine::ReloadAssembly();
+
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMenuBar();
 		}
 
@@ -428,8 +438,15 @@ namespace Pine
 				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			break;
 		case Key::R:
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			if (ctrl)
+			{
+				ScriptEngine::ReloadAssembly();
+			}
+			else
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			}
 			break;
 		}
 
