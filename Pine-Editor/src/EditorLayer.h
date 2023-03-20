@@ -45,7 +45,6 @@ namespace Pine
 		void OnScenePlay();
 		void OnSceneSimulate();
 		void OnSceneStop();
-		void OnScenePause();
 
 		void OnDuplicateEntity();
 
@@ -77,7 +76,7 @@ namespace Pine
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 
-		Ref<Texture2D> m_PlayIcon, m_PauseIcon, m_ResumeIcon, m_StepIcon, m_StopIcon, m_SimulateIcon;
+		Ref<Texture2D> m_PlayIcon, m_StopIcon, m_SimulateIcon;
 
 	private:
 
