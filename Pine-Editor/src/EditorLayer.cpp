@@ -27,6 +27,9 @@ namespace Pine
 
 		m_Texture = Texture2D::Create("assets/textures/checkerboard.png");
 		m_PlayIcon = Texture2D::Create("Resources/Icons/PlayIcon.png");
+		m_PauseIcon = Texture2D::Create("Resources/Icons/PauseIcon.png");
+		m_ResumeIcon = Texture2D::Create("Resources/Icons/ResumeIcon.png");
+		m_StepIcon = Texture2D::Create("Resources/Icons/StepIcon.png");
 		m_StopIcon = Texture2D::Create("Resources/Icons/StopIcon.png");
 		m_SimulateIcon = Texture2D::Create("Resources/Icons/SimulateIcon.png");
 
@@ -340,19 +343,21 @@ namespace Pine
 		constexpr float buttonSize = 40.0f;
 		constexpr float padding = 8.0f;
 		
-		ImVec4 containerColor = style.Colors[ImGuiCol_TitleBg];
-		containerColor.w = 127.5f / 255.0f;
+		ImVec4 containerColor(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 63.75f / 255.0f);
 
 		ImVec4 buttonColor = style.Colors[ImGuiCol_Button];
-		buttonColor.w = 0.0f / 255.0f;
+		buttonColor.w = 200.0f / 255.0f;
 
+		static int numButtons = 2;
+		float toolbarWidth = (buttonSize + style.FramePadding.x * 2) * numButtons + padding * (numButtons + 1);
+		ImGui::ShowDemoWindow();
 		ImGui::SameLine();
-		ImGui::SetCursorPos(ImVec2((ImGui::GetWindowContentRegionMax().x * 0.5f) - ((2 * buttonSize + 3 * padding + 4 * style.FramePadding.x) * 0.5f), 2 * padding));
+		ImGui::SetCursorPos(ImVec2((ImGui::GetWindowContentRegionMax().x * 0.5f) - (toolbarWidth * 0.5f), ImGui::GetWindowContentRegionMin().y + 2 * padding));
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
 		
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, containerColor);
-		ImGui::BeginChild("##SceneButtons", ImVec2((buttonSize + style.FramePadding.x * 2) * 2 + padding * 3, buttonSize + 2 * style.FramePadding.y + 2 * padding));
+		ImGui::BeginChild("##SceneButtons", ImVec2(toolbarWidth, buttonSize + 2 * style.FramePadding.y + 2 * padding));
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
 		ImGui::SameLine(padding, 0.0f);
@@ -361,8 +366,18 @@ namespace Pine
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColor);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, buttonColor);
 
+		bool hasPlayButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
+		bool hasSimulateButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
+		bool hasPauseButton = m_SceneState != SceneState::Edit;
+
+		if (m_ActiveScene->IsPaused())
+			numButtons = 3;
+		else
+			numButtons = 2;
+
 		// Play Button
 
+		if (hasPlayButton)
 		{
 			ImGui::SetCursorPosY(padding);
 			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_PlayIcon : m_StopIcon;
@@ -375,11 +390,13 @@ namespace Pine
 			}
 		}
 
-		ImGui::SameLine(0.0f, padding);
-
 		// Simulate Button
 
+		if (hasSimulateButton)
 		{
+			if (hasPlayButton)
+				ImGui::SameLine(0.0f, padding);
+
 			ImGui::SetCursorPosY(padding);
 			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_SimulateIcon : m_StopIcon;
 			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(buttonSize, buttonSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)))
@@ -388,6 +405,33 @@ namespace Pine
 					OnSceneSimulate();
 				else if (m_SceneState == SceneState::Simulate)
 					OnSceneStop();
+			}
+		}
+
+
+		// Step Button
+
+		if (hasPauseButton)
+		{
+			bool isPaused = m_ActiveScene->IsPaused();
+			ImGui::SameLine(0.0f, padding);
+			ImGui::SetCursorPosY(padding);
+			Ref<Texture2D> icon = !isPaused ? m_PauseIcon : m_ResumeIcon;
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(buttonSize, buttonSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)))
+			{
+				m_ActiveScene->SetPaused(!isPaused);
+			}
+
+			if (isPaused)
+			{
+				ImGui::SameLine(0.0f, padding);
+				ImGui::SetCursorPosY(padding);
+				Ref<Texture2D> icon = m_StepIcon;
+				bool isPaused = m_ActiveScene->IsPaused();
+				if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(buttonSize, buttonSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)))
+				{
+					m_ActiveScene->Step(50);
+				}
 			}
 		}
 
@@ -439,14 +483,10 @@ namespace Pine
 			break;
 		case Key::R:
 			if (ctrl)
-			{
 				ScriptEngine::ReloadAssembly();
-			}
 			else
-			{
 				if (!ImGuizmo::IsUsing())
 					m_GizmoType = ImGuizmo::OPERATION::SCALE;
-			}
 			break;
 		}
 
@@ -634,6 +674,14 @@ namespace Pine
 		m_ActiveScene = m_EditorScene;
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnScenePause()
+	{
+		if (m_SceneState == SceneState::Edit)
+			return;
+
+		m_ActiveScene->SetPaused(true);
 	}
 
 	void EditorLayer::OnDuplicateEntity()

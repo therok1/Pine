@@ -24,7 +24,7 @@ Entities:
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [0.912054777, 2.3159833, 15.3924313]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -78,7 +78,7 @@ Entities:
       ScriptFields:
         - Name: Speed
           Type: Float
-          Data: 2
+          Data: 10
     RigidBody2DComponent:
       BodyType: Dynamic
       FixedRotation: false
