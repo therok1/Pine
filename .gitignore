@@ -2,7 +2,9 @@
 **/bin/
 bin-int/
 Intermediates/
-Scripts/
+Binaries/
+**/Scripts/
+!**/Assets/Scripts
 
 # Pine files
 *.log
