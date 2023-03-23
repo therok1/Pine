@@ -34,17 +34,17 @@ namespace Pine
 	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
 		([&]()
-		{
-			auto view = src.view<Component>();
-			for (auto srcEntity : view)
 			{
-				entt::entity dstEntity = enttMap.at(src.get<IDComponent>(srcEntity).ID);
+				auto view = src.view<Component>();
+		for (auto srcEntity : view)
+		{
+			entt::entity dstEntity = enttMap.at(src.get<IDComponent>(srcEntity).ID);
 
-				auto& srcComponent = src.get<Component>(srcEntity);
-				dst.emplace_or_replace<Component>(dstEntity, srcComponent);
-			}
-		}(), 
-		...);
+			auto& srcComponent = src.get<Component>(srcEntity);
+			dst.emplace_or_replace<Component>(dstEntity, srcComponent);
+		}
+			}(),
+				...);
 	}
 
 	template<typename... Component>
@@ -57,11 +57,11 @@ namespace Pine
 	static void CopyComponentIfExists(Entity dst, Entity src)
 	{
 		([&]()
-		{
-			if (src.HasComponent<Component>())
+			{
+				if (src.HasComponent<Component>())
 				dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
-		}(), 
-		...);
+			}(),
+				...);
 	}
 
 	template<typename... Component>
@@ -72,7 +72,7 @@ namespace Pine
 
 	Scene::Scene()
 	{
-		
+
 	}
 
 	Scene::~Scene()
@@ -168,46 +168,49 @@ namespace Pine
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			auto view = m_Registry.view<ScriptComponent>();
-			for (auto entity : view)
 			{
-				Entity newEntity(entity, this);
-				ScriptEngine::OnUpdateEntity(newEntity, ts);
+				auto view = m_Registry.view<ScriptComponent>();
+				for (auto entity : view)
+				{
+					Entity newEntity(entity, this);
+					ScriptEngine::OnUpdateEntity(newEntity, ts);
+				}
+
+				m_Registry.view<NativeScriptComponent>().each(
+					[=](auto entity, auto& nsc)
+					{
+						if (!nsc.Instance)
+						{
+							nsc.Instance = nsc.InstantiateScript();
+							nsc.Instance->m_Entity = Entity(entity, this);
+							nsc.Instance->OnCreate();
+						}
+
+				nsc.Instance->OnUpdate(ts);
+					}
+				);
 			}
 
-			m_Registry.view<NativeScriptComponent>().each(
-				[=](auto entity, auto& nsc)
-				{
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity(entity, this);
-						nsc.Instance->OnCreate();
-					}
-
-					nsc.Instance->OnUpdate(ts);
-				}
-			);
-		}
-
-		{
-			constexpr int32_t velocityIterations = 6;
-			constexpr int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
-
-			auto view = m_Registry.view<RigidBody2DComponent>();
-			for (auto entity : view)
 			{
-				Entity newEntity(entity, this);
-				auto& transform = newEntity.GetComponent<TransformComponent>();
-				auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
+				constexpr int32_t velocityIterations = 6;
+				constexpr int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-				b2Body* body = static_cast<b2Body*>(rb2d.RuntimeBody);
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				auto view = m_Registry.view<RigidBody2DComponent>();
+				for (auto entity : view)
+				{
+					Entity newEntity(entity, this);
+					auto& transform = newEntity.GetComponent<TransformComponent>();
+					auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
+
+					b2Body* body = static_cast<b2Body*>(rb2d.RuntimeBody);
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
@@ -257,23 +260,26 @@ namespace Pine
 
 	void Scene::OnUpdateSimulation(Timestep ts, EditorCamera& camera)
 	{
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			constexpr int32_t velocityIterations = 6;
-			constexpr int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
-
-			auto view = m_Registry.view<RigidBody2DComponent>();
-			for (auto entity : view)
 			{
-				Entity newEntity = { entity, this };
-				auto& transform = newEntity.GetComponent<TransformComponent>();
-				auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
+				constexpr int32_t velocityIterations = 6;
+				constexpr int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				auto view = m_Registry.view<RigidBody2DComponent>();
+				for (auto entity : view)
+				{
+					Entity newEntity = { entity, this };
+					auto& transform = newEntity.GetComponent<TransformComponent>();
+					auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
@@ -340,6 +346,11 @@ namespace Pine
 				return Entity(entity, this);
 		}
 		return {};
+	}
+
+	void Scene::Step(int frames)
+	{
+		m_StepFrames = frames;
 	}
 
 	void Scene::OnPhysics2DStart()
@@ -439,19 +450,19 @@ namespace Pine
 	template<>
 	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
 	{
-		
+
 	}
 
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
 	{
-		
+
 	}
 
 	template<>
 	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
 	{
-		
+
 	}
 
 	template<>
@@ -464,7 +475,7 @@ namespace Pine
 	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{
-		
+
 	}
 
 	template<>
@@ -480,7 +491,7 @@ namespace Pine
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 	{
-		
+
 	}
 
 	template<>
