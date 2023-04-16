@@ -15,7 +15,7 @@ namespace Pine
 	private:
 
 		void Refresh();
-		void GoToFolder(const std::string& directory);
+		void GoToFolder(const std::vector<std::string>& directories, std::size_t index);
 
 		void DrawToolbar();
 		void DrawFolderTreeView();
@@ -30,6 +30,7 @@ namespace Pine
 
 	private:
 
+		std::filesystem::path m_BaseDirectory;
 		std::filesystem::path m_CurrentDirectory;
 
 		Ref<Texture2D> m_DirectoryIcon;

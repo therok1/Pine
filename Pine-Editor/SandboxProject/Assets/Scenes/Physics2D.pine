@@ -9,7 +9,7 @@ Entities:
       Scale: [0.999881089, 0.9998824, 0.99999994]
     SpriteRendererComponent:
       Color: [1, 0.413127422, 0.413127422, 1]
-      TexturePath: assets\textures\checkerboard.png
+      TexturePath: Textures\checkerboard.png
       TilingFactor: 1
     RigidBody2DComponent:
       BodyType: Dynamic

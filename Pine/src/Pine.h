@@ -18,6 +18,8 @@
 #include "Pine/Scene/ScriptableEntity.h"
 #include "Pine/Scene/Components.h"
 
+#include "Pine/Project/Project.h"
+
 // Renderer
 #include "Pine/Renderer/Renderer.h"
 #include "Pine/Renderer/Renderer2D.h"

@@ -6,6 +6,8 @@
 #include "Pine/Scripting/ScriptEngine.h"
 #include "Pine/Core/UUID.h"
 
+#include "Pine/Project/Project.h"
+
 #include <yaml-cpp/yaml.h>
 
 namespace YAML 
@@ -459,7 +461,11 @@ namespace Pine
 					spriteRendererComponent_.Color = spriteRendererComponent["Color"].as<glm::vec4>();
 
 					if (spriteRendererComponent["TexturePath"])
-						spriteRendererComponent_.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
+					{
+						std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						auto path = Project::GetAssetFileSystemPath(texturePath);
+						spriteRendererComponent_.Texture = Texture2D::Create(path.string());
+					}
 
 					if (spriteRendererComponent["TilingFactor"])
 						spriteRendererComponent_.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();

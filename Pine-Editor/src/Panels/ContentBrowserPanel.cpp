@@ -1,33 +1,32 @@
 #include "ContentBrowserPanel.h"
 
-#include <imgui/imgui.h>
+#include "Pine/Project/Project.h"
 
+#include <imgui/imgui.h>
 #include <IconsForkAwesome.h>
 
 namespace Pine
 {
-	extern const std::filesystem::path g_AssetPath = "assets";
-
 	namespace Utils
 	{
-		std::vector<std::string> SplitString(const std::string& text, const std::string& delimiter)
+		std::vector<std::string> SplitString(const std::string& source, const std::string& delimiter)
 		{
 			std::size_t start = 0, end = 0, delimiterLength = delimiter.size();
 			std::string token;
 			std::vector<std::string> tokens;
-			while ((end = text.find(delimiter, start)) != std::string::npos) {
-				token = text.substr(start, end - start);
+			while ((end = source.find(delimiter, start)) != std::string::npos) {
+				token = source.substr(start, end - start);
 				start = end + delimiterLength;
 				tokens.push_back(token);
 			}
 
-			tokens.push_back(text.substr(start));
+			tokens.push_back(source.substr(start));
 			return tokens;
 		}
 	}
 
 	ContentBrowserPanel::ContentBrowserPanel()
-		: m_CurrentDirectory(g_AssetPath)
+		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
 		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
 		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
@@ -42,11 +41,16 @@ namespace Pine
 	{
 	}
 
-	void ContentBrowserPanel::GoToFolder(const std::string& directory)
+	void ContentBrowserPanel::GoToFolder(const std::vector<std::string>& directories, std::size_t index)
 	{
-		auto& currentPath = m_CurrentDirectory.string();
-		if (currentPath.find(directory) != std::string::npos)
-			m_CurrentDirectory = currentPath.substr(0, currentPath.find(directory) + directory.size());
+		std::string relativePath;
+		for (std::size_t i = 0; i < index; i++)
+		{
+			const auto& directory = directories[i];
+			relativePath += "\\" + directory;
+		}
+
+		m_CurrentDirectory = m_BaseDirectory.string() + relativePath;
 
 		Refresh();
 	}
@@ -95,21 +99,27 @@ namespace Pine
 		// Current folder path
 		ImGui::SameLine(0.0f, 5.0f);
 		{
-			std::vector<std::string> directories = Utils::SplitString(m_CurrentDirectory.string(), "\\");
+			auto currentRelativePath = std::filesystem::relative(m_CurrentDirectory, m_BaseDirectory);
+			std::vector<std::string> directories = Utils::SplitString(currentRelativePath.string(), "\\");
 
 			if (ImGui::Button(ICON_FK_FOLDER " Content", ImVec2(0.0f, 28.0f)))
 			{
-				
+				GoToFolder(directories, 0);
 			}
 
-			for (const auto& directory : directories)
+			if (m_CurrentDirectory != m_BaseDirectory)
 			{
-				ImGui::SameLine(0.0f, 8.0f);
-				ImGui::Button(">", ImVec2(0.0f, 28.0f));
-				ImGui::SameLine(0.0f, 8.0f);
+				for (std::size_t i = 0; i < directories.size(); i++)
+				{
+					const auto& directory = directories[i];
 
-				if (ImGui::Button(directory.c_str(), ImVec2(0.0f, 28.0f)))
-					GoToFolder(directory);
+					ImGui::SameLine(0.0f, 8.0f);
+					ImGui::Button(">", ImVec2(0.0f, 28.0f));
+					ImGui::SameLine(0.0f, 8.0f);
+
+					if (ImGui::Button(directory.c_str(), ImVec2(0.0f, 28.0f)))
+						GoToFolder(directories, i + 1);
+				}
 			}
 		}
 
@@ -163,7 +173,7 @@ namespace Pine
 
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, g_AssetPath);
+				std::filesystem::path relativePath(path);
 				const wchar_t* itemPath = relativePath.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
