@@ -340,7 +340,7 @@ namespace Pine
 		ImVec2 corner = ImGui::GetCursorPos();
 		ImVec2 size = ImGui::GetContentRegionAvail();
 
-		constexpr float buttonSize = 40.0f;
+		constexpr float buttonSize = 32.0f;
 		constexpr float padding = 8.0f;
 
 		ImVec4 containerColor(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 63.75f / 255.0f);
