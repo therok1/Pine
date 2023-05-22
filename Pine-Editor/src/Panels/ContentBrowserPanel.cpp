@@ -9,7 +9,7 @@ namespace Pine
 {
 	namespace Utils
 	{
-		std::vector<std::string> SplitString(const std::string& source, const std::string& delimiter)
+		std::vector<std::string> SplitString(const std::string& source, const std::string& delimiter) // TODO: Move string manipulation functions into Utils.h
 		{
 			std::size_t start = 0, end = 0, delimiterLength = delimiter.size();
 			std::string token;
