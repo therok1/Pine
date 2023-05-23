@@ -26,6 +26,15 @@ namespace Pine {
 
 	public class RigidBody2DComponent : Component {
 
+		public Vector2 LinearVelocity
+		{
+			get
+			{
+				InternalCalls.RigidBody2DComponent_GetLinearVelocity(Entity.ID, out Vector2 velocity);
+				return velocity;
+			}
+		}
+
 		public void ApplyLinearImpulse(Vector2 impulse, Vector2 worldPosition, bool wake)
 		{
 			InternalCalls.RigidBody2DComponent_ApplyLinearImpulse(Entity.ID, ref impulse, ref worldPosition, wake);

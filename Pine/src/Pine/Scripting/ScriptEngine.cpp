@@ -6,6 +6,7 @@
 #include "Pine/Core/Timer.h"
 #include "Pine/Core/Buffer.h"
 #include "Pine/Core/FileSystem.h"
+#include "Pine/Project/Project.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -170,7 +171,8 @@ namespace Pine
 			return;
 		}
 
-		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		status = LoadAppAssembly(scriptModulePath);
 		if (!status)
 		{
 			PN_CORE_ERROR("[ScriptEngine] Couldn't load app assembly.");

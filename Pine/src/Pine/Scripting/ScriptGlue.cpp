@@ -111,9 +111,23 @@ namespace Pine
 		PN_CORE_ASSERT(scene);
 		Entity entity = scene->GetEntityByUUID(entityID);
 		PN_CORE_ASSERT(entity);
+
 		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
 		b2Body* body = static_cast<b2Body*>(rb2d.RuntimeBody);
 		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
+	}
+
+	static void RigidBody2DComponent_GetLinearVelocity(UUID entityID, glm::vec2* outLinearVelocity)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		PN_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		PN_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		b2Body* body = static_cast<b2Body*>(rb2d.RuntimeBody);
+		const b2Vec2& linearVelocity = body->GetLinearVelocity();
+		*outLinearVelocity = glm::vec2(linearVelocity.x, linearVelocity.y);
 	}
 
 	static bool Input_IsKeyDown(KeyCode keycode)
@@ -170,6 +184,7 @@ namespace Pine
 		
 		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulse);
 		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulseToCenter);
+		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_GetLinearVelocity);
 		
 		PN_ADD_INTERNAL_CALL(Input_IsKeyDown);
 	}

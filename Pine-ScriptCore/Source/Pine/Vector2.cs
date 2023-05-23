@@ -1,4 +1,6 @@
-﻿namespace Pine {
+﻿using System;
+
+namespace Pine {
 	public struct Vector2 {
 		public float X, Y;
 
@@ -24,6 +26,16 @@
 		public static Vector2 operator *(Vector2 vector, float scalar)
 		{
 			return new Vector2(vector.X * scalar, vector.Y * scalar);
+		}
+
+		public float Length()
+		{
+			return (float)Math.Sqrt(LengthSquared());
+		}
+
+		public float LengthSquared()
+		{
+			return X * X + Y * Y;
 		}
 
 	}
