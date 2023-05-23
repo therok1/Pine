@@ -125,8 +125,8 @@ namespace Pine
 
 	void Scene::DestroyEntity(Entity entity)
 	{
-		m_Registry.destroy(entity);
 		m_EntityMap.erase(entity.GetUUID());
+		m_Registry.destroy(entity);
 	}
 
 	void Scene::OnRuntimeStart()
