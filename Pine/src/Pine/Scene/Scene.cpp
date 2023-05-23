@@ -308,12 +308,13 @@ namespace Pine
 		}
 	}
 
-	void Scene::DuplicateEntity(Entity entity)
+	Entity Scene::DuplicateEntity(Entity entity)
 	{
 		std::string name = entity.GetName();
 		Entity newEntity = CreateEntity(name);
-
 		CopyComponentIfExists(AllComponents(), newEntity, entity);
+
+		return newEntity;
 	}
 
 	Entity Scene::FindEntityByName(std::string_view name)
