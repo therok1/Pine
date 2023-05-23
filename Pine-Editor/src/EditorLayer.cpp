@@ -185,7 +185,10 @@ namespace Pine
 				ImGui::Separator();
 				ImGui::PopStyleColor();
 
-				if (ImGui::MenuItem("Save", "Ctrl+S"))
+				if (ImGui::MenuItem("New Scene", "Ctrl+N"))
+					NewScene();
+
+				if (ImGui::MenuItem("Save Scene", "Ctrl+S"))
 					SaveScene();
 
 				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
@@ -225,8 +228,9 @@ namespace Pine
 
 		ImGui::End();
 
-		ImGui::Begin("Settings");
+		ImGui::Begin("Debug");
 		ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
+		ImGui::Text("ImGui ActiveID: %u", Application::Get().GetImGuiLayer()->GetActiveWidgetID());
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -488,6 +492,17 @@ namespace Pine
 				if (!ImGuizmo::IsUsing())
 					m_GizmoType = ImGuizmo::OPERATION::SCALE;
 			break;
+		case Key::Delete:
+			if (Application::Get().GetImGuiLayer()->GetActiveWidgetID() == 0)
+			{
+				Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+				if (selectedEntity)
+				{
+					m_SceneHierarchyPanel.SetSelectedEntity({});
+					m_ActiveScene->DestroyEntity(selectedEntity);
+				}
+				break;
+			}
 		}
 
 		return false;
