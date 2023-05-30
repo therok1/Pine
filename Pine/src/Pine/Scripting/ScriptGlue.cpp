@@ -10,6 +10,8 @@
 #include "Pine/Scene/Scene.h"
 #include "Pine/Scene/Entity.h"
 
+#include "Pine/Physics/Physics2D.h"
+
 #include <mono/metadata/object.h>
 #include <mono/metadata/reflection.h>
 
@@ -130,6 +132,30 @@ namespace Pine
 		*outLinearVelocity = glm::vec2(linearVelocity.x, linearVelocity.y);
 	}
 
+	static RigidBody2DComponent::BodyType RigidBody2DComponent_GetType(UUID entityID)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		PN_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		PN_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		return Utils::RigidBody2DTypeFromBox2DBody(body->GetType());
+	}
+
+	static void RigidBody2DComponent_SetType(UUID entityID, RigidBody2DComponent::BodyType bodyType)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		PN_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		PN_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		body->SetType(Utils::RigidBody2DTypeToBox2DBody(bodyType));
+	}
+
 	static bool Input_IsKeyDown(KeyCode keycode)
 	{
 		return Input::IsKeyPressed(keycode);
@@ -185,6 +211,8 @@ namespace Pine
 		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulse);
 		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyLinearImpulseToCenter);
 		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_GetLinearVelocity);
+		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_GetType);
+		PN_ADD_INTERNAL_CALL(RigidBody2DComponent_SetType);
 		
 		PN_ADD_INTERNAL_CALL(Input_IsKeyDown);
 	}

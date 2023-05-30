@@ -231,6 +231,7 @@ namespace Pine
 		ImGui::Begin("Debug");
 		ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
 		ImGui::Text("ImGui ActiveID: %u", Application::Get().GetImGuiLayer()->GetActiveWidgetID());
+		ImGui::Text("ImGui FPS: %.02f", 1.0f / io.DeltaTime);
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));

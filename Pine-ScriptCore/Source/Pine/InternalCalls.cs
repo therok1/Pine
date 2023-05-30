@@ -27,6 +27,12 @@ namespace Pine {
 		internal extern static void RigidBody2DComponent_GetLinearVelocity(ulong entityID, out Vector2 linearVelocity);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static RigidBody2DComponent.BodyType RigidBody2DComponent_GetType(ulong entityID);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetType(ulong entityID, RigidBody2DComponent.BodyType type);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static bool Input_IsKeyDown(KeyCode keycode);
 	}
 }

@@ -6,6 +6,7 @@
 #include "Pine/Scene/ScriptableEntity.h"
 #include "Pine/Renderer/Renderer2D.h"
 #include "Pine/Scripting/ScriptEngine.h"
+#include "Pine/Physics/Physics2D.h"
 
 #include <glm/glm.hpp>
 
@@ -17,19 +18,6 @@
 
 namespace Pine
 {
-	static b2BodyType RigidBody2DTypeToBox2DBody(RigidBody2DComponent::BodyType bodyType)
-	{
-		switch (bodyType)
-		{
-		case RigidBody2DComponent::BodyType::Static:	return b2_staticBody;
-		case RigidBody2DComponent::BodyType::Dynamic:	return b2_dynamicBody;
-		case RigidBody2DComponent::BodyType::Kinematic:	return b2_kinematicBody;
-		}
-
-		PN_CORE_ASSERT(false, "Invalid body type!");
-		return b2_staticBody;
-	}
-
 	template<typename... Component>
 	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
@@ -313,7 +301,6 @@ namespace Pine
 		std::string name = entity.GetName();
 		Entity newEntity = CreateEntity(name);
 		CopyComponentIfExists(AllComponents(), newEntity, entity);
-
 		return newEntity;
 	}
 
@@ -366,7 +353,7 @@ namespace Pine
 			auto& rb2d = newEntity.GetComponent<RigidBody2DComponent>();
 
 			b2BodyDef bodyDef;
-			bodyDef.type = RigidBody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.type = Utils::RigidBody2DTypeToBox2DBody(rb2d.Type);
 			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
 			bodyDef.angle = transform.Rotation.z;
 
