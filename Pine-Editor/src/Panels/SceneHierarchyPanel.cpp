@@ -2,6 +2,7 @@
 
 #include "Pine/Scene/Components.h"
 #include "Pine/Scripting/ScriptEngine.h"
+#include "Pine/UI/UI.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -459,15 +460,11 @@ namespace Pine
 				static char buffer[64];
 				strcpy_s(buffer, sizeof(buffer), component.ClassName.c_str());
 
-				if (!scriptClassExists)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(229.0f / 255.0f, 106.0f / 255.0f, 98.0f / 255.0f, 255.0f / 255.0f));
+				UI::ScopedStyleColor textColor(ImGuiCol_Text, ImVec4(229.0f / 255.0f, 106.0f / 255.0f, 98.0f / 255.0f, 255.0f / 255.0f), !scriptClassExists);
 
 				if (ImGui::InputText("Class", buffer, sizeof(buffer)))
 				{
 					component.ClassName = buffer;
-
-					if (!scriptClassExists)
-						ImGui::PopStyleColor();
 					return;
 				}
 
@@ -528,9 +525,6 @@ namespace Pine
 						}
 					}
 				}
-
-				if (!scriptClassExists)
-					ImGui::PopStyleColor();
 			});
 
 		DrawComponent<RigidBody2DComponent>("Rigid Body 2D", entity,
@@ -546,7 +540,7 @@ namespace Pine
 						if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
 						{
 							currentBodyTypeString = bodyTypeStrings[i];
-							component.Type = (RigidBody2DComponent::BodyType)i;
+							component.Type = static_cast<RigidBody2DComponent::BodyType>(i);
 						}
 
 						if (isSelected)
