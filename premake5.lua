@@ -30,6 +30,7 @@ group "Dependencies"
 	include "Pine/vendor/GLFW"
 	include "Pine/vendor/Glad"
 	include "Pine/vendor/imgui"
+	include "Pine/vendor/msdf-atlas-gen"
 	include "Pine/vendor/yaml-cpp"
 group ""
 
