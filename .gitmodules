@@ -19,3 +19,6 @@
 [submodule "Pine/vendor/Box2D"]
 	path = Pine/vendor/Box2D
 	url = https://github.com/therok1/box2d
+[submodule "Pine/vendor/msdf-atlas-gen"]
+	path = Pine/vendor/msdf-atlas-gen
+	url = https://github.com/therok1/msdf-atlas-gen.git
