@@ -18,14 +18,6 @@
 	#define PN_DEBUGBREAK()
 #endif
 
-#ifdef PN_ENABLE_ASSERTS
-	#define PN_ASSERT(x, ...) { if (!(x)) { PN_ERROR("Assertion failed: {0}", __VA_ARGS__); PN_DEBUGBREAK(); } }
-	#define PN_CORE_ASSERT(x, ...) { if (!(x)) { PN_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); PN_DEBUGBREAK(); } }
-#else
-	#define PN_ASSERT(x, ...)
-	#define PN_CORE_ASSERT(x, ...)
-#endif
-
 #define PN_EXPAND_MACRO(x) x
 #define PN_STRINGIFY_MACRO(x) #x
 
