@@ -25,9 +25,9 @@ namespace Pine
 		{
 			switch (bodyType)
 			{
-			case b2_staticBody: return RigidBody2DComponent::BodyType::Static;
-			case b2_dynamicBody: return RigidBody2DComponent::BodyType::Dynamic;
-			case b2_kinematicBody: return RigidBody2DComponent::BodyType::Kinematic;
+			case b2_staticBody:		return RigidBody2DComponent::BodyType::Static;
+			case b2_dynamicBody:	return RigidBody2DComponent::BodyType::Dynamic;
+			case b2_kinematicBody:	return RigidBody2DComponent::BodyType::Kinematic;
 			}
 
 			PN_CORE_ASSERT(false, "Invalid body type!");

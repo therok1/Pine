@@ -219,7 +219,7 @@ namespace Pine
 
 				auto& data = shaderData[stage];
 				data.resize(size / sizeof(uint32_t));
-				in.read((char*)data.data(), size);
+				in.read(reinterpret_cast<char*>(data.data()), size);
 				in.close();
 			}
 			else
@@ -237,7 +237,7 @@ namespace Pine
 				if (out.is_open())
 				{
 					auto& data = shaderData[stage];
-					out.write((char*)data.data(), data.size() * sizeof(uint32_t));
+					out.write(reinterpret_cast<char*>(data.data()), data.size() * sizeof(uint32_t));
 					out.flush();
 					out.close();
 				}
@@ -277,7 +277,7 @@ namespace Pine
 
 				auto& data = shaderData[stage];
 				data.resize(size / sizeof(uint32_t));
-				in.read((char*)data.data(), size);
+				in.read(reinterpret_cast<char*>(data.data()), size);
 				in.close();
 			}
 			else
@@ -299,7 +299,7 @@ namespace Pine
 				if (out.is_open())
 				{
 					auto& data = shaderData[stage];
-					out.write((char*)data.data(), data.size() * sizeof(uint32_t));
+					out.write(reinterpret_cast<char*>(data.data()), data.size() * sizeof(uint32_t));
 					out.flush();
 					out.close();
 				}
