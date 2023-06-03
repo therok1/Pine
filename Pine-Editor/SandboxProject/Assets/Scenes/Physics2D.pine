@@ -1,5 +1,17 @@
 Scene: Untitled
 Entities:
+  - Entity: 7501842653691734044
+    TagComponent:
+      Tag: SceneTitle
+    TransformComponent:
+      Translation: [-5, 1.5, -1.38243195e-10]
+      Rotation: [0, 0, 0]
+      Scale: [0.5, 0.5, 1]
+    TextComponent:
+      TextString: Demo Scene
+      Color: [1, 0.968560398, 0.571428537, 1]
+      Kerning: 0
+      LineSpacing: 0
   - Entity: 644128664916942443
     TagComponent:
       Tag: Square
@@ -9,7 +21,7 @@ Entities:
       Scale: [0.999881089, 0.9998824, 0.99999994]
     SpriteRendererComponent:
       Color: [1, 0.413127422, 0.413127422, 1]
-      TexturePath: Textures\checkerboard.png
+      TexturePath: C:\dev\C++\Pine\Pine-Editor\SandboxProject\Assets\Textures\checkerboard.png
       TilingFactor: 1
     RigidBody2DComponent:
       BodyType: Dynamic
@@ -151,3 +163,15 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
+  - Entity: 6236434512660334681
+    TagComponent:
+      Tag: EngineTitle
+    TransformComponent:
+      Translation: [-5, 2, -1.38243195e-10]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    TextComponent:
+      TextString: Pine Engine
+      Color: [1, 1, 1, 1]
+      Kerning: 0
+      LineSpacing: 0

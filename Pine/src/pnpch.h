@@ -2,7 +2,7 @@
 
 #include "Pine/Core/PlatformDetection.h"
 
-#ifdef HZ_PLATFORM_WINDOWS
+#ifdef PN_PLATFORM_WINDOWS
 	#ifndef NOMINMAX
 		#define NOMINMAX
 	#endif
