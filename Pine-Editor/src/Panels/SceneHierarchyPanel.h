@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Pine/Core/Core.h"
-#include "Pine/Core/Log.h"
 #include "Pine/Scene/Scene.h"
 #include "Pine/Scene/Entity.h"
 

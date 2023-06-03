@@ -1,16 +1,17 @@
 #include "pnpch.h"
 #include "ImGuiLayer.h"
 
-#include "backends/imgui_impl_opengl3.h"
-#include "backends/imgui_impl_glfw.h"
-
 #include "Pine/Core/Application.h"
+
+#include <imgui.h>
+#include <imgui_internal.h>
+
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-#include <imgui.h>
-#include <imgui_internal.h>
 #include <ImGuizmo.h>
 
 #include <IconsForkAwesome.h>
@@ -74,7 +75,7 @@ namespace Pine
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 460");
+		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -176,6 +177,7 @@ namespace Pine
 		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(21.0f / 255.0f, 21.0f / 255.0f, 21.0f / 255.0f, 255.0f / 255.0f);
 	}
+
 	uint32_t ImGuiLayer::GetActiveWidgetID() const
 	{
 		return GImGui->ActiveId;

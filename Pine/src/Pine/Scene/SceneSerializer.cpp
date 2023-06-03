@@ -359,6 +359,20 @@ namespace Pine
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<TextComponent>())
+		{
+			out << YAML::Key << "TextComponent";
+			out << YAML::BeginMap;
+
+			auto& textComponent = entity.GetComponent<TextComponent>();
+			out << YAML::Key << "TextString" << YAML::Value << textComponent.TextString;
+			out << YAML::Key << "Color" << YAML::Value << textComponent.Color;
+			out << YAML::Key << "Kerning" << YAML::Value << textComponent.Kerning;
+			out << YAML::Key << "LineSpacing" << YAML::Value << textComponent.LineSpacing;
+
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -564,6 +578,16 @@ namespace Pine
 					circleCollider2DComponent_.Friction = circleCollider2DComponent["Friction"].as<float>();
 					circleCollider2DComponent_.Restitution = circleCollider2DComponent["Restitution"].as<float>();
 					circleCollider2DComponent_.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto textComponent = entity["TextComponent"];
+				if (textComponent)
+				{
+					auto& textComponent_ = deserializedEntity.AddComponent<TextComponent>();
+					textComponent_.TextString = textComponent["TextString"].as<std::string>();
+					textComponent_.Color = textComponent["Color"].as<glm::vec4>();
+					textComponent_.Kerning = textComponent["Kerning"].as<float>();
+					textComponent_.LineSpacing = textComponent["LineSpacing"].as<float>();
 				}
 			}
 		}

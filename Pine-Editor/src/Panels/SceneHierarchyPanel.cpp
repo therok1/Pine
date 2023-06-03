@@ -6,10 +6,13 @@
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
+#include <imgui/misc/cpp/imgui_stdlib.h>
 
 #include <IconsForkAwesome.h>
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include <cstring>
 
 namespace Pine
 {
@@ -340,6 +343,7 @@ namespace Pine
 			DisplayAddComponentEntry<RigidBody2DComponent>("Rigid Body 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
 			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Collider 2D");
+			DisplayAddComponentEntry<TextComponent>("Text Component");
 
 			ImGui::EndPopup();
 		}
@@ -577,5 +581,14 @@ namespace Pine
 				ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 			}
 		);
+
+		DrawComponent<TextComponent>("Text Renderer", entity, 
+			[](auto& component)
+			{
+				ImGui::InputTextMultiline("Text String", &component.TextString);
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
+				ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
+			});
 	}
 }

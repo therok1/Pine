@@ -1,9 +1,11 @@
 #pragma once
 
 // For use by Pine applications
+#include "Pine/Core/Core.h"
 #include "Pine/Core/Application.h"
 #include "Pine/Core/Layer.h"
 #include "Pine/Core/Log.h"
+#include "Pine/Core/Assert.h"
 
 #include "Pine/Core/Timestep.h"
 

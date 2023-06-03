@@ -1,13 +1,21 @@
 #pragma once
 
+#include "Pine/Core/PlatformDetection.h"
+
+#ifdef HZ_PLATFORM_WINDOWS
+	#ifndef NOMINMAX
+		#define NOMINMAX
+	#endif
+#endif
+
 #include <iostream>
 #include <memory>
 #include <utility>
 #include <algorithm>
 #include <functional>
-#include <fstream>
 
 #include <string>
+#include <fstream>
 #include <sstream>
 #include <array>
 #include <vector>
