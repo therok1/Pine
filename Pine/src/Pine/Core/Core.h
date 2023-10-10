@@ -4,18 +4,21 @@
 
 #include <memory>
 
-#ifdef PN_DEBUG
-	#ifdef PN_PLATFORM_WINDOWS
-		#define PN_DEBUGBREAK() __debugbreak()
-	#elif defined(PN_PLATFORM_LINUX)
-		#include <signal.h>
-		#define PN_DEBUGBREAK() raise(SIGTRAP)
-	#else
-		#error "Platform doesn't support debugbreak yet!"
-	#endif
-	#define PN_ENABLE_ASSERTS
+#if defined(PN_PLATFORM_WINDOWS)
+	#define PN_DEBUGBREAK() __debugbreak()
+#elif defined(PN_PLATFORM_LINUX)
+	#include <signal.h>
+	#define PN_DEBUGBREAK() raise(SIGTRAP)
 #else
-	#define PN_DEBUGBREAK()
+	#error "Platform doesn't support debugbreak yet!"
+#endif
+
+#ifdef PN_DEBUG
+	#define PN_ENABLE_ASSERTS
+#endif
+
+#ifdef PN_DIST
+	#define PN_ENABLE_VERIFY
 #endif
 
 #define PN_EXPAND_MACRO(x) x

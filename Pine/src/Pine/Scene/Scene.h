@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Pine/Asset/Asset.h"
+
 #include "Pine/Core/UUID.h"
 #include "Pine/Core/Timestep.h"
+
 #include "Pine/Renderer/EditorCamera.h"
 
 #include <entt.hpp>
@@ -12,7 +15,7 @@ namespace Pine
 {
 	class Entity;
 
-	class Scene
+	class Scene : public Asset
 	{
 	public:
 
@@ -20,6 +23,8 @@ namespace Pine
 		~Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+
+		virtual AssetType GetType() const { return AssetType::Scene; }
 
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());

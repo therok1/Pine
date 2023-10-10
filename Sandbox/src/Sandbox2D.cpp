@@ -1,5 +1,7 @@
 #include "Sandbox2D.h"
 
+#include "Pine/Asset/TextureImporter.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,7 +18,7 @@ void Sandbox2D::OnAttach()
 {
 	PN_PROFILE_FUNCTION();
 
-	m_Texture = Pine::Texture2D::Create("assets/textures/checkerboard.png");
+	m_Texture = Pine::TextureImporter::LoadTexture2D("assets/textures/checkerboard.png");
 
 	m_CameraController.SetZoomLevel(5.0f);
 }

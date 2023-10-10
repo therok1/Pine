@@ -1,6 +1,7 @@
 #include "ContentBrowserPanel.h"
 
 #include "Pine/Project/Project.h"
+#include "Pine/Asset/TextureImporter.h"
 
 #include <imgui/imgui.h>
 #include <IconsForkAwesome.h>
@@ -28,31 +29,14 @@ namespace Pine
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
-		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
-		m_TXT_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/TXT_FileIcon.png");
-		m_PINE_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/PINE_FileIcon.png");
+		m_TreeNodes.push_back(TreeNode(".", 0));
 
-		m_FileExtensionIcons.emplace(".txt", m_TXT_FileIcon);
-		m_FileExtensionIcons.emplace(".pine", m_PINE_FileIcon);
-	}
+		m_DirectoryIcon = TextureImporter::LoadTexture2D("Resources/Icons/ContentBrowser/DirectoryIcon.png");
+		m_FileIcon = TextureImporter::LoadTexture2D("Resources/Icons/ContentBrowser/FileIcon.png");
 
-	void ContentBrowserPanel::Refresh()
-	{
-	}
+		RefreshAssetTree();
 
-	void ContentBrowserPanel::GoToFolder(const std::vector<std::string>& directories, std::size_t index)
-	{
-		std::string relativePath;
-		for (std::size_t i = 0; i < index; i++)
-		{
-			const auto& directory = directories[i];
-			relativePath += "\\" + directory;
-		}
-
-		m_CurrentDirectory = m_BaseDirectory.string() + relativePath;
-
-		Refresh();
+		m_Mode = Mode::FileSystem;
 	}
 
 	void ContentBrowserPanel::DrawToolbar()
@@ -104,7 +88,7 @@ namespace Pine
 
 			if (ImGui::Button(ICON_FK_FOLDER " Content", ImVec2(0.0f, 28.0f)))
 			{
-				GoToFolder(directories, 0);
+				
 			}
 
 			if (m_CurrentDirectory != m_BaseDirectory)
@@ -118,7 +102,9 @@ namespace Pine
 					ImGui::SameLine(0.0f, 8.0f);
 
 					if (ImGui::Button(directory.c_str(), ImVec2(0.0f, 28.0f)))
-						GoToFolder(directories, i + 1);
+					{
+
+					}
 				}
 			}
 		}
@@ -135,11 +121,6 @@ namespace Pine
 		ImGui::Dummy(ImVec2(size.x, 2.0f));
 	}
 
-	void ContentBrowserPanel::DrawFolderTreeView()
-	{
-		
-	}
-
 	void ContentBrowserPanel::OnImGuiRender()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5.0f, 5.0f));
@@ -147,10 +128,24 @@ namespace Pine
 		ImGui::PopStyleVar();
 
 		DrawToolbar();
-		DrawFolderTreeView();
 
-		static float thumbnailSize = 128.0f;
+		const char* label = m_Mode == Mode::Asset ? "Asset" : "File";
+		if (ImGui::Button(label))
+		{
+			m_Mode = m_Mode == Mode::Asset ? Mode::FileSystem : Mode::Asset;
+		}
+
+		if (m_CurrentDirectory != std::filesystem::path(m_BaseDirectory))
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("<"))
+			{
+				m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			}
+		}
+
 		static float padding = 16.0f;
+		static float thumbnailSize = 128.0f;
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -160,37 +155,107 @@ namespace Pine
 
 		ImGui::Columns(columnCount, 0, false);
 
-		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
+		if (m_Mode == Mode::Asset)
 		{
-			const auto& path = directoryEntry.path();
-			std::string filenameString = path.filename().string();
-			
-			ImGui::PushID(filenameString.c_str());
-			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : GetFileExtensionIcon(path.extension().string());
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
-			ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(thumbnailSize, thumbnailSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-			ImGui::PopStyleColor();
+			TreeNode* node = &m_TreeNodes[0];
 
-			if (ImGui::BeginDragDropSource())
+			auto currentDir = std::filesystem::relative(m_CurrentDirectory, Project::GetAssetDirectory());
+			for (const auto& p : currentDir)
 			{
-				std::filesystem::path relativePath(path);
-				const wchar_t* itemPath = relativePath.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-				ImGui::Text("Moving \"%s\"", filenameString.c_str());
-				ImGui::EndDragDropSource();
-			}
+				if (node->Path == currentDir)
+					break;
 
-			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			{
-				if (directoryEntry.is_directory())
+				if (node->Children.find(p) != node->Children.end())
 				{
-					m_CurrentDirectory /= path.filename();
+					node = &m_TreeNodes[node->Children[p]];
+					continue;
+				}
+				else
+				{
+					PN_CORE_ASSERT(false);
 				}
 			}
 
-			ImGui::TextWrapped(filenameString.c_str());
-			ImGui::NextColumn();
-			ImGui::PopID();
+			for (const auto& [item, treeNodeIndex] : node->Children)
+			{
+				bool isDirectory = std::filesystem::is_directory(Project::GetAssetDirectory() / item);
+
+				std::string itemStr = item.generic_string();
+
+				ImGui::PushID(itemStr.c_str());
+				Ref<Texture2D> icon = isDirectory ? m_DirectoryIcon : m_FileIcon;
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(thumbnailSize, thumbnailSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Delete"))
+					{
+						PN_CORE_ASSERT(false, "Not implemented");
+					}
+					ImGui::EndPopup();
+				}
+
+				if (ImGui::BeginDragDropSource())
+				{
+					AssetHandle handle = m_TreeNodes[treeNodeIndex].Handle;
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", &handle, sizeof(AssetHandle));
+					ImGui::Text("Moving \"%s\"", item.filename().string().c_str());
+					ImGui::EndDragDropSource();
+				}
+
+				ImGui::PopStyleColor();
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				{
+					if (isDirectory)
+						m_CurrentDirectory /= item.filename();
+				}
+
+				ImGui::TextWrapped(itemStr.c_str());
+
+				ImGui::NextColumn();
+
+				ImGui::PopID();
+			}
+		}
+		else
+		{
+			for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
+			{
+				const auto& path = directoryEntry.path();
+				std::string filenameString = path.filename().string();
+
+				ImGui::PushID(filenameString.c_str());
+				Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(icon->GetRendererID()), ImVec2(thumbnailSize, thumbnailSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Import"))
+					{
+						auto relativePath = std::filesystem::relative(path, Project::GetAssetDirectory());
+						Project::GetActive()->GetEditorAssetManager()->ImportAsset(relativePath);
+						RefreshAssetTree();
+					}
+
+					ImGui::EndPopup();
+				}
+
+				ImGui::PopStyleColor();
+
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				{
+					if (directoryEntry.is_directory())
+					{
+						m_CurrentDirectory /= path.filename();
+					}
+				}
+
+				ImGui::TextWrapped(filenameString.c_str());
+				ImGui::NextColumn();
+				ImGui::PopID();
+			}
 		}
 
 		ImGui::Columns(1);
@@ -198,11 +263,31 @@ namespace Pine
 		ImGui::End();
 	}
 
-	Ref<Texture2D> ContentBrowserPanel::GetFileExtensionIcon(const std::string& key) const
+	void ContentBrowserPanel::RefreshAssetTree()
 	{
-		if (m_FileExtensionIcons.find(key) != m_FileExtensionIcons.end())
-			return m_FileExtensionIcons.at(key);
-		else
-			return m_FileIcon;
+		const auto& assetRegistry = Project::GetActive()->GetEditorAssetManager()->GetAssetRegistry();
+		for (const auto& [handle, metadata] : assetRegistry)
+		{
+			uint32_t currentNodeIndex = 0;
+
+			for (const auto& p : metadata.FilePath)
+			{
+				auto it = m_TreeNodes[currentNodeIndex].Children.find(p.generic_string());
+				if (it != m_TreeNodes[currentNodeIndex].Children.end())
+				{
+					currentNodeIndex = it->second;
+				}
+				else
+				{
+					TreeNode newNode(p, handle);
+					newNode.Parent = currentNodeIndex;
+					m_TreeNodes.push_back(newNode);
+
+					m_TreeNodes[currentNodeIndex].Children[p] = m_TreeNodes.size() - 1;
+					currentNodeIndex = m_TreeNodes.size() - 1;
+				}
+
+			}
+		}
 	}
 }

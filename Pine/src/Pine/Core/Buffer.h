@@ -17,6 +17,12 @@ namespace Pine
 			Allocate(size);
 		}
 
+		Buffer(const void* data, uint64_t size)
+			: Data(static_cast<uint8_t*>(const_cast<void*>(data))), Size(size)
+		{
+
+		}
+
 		Buffer(const Buffer&) = default;
 
 		static Buffer Copy(Buffer other)
@@ -30,13 +36,13 @@ namespace Pine
 		{
 			Release();
 
-			Data = new uint8_t[size];
+			Data = static_cast<uint8_t*>(malloc(size));
 			Size = size;
 		}
 
 		void Release()
 		{
-			delete[] Data;
+			free(Data);
 			Data = nullptr;
 			Size = 0;
 		}

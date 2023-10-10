@@ -33,7 +33,7 @@ namespace Pine
 		spec.GenerateMips = false;
 
 		Ref<Texture2D> texture = Texture2D::Create(spec);
-		texture->SetData(reinterpret_cast<void*>(const_cast<T*>(bitmap.pixels)), bitmap.width * bitmap.height * 3);
+		texture->SetData(Buffer(reinterpret_cast<void*>(const_cast<T*>(bitmap.pixels)), bitmap.width * bitmap.height * 3));
 		return texture;
 	}
 

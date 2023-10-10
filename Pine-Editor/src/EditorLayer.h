@@ -31,6 +31,7 @@ namespace Pine
 
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
+		bool OnWindowDrop(WindowDropEvent& event);
 
 		void OnOverlayRender();
 
@@ -41,7 +42,7 @@ namespace Pine
 
 		void NewScene();
 		void OpenScene();
-		void OpenScene(const std::filesystem::path& path);
+		void OpenScene(AssetHandle handle);
 		void SaveScene();
 		void SaveSceneAs();
 

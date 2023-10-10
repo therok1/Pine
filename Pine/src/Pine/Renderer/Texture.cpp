@@ -7,7 +7,7 @@
 
 namespace Pine
 {
-	Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification)
+	Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification, Buffer data)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -15,22 +15,7 @@ namespace Pine
 			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLTexture2D>(specification);
-		}
-
-		PN_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
-	}
-
-	Ref<Texture2D> Texture2D::Create(const std::string& path)
-	{
-		switch (Renderer::GetAPI())
-		{
-		case RendererAPI::API::None:
-			PN_CORE_ASSERT(false, "RendererAPI::None is not supported!");
-			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLTexture2D>(path);
+			return CreateRef<OpenGLTexture2D>(specification, data);
 		}
 
 		PN_CORE_ASSERT(false, "Unknown RendererAPI!");

@@ -236,10 +236,7 @@ namespace Pine
 
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
-
-			if (spriteRendererComponent.Texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.Texture->GetPath();
-
+			out << YAML::Key << "TextureHandle" << YAML::Value << spriteRendererComponent.Texture;
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
 			out << YAML::EndMap;
@@ -376,7 +373,7 @@ namespace Pine
 		out << YAML::EndMap;
 	}
 
-	void SceneSerializer::Serialize(const std::string& filepath)
+	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
@@ -399,17 +396,17 @@ namespace Pine
 		fout << out.c_str();
 	}
 
-	void SceneSerializer::SerializeRuntime(const std::string& filepath)
+	void SceneSerializer::SerializeRuntime(const std::filesystem::path& filepath)
 	{
 		PN_CORE_ASSERT(false, "Not implemented!");
 	}
 
-	bool SceneSerializer::Deserialize(const std::string& filepath)
+	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
 	{
 		YAML::Node data;
 		try
 		{
-			data = YAML::LoadFile(filepath);
+			data = YAML::LoadFile(filepath.string());
 		}
 		catch (const std::exception& e)
 		{
@@ -476,10 +473,13 @@ namespace Pine
 
 					if (spriteRendererComponent["TexturePath"])
 					{
-						std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						/*std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
 						auto path = Project::GetAssetFileSystemPath(texturePath);
-						spriteRendererComponent_.Texture = Texture2D::Create(path.string());
+						spriteRendererComponent_.Texture = Texture2D::Create(path.string());*/
 					}
+
+					if (spriteRendererComponent["TextureHandle"])
+						spriteRendererComponent_.Texture = spriteRendererComponent["TextureHandle"].as<AssetHandle>();
 
 					if (spriteRendererComponent["TilingFactor"])
 						spriteRendererComponent_.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
@@ -595,7 +595,7 @@ namespace Pine
 		return true;
 	}
 
-	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
+	bool SceneSerializer::DeserializeRuntime(const std::filesystem::path& filepath)
 	{
 		PN_CORE_ASSERT(false, "Not implemented!");
 		return false;

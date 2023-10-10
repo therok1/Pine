@@ -7,6 +7,8 @@
 #include "Pine/Renderer/RenderCommand.h"
 #include "Pine/Renderer/MSDFData.h"
 
+#include "Pine/Asset/AssetManager.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -209,7 +211,7 @@ namespace Pine
 
 		s_Data.BlankTexture = Texture2D::Create(TextureSpecification());
 		uint32_t blankTextureData = 0xffffffff;
-		s_Data.BlankTexture->SetData(&blankTextureData, sizeof(blankTextureData));
+		s_Data.BlankTexture->SetData(Buffer(&blankTextureData, sizeof(uint32_t)));
 
 		int32_t samplers[Renderer2DData::MaxTextureSlots];
 		for (uint32_t i = 0; i < Renderer2DData::MaxTextureSlots; i++)
@@ -442,6 +444,7 @@ namespace Pine
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		PN_PROFILE_FUNCTION();
+		PN_CORE_VERIFY(texture);
 
 		constexpr uint32_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoordinates[] = {
@@ -555,9 +558,14 @@ namespace Pine
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		if (src.Texture)
-			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		{
+			Ref<Texture2D> texture = AssetManager::GetAsset<Texture2D>(src.Texture);
+			DrawQuad(transform, texture, src.TilingFactor, src.Color, entityID);
+		}
 		else
+		{
 			DrawQuad(transform, src.Color, entityID);
+		}
 	}
 
 	void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const TextParams& textParams, int entityID)

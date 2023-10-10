@@ -23,6 +23,7 @@
 #include <unordered_set>
 
 #include "Pine/Core/Core.h"
+#include "Pine/Core/Buffer.h"
 
 #include "Pine/Core/Log.h"
 

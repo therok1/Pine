@@ -65,7 +65,7 @@ namespace Pine
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4(1.0f);
-		Ref<Texture2D> Texture;
+		AssetHandle Texture = 0;
 		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;

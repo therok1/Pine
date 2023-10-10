@@ -22,8 +22,9 @@ namespace Pine
 			
 			out << YAML::BeginMap;
 			out << YAML::Key << "Name" << YAML::Value << config.Name;
-			out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
+			out << YAML::Key << "StartScene" << YAML::Value << static_cast<uint64_t>(config.StartScene);
 			out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();
+			out << YAML::Key << "AssetRegistryPath" << YAML::Value << config.AssetRegistryPath.string();
 			out << YAML::Key << "ScriptModulePath" << YAML::Value << config.ScriptModulePath.string();
 			out << YAML::EndMap;
 			
@@ -47,7 +48,7 @@ namespace Pine
 		}
 		catch (YAML::ParserException e)
 		{
-			PN_CORE_ERROR("Failed to load project file '{0}'\n     {1}", filepath, e.what());
+			PN_CORE_ERROR("Failed to load project file '{0}'\n		{1}", filepath, e.what());
 			return false;
 		}
 
@@ -56,8 +57,10 @@ namespace Pine
 			return false;
 
 		config.Name = projectNode["Name"].as<std::string>();
-		config.StartScene = projectNode["StartScene"].as<std::string>();
+		config.StartScene = projectNode["StartScene"].as<uint64_t>();
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
+		if (projectNode["AssetRegistryPath"])
+			config.AssetRegistryPath = projectNode["AssetRegistryPath"].as<std::string>();
 		config.ScriptModulePath = projectNode["ScriptModulePath"].as<std::string>();
 
 		return true;

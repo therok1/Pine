@@ -6,6 +6,10 @@
 #include "Pine/Scripting/ScriptEngine.h"
 #include "Pine/Renderer/Font.h"
 
+#include "Pine/Asset/AssetManager.h"
+#include "Pine/Asset/TextureImporter.h"
+#include "Pine/Asset/SceneImporter.h"
+
 #include <imgui/imgui.h>
 #include <ImGuizmo.h>
 
@@ -28,13 +32,12 @@ namespace Pine
 	{
 		PN_PROFILE_FUNCTION();
 
-		m_Texture = Texture2D::Create("assets/textures/checkerboard.png");
-		m_PlayIcon = Texture2D::Create("Resources/Icons/PlayIcon.png");
-		m_PauseIcon = Texture2D::Create("Resources/Icons/PauseIcon.png");
-		m_ResumeIcon = Texture2D::Create("Resources/Icons/ResumeIcon.png");
-		m_StepIcon = Texture2D::Create("Resources/Icons/StepIcon.png");
-		m_StopIcon = Texture2D::Create("Resources/Icons/StopIcon.png");
-		m_SimulateIcon = Texture2D::Create("Resources/Icons/SimulateIcon.png");
+		m_PlayIcon = TextureImporter::LoadTexture2D("Resources/Icons/PlayIcon.png");
+		m_PauseIcon = TextureImporter::LoadTexture2D("Resources/Icons/PauseIcon.png");
+		m_ResumeIcon = TextureImporter::LoadTexture2D("Resources/Icons/ResumeIcon.png");
+		m_StepIcon = TextureImporter::LoadTexture2D("Resources/Icons/StepIcon.png");
+		m_StopIcon = TextureImporter::LoadTexture2D("Resources/Icons/StopIcon.png");
+		m_SimulateIcon = TextureImporter::LoadTexture2D("Resources/Icons/SimulateIcon.png");
 
 		FramebufferSpecification spec;
 		spec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
@@ -262,8 +265,8 @@ namespace Pine
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 			{
-				const wchar_t* path = static_cast<const wchar_t*>(payload->Data);
-				OpenScene(path);
+				AssetHandle handle = *static_cast<AssetHandle*>(payload->Data);
+				OpenScene(handle);
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -341,6 +344,7 @@ namespace Pine
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(PN_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(PN_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+		dispatcher.Dispatch<WindowDropEvent>(PN_BIND_EVENT_FN(EditorLayer::OnWindowDrop));
 	}
 
 	void EditorLayer::UI_Toolbar()
@@ -531,6 +535,11 @@ namespace Pine
 		return false;
 	}
 
+	bool EditorLayer::OnWindowDrop(WindowDropEvent& event)
+	{
+		return true;
+	}
+
 	void EditorLayer::OnOverlayRender()
 	{
 		if (m_SceneState == SceneState::Play)
@@ -613,8 +622,10 @@ namespace Pine
 		{
 			ScriptEngine::Init();
 
-			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
-			OpenScene(startScenePath);
+			AssetHandle startScene = Project::GetActive()->GetConfig().StartScene;
+			std::cout << startScene << std::endl;
+			if (startScene)
+				OpenScene(startScene);
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
 		}
 	}
@@ -634,32 +645,26 @@ namespace Pine
 
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("Pine Scene (*.pine)\0*.pine\0");
+		/*std::string filepath = FileDialogs::OpenFile("Pine Scene (*.pine)\0*.pine\0");
 		if (!filepath.empty())
-			OpenScene(filepath);
+			OpenScene(filepath);*/
 	}
 
-	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	void EditorLayer::OpenScene(AssetHandle handle)
 	{
+		PN_CORE_ASSERT(handle);
+
 		if (m_SceneState != SceneState::Edit)
 			OnSceneStop();
 
-		if (path.extension().string() != ".pine")
-		{
-			PN_CORE_WARN("Couldn't load scene '{0}' - unsupported file extension!", path.filename().string());
-			return;
-		}
+		Ref<Scene> readOnlyScene = AssetManager::GetAsset<Scene>(handle);
+		Ref<Scene> newScene = Scene::Copy(readOnlyScene);
 
-		Ref<Scene> newScene = CreateRef<Scene>();
-		SceneSerializer serializer(newScene);
-		if (serializer.Deserialize(path.string()))
-		{
-			m_EditorScene = newScene;
-			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+		m_EditorScene = newScene;
+		m_SceneHierarchyPanel.SetContext(m_EditorScene);
 
-			m_ActiveScene = m_EditorScene;
-			m_EditorScenePath = path;
-		}
+		m_ActiveScene = m_EditorScene;
+		m_EditorScenePath = Project::GetActive()->GetEditorAssetManager()->GetFilePath(handle);
 	}
 
 	void EditorLayer::SaveScene()
@@ -682,8 +687,7 @@ namespace Pine
 
 	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
 	{
-		SceneSerializer serializer(scene);
-		serializer.Serialize(path.string());
+		SceneImporter::SaveScene(scene, path);
 	}
 
 	void EditorLayer::OnScenePlay()
